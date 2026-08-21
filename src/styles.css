@@ -268,9 +268,9 @@
   box-shadow: var(--shadow-paper);
 }
 
-/* Ghost placeholder CV — muted, italic content hinting at what to type */
+/* Ghost placeholder CV — faint, semi-visible text hinting at structure only */
 @utility placeholder-cv {
-  --placeholder: color-mix(in oklch, var(--color-foreground) 55%, transparent);
+  --placeholder: color-mix(in oklch, var(--color-foreground) 30%, transparent);
 
   .display,
   p,
@@ -286,7 +286,7 @@
   }
 
   mark {
-    background: color-mix(in oklch, var(--color-accent-soft) 60%, transparent);
+    background: color-mix(in oklch, var(--color-accent-soft) 40%, transparent);
   }
 }
 
