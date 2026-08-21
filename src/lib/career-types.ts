@@ -41,7 +41,7 @@ export type MasterCv = {
   projects: ProjectEntry[];
   volunteer: string[];
   updatedAt: string;
-  template: "editorial" | "compact" | "classic";
+  template: CvTemplateId;
   version: number;
 };
 
@@ -104,6 +104,17 @@ export type Application = {
   nextAction?: string;
   nextActionDate?: string;
   timeline: ApplicationEvent[];
+};
+
+export type CvTemplateId = "editorial" | "modern" | "classic" | "compact" | "minimal";
+
+export type CareerSuggestion = {
+  id: string;
+  title: string;
+  why: string;
+  transferable: string[];
+  openings: number;
+  match: number;
 };
 
 export type SuggestionState = "pending" | "accepted" | "rejected";

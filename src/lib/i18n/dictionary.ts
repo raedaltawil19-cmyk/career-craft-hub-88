@@ -11,6 +11,7 @@ import add from "./ns/add";
 import tailor from "./ns/tailor";
 import profile from "./ns/profile";
 import notifications from "./ns/notifications";
+import ws from "./ns/ws";
 
 const namespaces: Record<string, Bundle> = {
   common,
@@ -24,6 +25,7 @@ const namespaces: Record<string, Bundle> = {
   tailor,
   profile,
   notifications,
+  ws,
 };
 
 function build(): Record<Language, Record<string, string>> {
