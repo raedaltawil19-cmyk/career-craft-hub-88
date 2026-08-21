@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppAddModeRouteImport } from './routes/app.add.$mode'
 import { Route as AppApplicationsIndexRouteImport } from './routes/app.applications.index'
 import { Route as AppApplicationsAppIdRouteImport } from './routes/app.applications.$appId'
@@ -41,6 +42,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppNotificationsRoute = AppNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAddModeRoute = AppAddModeRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app/': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
   '/app/': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/notifications'
+    | '/app/profile'
     | '/app/'
     | '/app/add/$mode'
     | '/app/applications/$appId'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/app/notifications'
+    | '/app/profile'
     | '/app'
     | '/app/add/$mode'
     | '/app/applications/$appId'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/notifications'
+    | '/app/profile'
     | '/app/'
     | '/app/add/$mode'
     | '/app/applications/$appId'
@@ -214,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/app/notifications'
       preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/add/$mode': {
@@ -284,6 +303,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
   AppIndexRoute: typeof AppIndexRoute
   AppAddModeRoute: typeof AppAddModeRoute
   AppApplicationsAppIdRoute: typeof AppApplicationsAppIdRoute
@@ -298,6 +318,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
   AppIndexRoute: AppIndexRoute,
   AppAddModeRoute: AppAddModeRoute,
   AppApplicationsAppIdRoute: AppApplicationsAppIdRoute,

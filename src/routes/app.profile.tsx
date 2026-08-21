@@ -71,19 +71,9 @@ function ProfilePage() {
       <section>
         <h2 className="eyebrow mb-2">Career workspace</h2>
         <Panel className="divide-y divide-border p-0">
-          <LinkRow to="/app/cv" icon={FileText} title="Master CV" detail="Your source of truth" />
-          <LinkRow
-            to="/app/applications"
-            icon={Send}
-            title="Applications"
-            detail="Pipeline and reminders"
-          />
-          <LinkRow
-            to="/app/notifications"
-            icon={Bell}
-            title="Notifications"
-            detail="Matches and updates"
-          />
+          <LinkRow to="/app/cv" title="Master CV" meta="Your source of truth" />
+          <LinkRow to="/app/applications" title="Applications" meta="Pipeline and reminders" />
+          <LinkRow to="/app/notifications" title="Notifications" meta="Matches and updates" />
         </Panel>
       </section>
 
