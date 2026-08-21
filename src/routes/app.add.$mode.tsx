@@ -15,12 +15,13 @@ import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
+import { translate, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/add/$mode")({
   head: () => ({
     meta: [
-      { title: "Add a CV — Smart CV" },
-      { name: "description", content: "Paste, upload, import from LinkedIn or fill a guided form." },
+      { title: translate("en", "add.headTitle") },
+      { name: "description", content: translate("en", "add.headDescription") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -28,16 +29,18 @@ export const Route = createFileRoute("/app/add/$mode")({
 });
 
 const meta = {
-  paste: { title: "Paste your CV", icon: ClipboardType },
-  upload: { title: "Upload your CV", icon: FileUp },
-  linkedin: { title: "Import from LinkedIn", icon: Linkedin },
-  manual: { title: "Guided form", icon: PenLine },
+  paste: { titleKey: "add.modePasteTitle", icon: ClipboardType },
+  upload: { titleKey: "add.modeUploadTitle", icon: FileUp },
+  linkedin: { titleKey: "add.modeLinkedinTitle", icon: Linkedin },
+  manual: { titleKey: "add.modeManualTitle", icon: PenLine },
 } as const;
 
 type Mode = keyof typeof meta;
 
 function AddCvPage() {
   const { mode } = Route.useParams();
+  const t = useT();
+  const { isRtl } = useI18n();
   const m = (Object.keys(meta).includes(mode) ? mode : "paste") as Mode;
   const Icon = meta[m].icon;
 
@@ -47,7 +50,7 @@ function AddCvPage() {
         to="/app"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
       >
-        <ArrowLeft className="size-4" /> Workspace
+        <ArrowLeft className={cn("size-4", isRtl && "rotate-180")} /> {t("add.backToWorkspace")}
       </Link>
 
       <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
@@ -55,8 +58,8 @@ function AddCvPage() {
           <Icon className="size-5" />
         </span>
         <div className="min-w-0">
-          <Eyebrow>Add a CV</Eyebrow>
-          <h1 className="display text-2xl leading-tight sm:text-3xl">{meta[m].title}</h1>
+          <Eyebrow>{t("add.eyebrow")}</Eyebrow>
+          <h1 className="display text-2xl leading-tight sm:text-3xl">{t(meta[m].titleKey)}</h1>
         </div>
       </header>
 
@@ -79,6 +82,7 @@ function ReviewStep({
   onConfirm: () => void;
   note: string;
 }) {
+  const t = useT();
   return (
     <div className="space-y-4">
       <Panel className="border-primary/25 bg-primary-soft/40">
@@ -89,14 +93,14 @@ function ReviewStep({
       </Panel>
 
       <Panel>
-        <h2 className="text-lg">Review what we extracted</h2>
+        <h2 className="text-lg">{t("add.reviewTitle")}</h2>
         <dl className="mt-3 space-y-3 text-sm">
-          <Field label="Name" value={draft.name} />
-          <Field label="Title" value={draft.title} />
-          <Field label="Contact" value={[draft.email, draft.phone].filter(Boolean).join(" · ")} />
-          <Field label="Location" value={draft.location} />
+          <Field label={t("add.fieldName")} value={draft.name} />
+          <Field label={t("add.fieldTitle")} value={draft.title} />
+          <Field label={t("add.fieldContact")} value={[draft.email, draft.phone].filter(Boolean).join(" · ")} />
+          <Field label={t("add.fieldLocation")} value={draft.location} />
         </dl>
-        <h3 className="eyebrow mt-5">Experience ({draft.experience.length})</h3>
+        <h3 className="eyebrow mt-5">{t("add.experienceHeading", { count: draft.experience.length })}</h3>
         <ul className="mt-2 space-y-2">
           {draft.experience.map((e) => (
             <li key={e.id} className="rounded-xl bg-surface p-3">
@@ -104,12 +108,12 @@ function ReviewStep({
                 {e.role} · {e.company}
               </p>
               <p className="text-xs text-muted-foreground">
-                {e.start} – {e.end} · {e.bullets.length} bullet points
+                {e.start} – {e.end} · {t("add.bulletPoints", { count: e.bullets.length })}
               </p>
             </li>
           ))}
         </ul>
-        <h3 className="eyebrow mt-5">Skills</h3>
+        <h3 className="eyebrow mt-5">{t("add.skillsHeading")}</h3>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {draft.skills.map((s) => (
             <Tag key={s}>{s}</Tag>
@@ -122,14 +126,14 @@ function ReviewStep({
           onClick={onConfirm}
           className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
         >
-          <Check className="size-4" /> Confirm & create Master CV
+          <Check className="size-4" /> {t("add.confirmCreate")}
         </button>
         <Link
           to="/app/cv/edit"
           search={{ panel: "sections" }}
           className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
         >
-          Correct something first
+          {t("add.correctFirst")}
         </Link>
       </div>
     </div>
@@ -137,10 +141,11 @@ function ReviewStep({
 }
 
 function Field({ label, value }: { label: string; value: string }) {
+  const t = useT();
   return (
     <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2">
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 font-medium">{value || "—"}</dd>
+      <dd className="min-w-0 font-medium">{value || t("add.emptyValue")}</dd>
     </div>
   );
 }
@@ -157,6 +162,7 @@ function useCreate() {
 /* ---------------------------------- paste ---------------------------------- */
 
 function PasteFlow() {
+  const t = useT();
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
@@ -164,27 +170,27 @@ function PasteFlow() {
   return phase === "review" ? (
     <ReviewStep
       draft={demoMasterCv}
-      note="Extracted from the text you pasted. Nothing was added that wasn't in your text — correct anything that looks wrong before confirming."
+      note={t("add.pasteNote")}
       onConfirm={() => create(demoMasterCv)}
     />
   ) : phase === "working" ? (
-    <Working label="Reading your CV text…" />
+    <Working label={t("add.pasteWorkingLabel")} />
   ) : (
     <Panel>
       <label className="block">
-        <span className="text-sm font-medium">Paste the full text of your CV</span>
+        <span className="text-sm font-medium">{t("add.pasteLabel")}</span>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={12}
-          placeholder="Name, contact details, experience, education, skills…"
+          placeholder={t("add.pastePlaceholder")}
           className="mt-2 w-full resize-y rounded-xl border border-border bg-background p-3.5 text-sm leading-relaxed outline-none focus:border-primary"
         />
       </label>
       {phase === "error" ? (
         <div className="mt-4">
           <ErrorState
-            description="That text was too short to structure reliably. Paste the whole CV, including roles and dates."
+            description={t("add.pasteErrorDescription")}
             onRetry={() => setPhase("input")}
           />
         </div>
@@ -199,7 +205,7 @@ function PasteFlow() {
         }}
         className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
       >
-        Continue
+        {t("add.continue")}
       </button>
     </Panel>
   );
@@ -208,6 +214,7 @@ function PasteFlow() {
 /* ---------------------------------- upload --------------------------------- */
 
 function UploadFlow() {
+  const t = useT();
   const [file, setFile] = useState<string | null>(null);
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
@@ -216,20 +223,20 @@ function UploadFlow() {
     return (
       <ReviewStep
         draft={demoMasterCv}
-        note={`Parsed from ${file}. Formatting from the original file is not carried over — only your information.`}
+        note={t("add.uploadNote", { file: file ?? "" })}
         onConfirm={() => create(demoMasterCv)}
       />
     );
-  if (phase === "working") return <Working label={`Extracting content from ${file}…`} />;
+  if (phase === "working") return <Working label={t("add.uploadWorkingLabel", { file: file ?? "" })} />;
 
   return (
     <Panel>
       <div className="rounded-2xl border border-dashed border-border-strong bg-surface/60 p-8 text-center">
         <FileUp className="mx-auto size-7 text-primary" />
-        <p className="mt-3 font-medium">Drop your CV file here</p>
-        <p className="mt-1 text-xs text-muted-foreground">PDF, DOC or DOCX · up to 10 MB</p>
+        <p className="mt-3 font-medium">{t("add.uploadDropTitle")}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{t("add.uploadHint")}</p>
         <label className="tap mt-4 inline-flex cursor-pointer items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
-          Choose file
+          {t("add.uploadChooseFile")}
           <input
             type="file"
             accept=".pdf,.doc,.docx"
@@ -247,10 +254,10 @@ function UploadFlow() {
       {phase === "error" ? (
         <div className="mt-4">
           <ErrorState
-            title="We couldn't read that file"
-            description="Scanned or image-only PDFs often fail. Try another file, or paste the text instead."
+            title={t("add.uploadErrorTitle")}
+            description={t("add.uploadErrorDescription")}
             onRetry={() => setPhase("input")}
-            retryLabel="Choose another file"
+            retryLabel={t("add.uploadErrorRetryLabel")}
           />
         </div>
       ) : null}

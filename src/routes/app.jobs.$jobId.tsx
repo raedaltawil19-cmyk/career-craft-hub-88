@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/jobs/$jobId")({
   head: () => ({
@@ -27,20 +28,27 @@ export const Route = createFileRoute("/app/jobs/$jobId")({
 const tabs = ["Overview", "Analysis", "Match"] as const;
 
 function JobDetailPage() {
+  const t = useT();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
   const { jobs, state, toggleSavedJob, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
   const [tab, setTab] = useState<(typeof tabs)[number]>("Overview");
 
+  const tabLabels: Record<(typeof tabs)[number], string> = {
+    Overview: t("jobs.tabOverview"),
+    Analysis: t("jobs.tabAnalysis"),
+    Match: t("jobs.tabMatch"),
+  };
+
   if (!job) {
     return (
       <EmptyState
-        title="Job not found"
-        description="This posting is no longer in your workspace."
+        title={t("jobs.jobNotFoundTitle")}
+        description={t("jobs.jobNotFoundDescription")}
         action={
           <Link to="/app/jobs" className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium">
-            Back to jobs
+            {t("jobs.backToJobs")}
           </Link>
         }
       />
@@ -57,7 +65,7 @@ function JobDetailPage() {
         to="/app/jobs"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
       >
-        <ArrowLeft className="size-4" /> Jobs
+        <ArrowLeft className="size-4 rtl:rotate-180" /> {t("jobs.backToJobsShort")}
       </Link>
 
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
@@ -79,14 +87,14 @@ function JobDetailPage() {
           params={{ jobId: job.id }}
           className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
         >
-          <Sparkles className="size-4" /> Tailor my CV
+          <Sparkles className="size-4" /> {t("jobs.tailorMyCv")}
         </Link>
         <button
           onClick={() => toggleSavedJob(job.id)}
           className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
         >
           {saved ? <BookmarkCheck className="size-4" /> : <Bookmark className="size-4" />}
-          {saved ? "Saved" : "Save"}
+          {saved ? t("jobs.saved") : t("jobs.save")}
         </button>
         {!alreadyTracked ? (
           <button
@@ -105,7 +113,7 @@ function JobDetailPage() {
                   {
                     id: `ev-${Math.random().toString(36).slice(2, 8)}`,
                     date: new Date().toISOString().slice(0, 10),
-                    label: "Saved from job discovery",
+                    label: t("jobs.trackedFromDiscovery"),
                   },
                 ],
               });
@@ -113,28 +121,28 @@ function JobDetailPage() {
             }}
             className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
           >
-            Track application
+            {t("jobs.trackApplication")}
           </button>
         ) : null}
       </div>
 
       <div
         role="tablist"
-        aria-label="Job sections"
+        aria-label={t("jobs.jobSections")}
         className="flex gap-1 rounded-xl border border-border bg-surface p-1"
       >
-        {tabs.map((t) => (
+        {tabs.map((tb) => (
           <button
-            key={t}
+            key={tb}
             role="tab"
-            aria-selected={tab === t}
-            onClick={() => setTab(t)}
+            aria-selected={tab === tb}
+            onClick={() => setTab(tb)}
             className={cn(
               "tap flex-1 rounded-lg px-3 text-sm font-medium transition-colors",
-              tab === t ? "bg-card text-foreground shadow-soft" : "text-muted-foreground",
+              tab === tb ? "bg-card text-foreground shadow-soft" : "text-muted-foreground",
             )}
           >
-            {t}
+            {tabLabels[tb]}
           </button>
         ))}
       </div>
@@ -142,14 +150,14 @@ function JobDetailPage() {
       {tab === "Overview" ? (
         <div className="grid gap-4 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
-            <h2 className="text-xl">About the role</h2>
+            <h2 className="text-xl">{t("jobs.aboutTheRole")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-foreground/85">{job.summary}</p>
-            <h3 className="eyebrow mt-5">Responsibilities</h3>
+            <h3 className="eyebrow mt-5">{t("jobs.responsibilities")}</h3>
             <ul className="mt-2 space-y-1.5">
               {job.responsibilities.map((r) => (
                 <li
                   key={r}
-                  className="relative pl-4 text-sm leading-relaxed text-foreground/85 before:absolute before:left-0 before:top-2.5 before:size-1 before:rounded-full before:bg-accent"
+                  className="relative ps-4 text-sm leading-relaxed text-foreground/85 before:absolute before:start-0 before:top-2.5 before:size-1 before:rounded-full before:bg-accent"
                 >
                   {r}
                 </li>
@@ -157,13 +165,13 @@ function JobDetailPage() {
             </ul>
           </Panel>
           <Panel>
-            <h2 className="text-lg">Facts</h2>
+            <h2 className="text-lg">{t("jobs.facts")}</h2>
             <dl className="mt-3 space-y-2.5 text-sm">
-              <Fact label="Experience" value={job.experienceRequirement} />
-              <Fact label="Working mode" value={job.mode} />
-              <Fact label="Location" value={job.location} />
-              <Fact label="Salary" value={job.salary ?? "Not disclosed"} />
-              <Fact label="Source" value={job.source} />
+              <Fact label={t("jobs.factExperience")} value={job.experienceRequirement} />
+              <Fact label={t("jobs.factWorkingMode")} value={job.mode} />
+              <Fact label={t("jobs.factLocation")} value={job.location} />
+              <Fact label={t("jobs.factSalary")} value={job.salary ?? t("jobs.notDisclosed")} />
+              <Fact label={t("jobs.factSource")} value={job.source} />
             </dl>
           </Panel>
         </div>
@@ -172,7 +180,7 @@ function JobDetailPage() {
       {tab === "Analysis" ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <Panel>
-            <h2 className="text-lg">Required</h2>
+            <h2 className="text-lg">{t("jobs.required")}</h2>
             <ul className="mt-3 space-y-2">
               {job.required.map((r) => (
                 <li key={r} className="flex gap-2 text-sm">
@@ -181,7 +189,7 @@ function JobDetailPage() {
                 </li>
               ))}
             </ul>
-            <h2 className="mt-5 text-lg">Preferred</h2>
+            <h2 className="mt-5 text-lg">{t("jobs.preferred")}</h2>
             <ul className="mt-3 space-y-2">
               {job.preferred.map((r) => (
                 <li key={r} className="flex gap-2 text-sm">
@@ -192,7 +200,7 @@ function JobDetailPage() {
             </ul>
           </Panel>
           <Panel>
-            <h2 className="text-lg">Keywords the employer uses</h2>
+            <h2 className="text-lg">{t("jobs.keywordsEmployerUses")}</h2>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {job.keywords.map((k) => (
                 <Tag key={k} tone="key">
@@ -200,10 +208,9 @@ function JobDetailPage() {
                 </Tag>
               ))}
             </div>
-            <h3 className="eyebrow mt-5">Employer expectations</h3>
+            <h3 className="eyebrow mt-5">{t("jobs.employerExpectations")}</h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground/85">
-              A senior contributor who can work across research, design and system contribution
-              without hand-holding, and who can explain trade-offs to non-designers.
+              {t("jobs.employerExpectationsBody")}
             </p>
           </Panel>
         </div>
@@ -216,53 +223,53 @@ function JobDetailPage() {
               <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
                 <MatchRing value={job.match} size={64} />
                 <p className="min-w-0 text-sm text-muted-foreground">
-                  Comparison of your Master CV against this posting. The score is an aid for
-                  prioritising, not a decision.
+                  {t("jobs.matchComparisonBody")}
                 </p>
               </div>
             </Panel>
             <div className="grid gap-4 lg:grid-cols-3">
               <MatchGroup
-                title="Strong matches"
+                title={t("jobs.strongMatches")}
                 tone="match"
                 icon={<CircleCheck className="size-4 text-success" />}
                 items={job.matchingSkills}
+                emptyLabel={t("jobs.nothingInGroup")}
               />
               <MatchGroup
-                title="Transferable"
+                title={t("jobs.transferable")}
                 tone="neutral"
                 icon={<CircleDashed className="size-4 text-muted-foreground" />}
                 items={cv.skills.filter((s) => !job.matchingSkills.includes(s)).slice(0, 4)}
+                emptyLabel={t("jobs.nothingInGroup")}
               />
               <MatchGroup
-                title="Missing / to address"
+                title={t("jobs.missingToAddress")}
                 tone="gap"
                 icon={<CircleAlert className="size-4 text-warning" />}
                 items={job.gaps}
+                emptyLabel={t("jobs.nothingInGroup")}
               />
             </div>
             <Panel>
-              <h2 className="text-lg">Recommended changes</h2>
+              <h2 className="text-lg">{t("jobs.recommendedChanges")}</h2>
               <ul className="mt-3 space-y-2 text-sm text-foreground/85">
-                <li>Lead the summary with payments-adjacent experience you already have.</li>
-                <li>Surface the design system bullet higher — it maps to a core requirement.</li>
-                <li>
-                  Mention mentoring only if it reflects your real work; the posting asks for it.
-                </li>
+                <li>{t("jobs.recommendation1")}</li>
+                <li>{t("jobs.recommendation2")}</li>
+                <li>{t("jobs.recommendation3")}</li>
               </ul>
               <Link
                 to="/app/tailor/$jobId"
                 params={{ jobId: job.id }}
                 className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                <Sparkles className="size-4" /> Start tailoring
+                <Sparkles className="size-4" /> {t("jobs.startTailoring")}
               </Link>
             </Panel>
           </div>
         ) : (
           <EmptyState
-            title="No Master CV to compare"
-            description="Add a CV with the + button to unlock matching for this role."
+            title={t("jobs.noMasterCvTitle")}
+            description={t("jobs.noMasterCvDescription")}
           />
         )
       ) : null}
@@ -284,11 +291,13 @@ function MatchGroup({
   items,
   tone,
   icon,
+  emptyLabel,
 }: {
   title: string;
   items: string[];
   tone: "match" | "gap" | "neutral";
   icon: React.ReactNode;
+  emptyLabel: string;
 }) {
   return (
     <Panel>
@@ -305,7 +314,7 @@ function MatchGroup({
           ))}
         </div>
       ) : (
-        <p className="mt-3 text-sm text-muted-foreground">Nothing in this group.</p>
+        <p className="mt-3 text-sm text-muted-foreground">{emptyLabel}</p>
       )}
     </Panel>
   );

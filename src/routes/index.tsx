@@ -10,6 +10,8 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import { LanguageSelect } from "@/components/language-select";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,80 +35,66 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const entryModes = [
-  { icon: ClipboardType, label: "Paste text", detail: "Drop in your CV, we structure it" },
-  { icon: FileUp, label: "Upload file", detail: "PDF, DOC or DOCX" },
-  { icon: Linkedin, label: "LinkedIn", detail: "Import your profile export" },
-  { icon: PenLine, label: "Guided form", detail: "One friendly question at a time" },
-];
-
-const steps = [
-  {
-    icon: Sparkles,
-    title: "One Master CV",
-    body: "Your complete career history, kept in one living document. Every other version comes from it.",
-  },
-  {
-    icon: Search,
-    title: "Find and analyze roles",
-    body: "See how a posting actually maps to your experience: strong matches, transferable skills, real gaps.",
-  },
-  {
-    icon: Target,
-    title: "Tailor honestly",
-    body: "The assistant reframes what you already did to fit the role. It never invents experience.",
-  },
-  {
-    icon: Send,
-    title: "Track every application",
-    body: "Statuses, reminders and interview notes for each role you sent a tailored CV to.",
-  },
-];
-
 function Landing() {
+  const t = useT();
+
+  const entryModes = [
+    { icon: ClipboardType, label: t("landing.entryPasteLabel"), detail: t("landing.entryPasteDetail") },
+    { icon: FileUp, label: t("landing.entryUploadLabel"), detail: t("landing.entryUploadDetail") },
+    { icon: Linkedin, label: t("landing.entryLinkedinLabel"), detail: t("landing.entryLinkedinDetail") },
+    { icon: PenLine, label: t("landing.entryFormLabel"), detail: t("landing.entryFormDetail") },
+  ];
+
+  const steps = [
+    { icon: Sparkles, title: t("landing.step1Title"), body: t("landing.step1Body") },
+    { icon: Search, title: t("landing.step2Title"), body: t("landing.step2Body") },
+    { icon: Target, title: t("landing.step3Title"), body: t("landing.step3Body") },
+    { icon: Send, title: t("landing.step4Title"), body: t("landing.step4Body") },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-5">
-        <span className="display min-w-0 truncate text-xl">Smart CV</span>
+      <header className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-4 px-5 py-5">
+        <span className="display min-w-0 truncate text-xl">{t("landing.appName")}</span>
+        <LanguageSelect />
         <Link
           to="/app"
           className="tap inline-flex shrink-0 items-center rounded-xl border border-border px-4 text-sm font-medium"
         >
-          Open workspace
+          {t("landing.openWorkspace")}
         </Link>
       </header>
 
       <main>
         <section className="mx-auto max-w-5xl px-5 pb-14 pt-6 sm:pt-16">
-          <p className="eyebrow">Your career workspace</p>
+          <p className="eyebrow">{t("landing.eyebrow")}</p>
           <h1 className="display mt-2 text-[2.5rem] leading-[1.05] sm:text-6xl">
-            One master CV.
+            {t("landing.heroTitleLine1")}
             <br />
-            Tailored for every job.
+            {t("landing.heroTitleLine2")}
           </h1>
           <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-            Smart CV keeps your full career history in one place, analyzes the roles you want, and
-            writes a focused version for each one — using only what you've actually done.
+            {t("landing.heroBody")}
           </p>
           <div className="mt-7 flex flex-wrap gap-2.5">
             <Link
               to="/app"
               className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground"
             >
-              Start your Master CV <ArrowRight className="size-4" />
+              {t("landing.startMasterCv")} <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
             <Link
               to="/app/jobs"
               className="tap inline-flex items-center rounded-xl border border-border px-5 text-sm font-medium"
             >
-              Browse matching jobs
+              {t("landing.browseJobs")}
             </Link>
           </div>
         </section>
 
         <section className="border-y border-border bg-surface/60">
           <div className="mx-auto max-w-5xl px-5 py-12">
-            <h2 className="display text-2xl sm:text-3xl">Four ways to bring your CV in</h2>
+            <h2 className="display text-2xl sm:text-3xl">{t("landing.entryModesTitle")}</h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {entryModes.map((m) => (
                 <li key={m.label} className="rounded-2xl border border-border bg-card p-4">
@@ -120,7 +108,7 @@ function Landing() {
         </section>
 
         <section className="mx-auto max-w-5xl px-5 py-14">
-          <h2 className="display text-2xl sm:text-3xl">How the workspace works</h2>
+          <h2 className="display text-2xl sm:text-3xl">{t("landing.howItWorksTitle")}</h2>
           <ol className="mt-6 grid gap-4 sm:grid-cols-2">
             {steps.map((s, i) => (
               <li key={s.title} className="rounded-2xl border border-border bg-card p-5">
@@ -129,7 +117,7 @@ function Landing() {
                     <s.icon className="size-5" />
                   </span>
                   <p className="min-w-0 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Step {i + 1}
+                    {t("landing.stepLabel", { count: i + 1 })}
                   </p>
                 </div>
                 <h3 className="mt-3 text-lg font-semibold">{s.title}</h3>
@@ -141,16 +129,13 @@ function Landing() {
 
         <section className="mx-auto max-w-5xl px-5 pb-20">
           <div className="rounded-3xl bg-primary p-8 text-primary-foreground sm:p-12">
-            <h2 className="display text-2xl sm:text-4xl">Stop rewriting your CV from scratch</h2>
-            <p className="mt-3 max-w-lg text-sm opacity-85 sm:text-base">
-              Build it once, keep it current, and send a sharper version to every role you care
-              about.
-            </p>
+            <h2 className="display text-2xl sm:text-4xl">{t("landing.ctaTitle")}</h2>
+            <p className="mt-3 max-w-lg text-sm opacity-85 sm:text-base">{t("landing.ctaBody")}</p>
             <Link
               to="/app"
               className="tap mt-6 inline-flex items-center gap-2 rounded-xl bg-background px-6 text-sm font-semibold text-foreground"
             >
-              Open Smart CV <ArrowRight className="size-4" />
+              {t("landing.ctaButton")} <ArrowRight className="size-4 rtl:rotate-180" />
             </Link>
           </div>
         </section>
@@ -158,7 +143,7 @@ function Landing() {
 
       <footer className="border-t border-border">
         <div className="mx-auto max-w-5xl px-5 py-6 text-sm text-muted-foreground">
-          Smart CV — a calm workspace for your career.
+          {t("landing.footerText")}
         </div>
       </footer>
     </div>

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { ApplicationStatus } from "@/lib/career-types";
 
@@ -112,7 +113,19 @@ const statusTone: Record<ApplicationStatus, string> = {
   Closed: "bg-secondary text-muted-foreground",
 };
 
+const statusKey: Record<ApplicationStatus, string> = {
+  Saved: "dashboard.statusSaved",
+  Applied: "dashboard.statusApplied",
+  Interview: "dashboard.statusInterview",
+  "Second interview": "dashboard.statusSecondInterview",
+  Offer: "dashboard.statusOffer",
+  Rejected: "dashboard.statusRejected",
+  Withdrawn: "dashboard.statusWithdrawn",
+  Closed: "dashboard.statusClosed",
+};
+
 export function StatusPill({ status }: { status: ApplicationStatus }) {
+  const t = useT();
   return (
     <span
       className={cn(
@@ -120,7 +133,7 @@ export function StatusPill({ status }: { status: ApplicationStatus }) {
         statusTone[status],
       )}
     >
-      {status}
+      {t(statusKey[status])}
     </span>
   );
 }
@@ -194,26 +207,27 @@ export function LoadingList({ rows = 3 }: { rows?: number }) {
 }
 
 export function ErrorState({
-  title = "Something didn't work",
+  title,
   description,
   onRetry,
-  retryLabel = "Try again",
+  retryLabel,
 }: {
   title?: string;
   description: string;
   onRetry?: () => void;
   retryLabel?: string;
 }) {
+  const t = useT();
   return (
     <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-5">
-      <h3 className="text-base font-semibold text-destructive">{title}</h3>
+      <h3 className="text-base font-semibold text-destructive">{title ?? t("common.errorTitle")}</h3>
       <p className="mt-1 text-sm text-muted-foreground">{description}</p>
       {onRetry ? (
         <button
           onClick={onRetry}
           className="tap mt-4 inline-flex items-center rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
         >
-          {retryLabel}
+          {retryLabel ?? t("common.retry")}
         </button>
       ) : null}
     </div>
