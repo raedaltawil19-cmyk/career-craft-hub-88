@@ -219,43 +219,63 @@ function BigAction({
   );
 }
 
-function EmptyTemplate({ onLoadDemo }: { onLoadDemo: () => void }) {
+function EmptyTemplate({ template }: { template: CvTemplateId }) {
   const t = useT();
+  const placeholder: MasterCv = {
+    name: "",
+    title: "",
+    email: "",
+    phone: "",
+    location: "",
+    links: [],
+    summary: "",
+    experience: [],
+    education: [],
+    skills: [],
+    languages: [],
+    tools: [],
+    certifications: [],
+    projects: [],
+    volunteer: [],
+    updatedAt: new Date().toISOString(),
+    template,
+    version: 0,
+  };
+
   return (
-    <div className="tile flex flex-col items-center gap-4 p-8 text-center">
-      <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
-        <FilePlus2 className="size-7" />
-      </span>
-      <div>
-        <h2 className="text-xl font-bold">{t("ws.emptyPreviewTitle")}</h2>
-        <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-          {t("ws.emptyPreviewHint")}
-        </p>
+    <div className="space-y-4">
+      <div className="relative">
+        <CvPreview cv={placeholder} className="opacity-60" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2 p-6 opacity-40" aria-hidden>
+          {[90, 80, 85, 70, 88, 60].map((w, i) => (
+            <span
+              key={i}
+              className="block h-2 rounded-full bg-foreground/15"
+              style={{ width: `${w}%` }}
+            />
+          ))}
+        </div>
       </div>
-      <div className="grid w-full max-w-xs gap-2">
+
+      <div className="tile flex flex-col items-center gap-4 p-6 text-center">
+        <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
+          <FilePlus2 className="size-7" />
+        </span>
+        <div>
+          <h2 className="text-xl font-bold">{t("ws.emptyPreviewTitle")}</h2>
+          <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+            {t("ws.emptyPreviewHint")}
+          </p>
+        </div>
         <Link
           to="/app/add/$mode"
           params={{ mode: "paste" }}
-          className="tap flex items-center justify-center rounded-2xl bg-primary px-5 text-base font-bold text-primary-foreground"
+          className="tap flex w-full max-w-xs items-center justify-center rounded-2xl bg-primary px-5 text-base font-bold text-primary-foreground"
         >
           {t("ws.addCvCta")}
         </Link>
-        <button
-          type="button"
-          onClick={onLoadDemo}
-          className="tap rounded-2xl border border-border-strong bg-card px-5 text-base font-bold hover:bg-muted"
-        >
-          {t("dashboard.exploreSampleData")}
-        </button>
-      </div>
-      <div className="mt-2 w-full space-y-2 opacity-40" aria-hidden>
-        <span className="block h-3 w-2/5 rounded-full bg-foreground/30" />
-        <span className="block h-2 w-1/4 rounded-full bg-foreground/20" />
-        <span className="mt-4 block h-px w-full bg-border" />
-        {[90, 80, 85, 70, 88, 60].map((w, i) => (
-          <span key={i} className="block h-2 rounded-full bg-foreground/15" style={{ width: `${w}%` }} />
-        ))}
       </div>
     </div>
   );
 }
+
