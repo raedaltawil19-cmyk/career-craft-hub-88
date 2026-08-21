@@ -244,10 +244,13 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <CvPreview cv={placeholder} className="opacity-60" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 space-y-2 p-6 opacity-40" aria-hidden>
-          {[90, 80, 85, 70, 88, 60].map((w, i) => (
+      <div className="relative w-full aspect-[1/1.414]">
+        <CvPreview cv={placeholder} className="h-full w-full opacity-60" />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 top-32 space-y-3 px-5 py-6 opacity-40 sm:px-8"
+          aria-hidden
+        >
+          {[90, 80, 85, 70, 88, 60, 92, 74, 83, 66, 90, 78, 86, 72, 94, 68].map((w, i) => (
             <span
               key={i}
               className="block h-2 rounded-full bg-foreground/15"
@@ -256,6 +259,7 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
           ))}
         </div>
       </div>
+
 
       <div className="tile flex flex-col items-center gap-4 p-6 text-center">
         <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
