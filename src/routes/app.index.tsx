@@ -14,6 +14,7 @@ import {
 } from "@/components/career-suggestions-panel";
 import { Eyebrow } from "@/components/ui-bits";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
+import type { CvTemplateId, MasterCv } from "@/lib/career-types";
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
@@ -42,7 +43,6 @@ function HomePage() {
     applySuggestion,
     setSuggestionState,
     updateMasterCv,
-    loadDemo,
   } = useWorkspace();
 
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
@@ -123,7 +123,7 @@ function HomePage() {
               ) : null}
             </>
           ) : (
-            <EmptyTemplate onLoadDemo={loadDemo} />
+            <EmptyTemplate template={template} />
           )}
         </div>
 
