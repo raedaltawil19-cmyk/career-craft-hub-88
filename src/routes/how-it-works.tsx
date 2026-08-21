@@ -16,13 +16,13 @@ import { useT } from "@/lib/i18n";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "Smart CV — One master CV, tailored for every job" },
+      { title: "How Smart CV works — master CV, tailoring and tracking" },
       {
         name: "description",
         content:
-          "Build one Master CV, then let Smart CV tailor it to each role, track applications and guide your next career move.",
+          "See how Smart CV works: one Master CV, honest tailoring per job, and a tracker for every application.",
       },
-      { property: "og:title", content: "Smart CV — One master CV, tailored for every job" },
+      { property: "og:title", content: "How Smart CV works" },
       {
         property: "og:description",
         content:
