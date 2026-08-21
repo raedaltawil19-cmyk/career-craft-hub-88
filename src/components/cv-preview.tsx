@@ -7,11 +7,13 @@ export function CvPreview({
   highlight = [],
   className,
   compact = false,
+  placeholder = false,
 }: {
   cv: MasterCv;
   highlight?: string[];
   className?: string;
   compact?: boolean;
+  placeholder?: boolean;
 }) {
   const t = useT();
   const isClassic = cv.template === "classic";
