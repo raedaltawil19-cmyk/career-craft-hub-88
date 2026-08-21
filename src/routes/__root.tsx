@@ -84,6 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Build a Master CV, improve it with AI guidance, discover matching jobs, tailor applications and track every outcome in one calm career workspace.",
       },
       { name: "author", content: "Smart CV" },
+      { name: "google", content: "notranslate" },
       { property: "og:title", content: "Smart CV — Your smart career workspace" },
       {
         property: "og:description",
@@ -113,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" translate="no" className="notranslate">
       <head>
         <HeadContent />
       </head>
