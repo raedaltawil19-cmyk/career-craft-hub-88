@@ -117,13 +117,13 @@ function HomePage() {
       </header>
 
       {/* One clear primary action */}
-      <Link to="/app/cv/edit" className="block">
-        <ActionCard
-          icon={<Sparkles className="size-7" />}
-          title={t("dashboard.editAndImprove")}
-          description={cv.title}
-        />
-      </Link>
+      <ActionCard
+        to="/app/cv/edit"
+        icon={<Sparkles className="size-7" />}
+        title={t("dashboard.editAndImprove")}
+        description={cv.title}
+      />
+
 
       <QuickTiles t={t} />
 
