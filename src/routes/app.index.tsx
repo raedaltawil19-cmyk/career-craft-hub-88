@@ -250,7 +250,6 @@ function AddCvTile() {
         <span className="rounded-xl bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">
           {t("ws.addCvCta")}
         </span>
-        <span className="text-base font-bold leading-tight">{t("ws.emptyPreviewTitle")}</span>
         <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
       </button>
 
