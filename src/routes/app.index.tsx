@@ -249,7 +249,7 @@ function AddCvTile() {
         <span className="grid size-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
           <FilePlus2 className="size-6" />
         </span>
-        <span className="rounded-xl bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">
+        <span className="w-full rounded-xl bg-primary py-2.5 text-center text-sm font-bold text-primary-foreground">
           {t("ws.addCvCta")}
         </span>
         <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
