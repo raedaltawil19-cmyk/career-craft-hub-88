@@ -13,6 +13,7 @@ import {
   SimilarJobsPanel,
 } from "@/components/career-suggestions-panel";
 import { Eyebrow } from "@/components/ui-bits";
+import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
 import type { CvTemplateId, MasterCv } from "@/lib/career-types";
 
@@ -221,6 +222,7 @@ function BigAction({
 
 function EmptyTemplate({ template }: { template: CvTemplateId }) {
   const t = useT();
+  const [sheetOpen, setSheetOpen] = useState(false);
   const placeholder: MasterCv = {
     name: "",
     title: "",
@@ -271,14 +273,16 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
             {t("ws.emptyPreviewHint")}
           </p>
         </div>
-        <Link
-          to="/app/add/$mode"
-          params={{ mode: "paste" }}
+        <button
+          type="button"
+          onClick={() => setSheetOpen(true)}
           className="tap flex w-full max-w-xs items-center justify-center rounded-2xl bg-primary px-5 text-base font-bold text-primary-foreground"
         >
           {t("ws.addCvCta")}
-        </Link>
+        </button>
       </div>
+
+      <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
     </div>
   );
 }
