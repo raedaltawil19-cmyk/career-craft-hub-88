@@ -1,7 +1,7 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { TemplateGallery } from "@/components/template-gallery";
@@ -15,7 +15,8 @@ import {
 import { Eyebrow } from "@/components/ui-bits";
 import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
-import type { CvTemplateId, MasterCv } from "@/lib/career-types";
+import { sampleCvFor } from "@/lib/sample-cv";
+import type { CvTemplateId } from "@/lib/career-types";
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
@@ -215,45 +216,16 @@ function BigAction({
 
 function EmptyTemplate({ template }: { template: CvTemplateId }) {
   const t = useT();
+  const { lang } = useI18n();
   const [sheetOpen, setSheetOpen] = useState(false);
-  const placeholder: MasterCv = {
-    name: "",
-    title: "",
-    email: "",
-    phone: "",
-    location: "",
-    links: [],
-    summary: "",
-    experience: [],
-    education: [],
-    skills: [],
-    languages: [],
-    tools: [],
-    certifications: [],
-    projects: [],
-    volunteer: [],
-    updatedAt: new Date().toISOString(),
-    template,
-    version: 0,
-  };
+  const sample = sampleCvFor(lang, template);
 
   return (
     <div className="space-y-4">
-      <div className="relative w-full aspect-[1/1.414]">
-        <CvPreview cv={placeholder} className="h-full w-full opacity-60" />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 top-32 space-y-3 px-5 py-6 opacity-40 sm:px-8"
-          aria-hidden
-        >
-          {[90, 80, 85, 70, 88, 60, 92, 74, 83, 66, 90, 78, 86, 72, 94, 68].map((w, i) => (
-            <span
-              key={i}
-              className="block h-2 rounded-full bg-foreground/15"
-              style={{ width: `${w}%` }}
-            />
-          ))}
-        </div>
+      <div className="relative w-full">
+        <CvPreview cv={sample} className="w-full" />
       </div>
+
 
 
       <div className="tile flex flex-col items-center gap-4 p-6 text-center">
