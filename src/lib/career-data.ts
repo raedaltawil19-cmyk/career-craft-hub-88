@@ -1,5 +1,6 @@
 import type {
   Application,
+  CareerSuggestion,
   CvDoc,
   Job,
   MasterCv,
@@ -421,3 +422,30 @@ export const statusOrder = [
   "Withdrawn",
   "Closed",
 ] as const;
+
+export const demoCareerSuggestions: CareerSuggestion[] = [
+  {
+    id: "career-1",
+    title: "Design Systems Lead",
+    why: "You already build and maintain a shared component library with engineers — that is the core of this role.",
+    transferable: ["Design systems", "Documentation", "Cross-team collaboration"],
+    openings: 12,
+    match: 84,
+  },
+  {
+    id: "career-2",
+    title: "UX Researcher",
+    why: "Your CV shows repeated user research, interviews and usability testing across fintech products.",
+    transferable: ["User research", "Interviews", "Usability testing"],
+    openings: 9,
+    match: 76,
+  },
+  {
+    id: "career-3",
+    title: "Product Manager, Platform",
+    why: "You have owned end-to-end product decisions with measurable outcomes and worked closely with data.",
+    transferable: ["Product discovery", "Stakeholder alignment", "Data-informed decisions"],
+    openings: 15,
+    match: 71,
+  },
+];

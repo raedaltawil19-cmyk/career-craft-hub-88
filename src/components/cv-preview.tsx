@@ -16,16 +16,24 @@ export function CvPreview({
   const t = useT();
   const isClassic = cv.template === "classic";
   const isCompact = cv.template === "compact" || compact;
+  const isModern = cv.template === "modern";
+  const isMinimal = cv.template === "minimal";
 
   return (
     <article
       className={cn("paper overflow-hidden", className)}
       aria-label={t("cv.previewAriaLabel", { name: cv.name || t("cv.yourName") })}
     >
+      {isModern ? <div className="h-2.5 w-full bg-primary" /> : null}
       <div className={cn("px-5 py-6 sm:px-8 sm:py-8", isCompact && "px-4 py-5 sm:px-6 sm:py-6")}>
         <header className={cn("pb-4", isClassic ? "text-center" : "")}>
           <h2 className="display text-2xl leading-tight sm:text-3xl">{cv.name || t("cv.yourName")}</h2>
-          <p className="mt-1 text-sm font-semibold tracking-wide text-primary">
+          <p
+            className={cn(
+              "mt-1 text-sm font-semibold tracking-wide",
+              isMinimal ? "text-muted-foreground" : "text-primary",
+            )}
+          >
             {cv.title || t("cv.yourTitle")}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">

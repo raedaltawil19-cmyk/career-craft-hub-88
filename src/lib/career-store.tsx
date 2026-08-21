@@ -10,6 +10,8 @@ import {
 import type {
   Application,
   ApplicationStatus,
+  CareerSuggestion,
+  CvTemplateId,
   CvDoc,
   MasterCv,
   Notification,
@@ -18,6 +20,7 @@ import type {
 } from "./career-types";
 import {
   demoApplications,
+  demoCareerSuggestions,
   demoCvDocs,
   demoJobs,
   demoMasterCv,
@@ -33,6 +36,7 @@ type WorkspaceState = {
   suggestions: Suggestion[];
   notifications: Notification[];
   savedJobIds: string[];
+  template: CvTemplateId;
 };
 
 const initialState: WorkspaceState = {
@@ -43,6 +47,7 @@ const initialState: WorkspaceState = {
   suggestions: [],
   notifications: demoNotifications,
   savedJobIds: [],
+  template: "editorial",
 };
 
 const demoState: WorkspaceState = {
@@ -53,11 +58,15 @@ const demoState: WorkspaceState = {
   suggestions: demoSuggestions,
   notifications: demoNotifications,
   savedJobIds: ["job-1", "job-3"],
+  template: "editorial",
 };
 
 type Ctx = {
   state: WorkspaceState;
   jobs: typeof demoJobs;
+  careers: CareerSuggestion[];
+  setTemplate: (template: CvTemplateId) => void;
+  applySuggestion: (id: string, text: string) => void;
   loadDemo: () => void;
   reset: () => void;
   createMasterCv: (cv: MasterCv) => void;
@@ -125,6 +134,37 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
           }
         : s,
     );
+  }, []);
+
+  const setTemplate = useCallback((template: CvTemplateId) => {
+    setState((s) => ({
+      ...s,
+      template,
+      masterCv: s.masterCv ? { ...s.masterCv, template } : s.masterCv,
+    }));
+  }, []);
+
+  /** Replace the original wording with the approved (possibly edited) text. */
+  const applySuggestion = useCallback((id: string, text: string) => {
+    setState((s) => {
+      const suggestion = s.suggestions.find((x) => x.id === id);
+      const suggestions = s.suggestions.map((x) =>
+        x.id === id ? { ...x, after: text, state: "accepted" as SuggestionState } : x,
+      );
+      if (!suggestion || !s.masterCv) return { ...s, suggestions };
+      const before = suggestion.before;
+      const cv = s.masterCv;
+      const masterCv: MasterCv = {
+        ...cv,
+        summary: cv.summary === before ? text : cv.summary,
+        experience: cv.experience.map((e) => ({
+          ...e,
+          bullets: e.bullets.map((b) => (b === before ? text : b)),
+        })),
+        updatedAt: new Date().toISOString(),
+      };
+      return { ...s, suggestions, masterCv };
+    });
   }, []);
 
   const setSuggestionState = useCallback((id: string, next: SuggestionState) => {
@@ -197,6 +237,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     () => ({
       state,
       jobs: demoJobs,
+      careers: demoCareerSuggestions,
+      setTemplate,
+      applySuggestion,
       loadDemo,
       reset,
       createMasterCv,
@@ -212,6 +255,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }),
     [
       state,
+      setTemplate,
+      applySuggestion,
       loadDemo,
       reset,
       createMasterCv,

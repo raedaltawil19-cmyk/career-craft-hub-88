@@ -37,6 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const t = useT();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const unread = state.notifications.filter((n) => !n.read).length;
+  const jobAlert = state.suggestions.some((s) => s.state === "accepted");
 
   const isActive = (to: string, exact: boolean) =>
     exact ? pathname === to : pathname.startsWith(to);
@@ -138,6 +139,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               label={t(item.labelKey)}
               icon={item.icon}
               active={isActive(item.to, item.exact)}
+              alert={item.to === "/app/jobs" && jobAlert}
             />
           ))}
           <li className="flex justify-center">
@@ -157,6 +159,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               label={t(item.labelKey)}
               icon={item.icon}
               active={isActive(item.to, item.exact)}
+              alert={item.to === "/app/jobs" && jobAlert}
             />
           ))}
         </ul>
@@ -172,11 +175,13 @@ function NavItem({
   label,
   icon: Icon,
   active,
+  alert = false,
 }: {
   to: string;
   label: string;
   icon: typeof Home;
   active: boolean;
+  alert?: boolean;
 }) {
   return (
     <li>
@@ -188,7 +193,12 @@ function NavItem({
           active ? "text-primary" : "text-muted-foreground",
         )}
       >
-        <Icon className={cn("size-5", active && "stroke-[2.4]")} />
+        <span className="relative">
+          <Icon className={cn("size-5", active && "stroke-[2.4]")} />
+          {alert ? (
+            <span className="absolute -end-1 -top-0.5 size-2 rounded-full bg-accent" />
+          ) : null}
+        </span>
         <span className="truncate">{label}</span>
       </Link>
     </li>
