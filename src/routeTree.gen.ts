@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
+import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,16 +35,23 @@ const AppJobsIndexRoute = AppJobsIndexRouteImport.update({
   path: '/jobs/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJobsJobIdRoute = AppJobsJobIdRouteImport.update({
+  id: '/jobs/$jobId',
+  path: '/jobs/$jobId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/': typeof AppJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppIndexRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs': typeof AppJobsIndexRoute
 }
 export interface FileRoutesById {
@@ -51,14 +59,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/': typeof AppJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/' | '/app/jobs/'
+  fullPaths: '/' | '/app' | '/app/' | '/app/jobs/$jobId' | '/app/jobs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/jobs'
-  id: '__root__' | '/' | '/app' | '/app/' | '/app/jobs/'
+  to: '/' | '/app' | '/app/jobs/$jobId' | '/app/jobs'
+  id: '__root__' | '/' | '/app' | '/app/' | '/app/jobs/$jobId' | '/app/jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,16 +105,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJobsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/jobs/$jobId': {
+      id: '/app/jobs/$jobId'
+      path: '/jobs/$jobId'
+      fullPath: '/app/jobs/$jobId'
+      preLoaderRoute: typeof AppJobsJobIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppJobsJobIdRoute: typeof AppJobsJobIdRoute
   AppJobsIndexRoute: typeof AppJobsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppJobsJobIdRoute: AppJobsJobIdRoute,
   AppJobsIndexRoute: AppJobsIndexRoute,
 }
 
