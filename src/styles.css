@@ -6,21 +6,22 @@
 
 /*
  * SMART CV — design system
- * Aesthetic: editorial career product. Warm paper base, deep ink text,
- * teal "signal" primary, copper accent. Serif display + geometric sans body.
+ * Aesthetic: "Vivid Coral Grid". Warm off-white base, deep indigo ink text,
+ * vivid coral primary, rose accent. Large friendly cards, big tap targets.
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
