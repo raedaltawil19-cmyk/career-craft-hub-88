@@ -15,7 +15,7 @@ import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
-import { translate, useT } from "@/lib/i18n";
+import { translate, useI18n, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/add/$mode")({
   head: () => ({
@@ -366,44 +366,54 @@ function LinkedInFlow() {
 
 type Answer = Record<string, string>;
 
-const questionGroups = [
-  {
-    title: "Personal information",
-    questions: [
-      { id: "name", q: "What's your full name?", placeholder: "Amina Haddad" },
-      { id: "title", q: "What professional title describes you today?", placeholder: "Senior Product Designer" },
-      { id: "email", q: "Best email for recruiters?", placeholder: "you@mail.com" },
-      { id: "location", q: "Where are you based?", placeholder: "Stockholm, Sweden" },
-    ],
-  },
-  {
-    title: "Work experience",
-    questions: [
-      { id: "company", q: "Where did you work most recently?", placeholder: "Company name" },
-      { id: "role", q: "What was your role there?", placeholder: "Job title" },
-      { id: "period", q: "When did you start and finish?", placeholder: "Mar 2022 – Present" },
-      { id: "responsibilities", q: "What were your main responsibilities?", placeholder: "In your own words" },
-      { id: "achievements", q: "What are you proudest of in that role?", placeholder: "One concrete result" },
-    ],
-  },
-  {
-    title: "Education",
-    questions: [
-      { id: "school", q: "Where did you study?", placeholder: "School or university" },
-      { id: "program", q: "What did you study?", placeholder: "Programme or degree" },
-      { id: "years", q: "During which years?", placeholder: "2015 – 2017" },
-    ],
-  },
-  {
-    title: "Skills & more",
-    questions: [
-      { id: "skills", q: "What are your main skills?", placeholder: "Comma separated" },
-      { id: "languages", q: "Which languages do you speak?", placeholder: "Swedish, English…" },
-      { id: "tools", q: "Which tools or software do you use?", placeholder: "Figma, Linear…" },
-      { id: "extra", q: "Anything else worth including?", placeholder: "Projects, volunteering, courses" },
-    ],
-  },
-] as const;
+function useQuestionGroups() {
+  const t = useT();
+  return [
+    {
+      titleKey: "add.groupPersonalTitle",
+      questions: [
+        { id: "name", qKey: "add.qName", placeholderKey: "add.qNamePlaceholder" },
+        { id: "title", qKey: "add.qTitle", placeholderKey: "add.qTitlePlaceholder" },
+        { id: "email", qKey: "add.qEmail", placeholderKey: "add.qEmailPlaceholder" },
+        { id: "location", qKey: "add.qLocation", placeholderKey: "add.qLocationPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupWorkTitle",
+      questions: [
+        { id: "company", qKey: "add.qCompany", placeholderKey: "add.qCompanyPlaceholder" },
+        { id: "role", qKey: "add.qRole", placeholderKey: "add.qRolePlaceholder" },
+        { id: "period", qKey: "add.qPeriod", placeholderKey: "add.qPeriodPlaceholder" },
+        { id: "responsibilities", qKey: "add.qResponsibilities", placeholderKey: "add.qResponsibilitiesPlaceholder" },
+        { id: "achievements", qKey: "add.qAchievements", placeholderKey: "add.qAchievementsPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupEducationTitle",
+      questions: [
+        { id: "school", qKey: "add.qSchool", placeholderKey: "add.qSchoolPlaceholder" },
+        { id: "program", qKey: "add.qProgram", placeholderKey: "add.qProgramPlaceholder" },
+        { id: "years", qKey: "add.qYears", placeholderKey: "add.qYearsPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupSkillsTitle",
+      questions: [
+        { id: "skills", qKey: "add.qSkills", placeholderKey: "add.qSkillsPlaceholder" },
+        { id: "languages", qKey: "add.qLanguages", placeholderKey: "add.qLanguagesPlaceholder" },
+        { id: "tools", qKey: "add.qTools", placeholderKey: "add.qToolsPlaceholder" },
+        { id: "extra", qKey: "add.qExtra", placeholderKey: "add.qExtraPlaceholder" },
+      ],
+    },
+  ].map((g) => ({
+    title: t(g.titleKey),
+    questions: g.questions.map((q) => ({
+      id: q.id,
+      q: t(q.qKey),
+      placeholder: t(q.placeholderKey),
+    })),
+  }));
+}
 
 function ManualFlow() {
   const [groupIndex, setGroupIndex] = useState(0);
