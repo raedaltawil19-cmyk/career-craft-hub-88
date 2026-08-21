@@ -15,7 +15,7 @@ import {
 import { Eyebrow } from "@/components/ui-bits";
 import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
-import { sampleCvFor } from "@/lib/sample-cv";
+import { blankCvFor } from "@/lib/sample-cv";
 import type { CvTemplateId } from "@/lib/career-types";
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
@@ -218,7 +218,7 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
   const t = useT();
   const { lang } = useI18n();
   const [sheetOpen, setSheetOpen] = useState(false);
-  const sample = sampleCvFor(lang, template);
+  const sample = blankCvFor(lang, template);
 
   return (
     <div className="space-y-4">
