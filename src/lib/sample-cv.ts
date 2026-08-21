@@ -200,7 +200,7 @@ export function sampleCvFor(lang: Language, template: CvTemplateId): MasterCv {
  * hints at what the user should type. No real personal data is implied.
  */
 const placeholderEn: SampleCopy = {
-  name: "Fictional Person",
+  name: "Johanna Svensson",
   title: "Your job title",
   email: "you@example.com",
   phone: "+46 700 000 000",
@@ -259,7 +259,7 @@ const placeholderEn: SampleCopy = {
 };
 
 const placeholderSv: SampleCopy = {
-  name: "Fiktiv Person",
+  name: "Johanna Svensson",
   title: "Din yrkestitel",
   email: "du@exempel.se",
   phone: "+46 700 000 000",
@@ -318,7 +318,7 @@ const placeholderSv: SampleCopy = {
 };
 
 const placeholderAr: SampleCopy = {
-  name: "شخص وهمي",
+  name: "جوهانا سفينسون",
   title: "المسمى الوظيفي",
   email: "you@example.com",
   phone: "+966 50 000 0000",
