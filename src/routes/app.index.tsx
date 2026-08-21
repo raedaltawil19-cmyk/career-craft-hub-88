@@ -1,6 +1,6 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import { ChevronRight, Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
 import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
@@ -204,14 +204,20 @@ function BigAction({
     <button
       type="button"
       onClick={onClick}
-      className="pressable block w-full rounded-3xl p-5 text-start text-white"
+      className="group pressable flex w-full items-center gap-4 rounded-2xl p-4 text-start text-white"
       style={{ background: color, boxShadow: "var(--shadow-press)" }}
     >
-      <span className="mb-3 grid size-12 place-items-center rounded-2xl bg-white/20">
+      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/20 transition-transform duration-150 group-hover:scale-105">
         {icon}
       </span>
-      <span className="block text-lg font-bold leading-tight">{title}</span>
-      <span className="mt-1 block text-sm text-white/85">{description}</span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-base font-bold leading-tight">{title}</span>
+        <span className="mt-0.5 block text-[13px] leading-snug text-white/85">{description}</span>
+      </span>
+      <ChevronRight
+        className="size-5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180"
+        aria-hidden
+      />
     </button>
   );
 }
