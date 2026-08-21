@@ -193,3 +193,44 @@ export function sampleCvFor(lang: Language, template: CvTemplateId): MasterCv {
     version: 0,
   };
 }
+
+const BLANK = "\u00A0";
+
+/** Same sections and spacing as the sample, but with no personal data. */
+export function blankCvFor(lang: Language, template: CvTemplateId): MasterCv {
+  const base = byLang[lang] ?? en;
+  return {
+    name: "",
+    title: "",
+    email: "",
+    phone: "",
+    location: BLANK,
+    links: [],
+    summary: BLANK,
+    experience: base.experience.map((e) => ({
+      ...e,
+      role: BLANK,
+      company: BLANK,
+      location: BLANK,
+      start: BLANK,
+      end: BLANK,
+      bullets: e.bullets.map(() => BLANK),
+    })),
+    education: base.education.map((ed) => ({
+      ...ed,
+      school: BLANK,
+      program: BLANK,
+      start: BLANK,
+      end: BLANK,
+    })),
+    skills: [BLANK],
+    languages: [BLANK],
+    tools: [BLANK],
+    certifications: [BLANK],
+    projects: base.projects.map((p) => ({ ...p, name: BLANK, description: BLANK, year: BLANK })),
+    volunteer: [BLANK],
+    template,
+    updatedAt: "2024-01-01T00:00:00.000Z",
+    version: 0,
+  };
+}
