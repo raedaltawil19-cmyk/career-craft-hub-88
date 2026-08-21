@@ -70,6 +70,8 @@ function HomePage() {
         </h1>
       </header>
 
+      {cv ? null : <AddCvTile />}
+
       <TemplateGallery value={template} onChange={setTemplate} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
