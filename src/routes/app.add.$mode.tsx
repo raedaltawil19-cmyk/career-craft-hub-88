@@ -413,40 +413,46 @@ function ManualFlow() {
   const answeredCount = Object.values(answers).filter((v) => v.trim()).length;
 
   if (reviewing) {
+    const a = (k: string) => answers[k] ?? "";
+    const list = (k: string) =>
+      a(k)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
     const draft: MasterCv = {
       ...emptyMasterCv,
-      name: answers.name || "",
-      title: answers.title || "",
-      email: answers.email || "",
-      location: answers.location || "",
-      summary: answers.responsibilities || "",
-      experience: answers.company
+      name: a("name"),
+      title: a("title"),
+      email: a("email"),
+      location: a("location"),
+      summary: a("responsibilities"),
+      experience: a("company")
         ? [
             {
               id: "exp-new",
-              role: answers.role || "",
-              company: answers.company,
-              location: answers.location || "",
-              start: (answers.period || "").split("–")[0]?.trim() || "",
-              end: (answers.period || "").split("–")[1]?.trim() || "Present",
-              bullets: [answers.responsibilities, answers.achievements].filter(Boolean) as string[],
+              role: a("role"),
+              company: a("company"),
+              location: a("location"),
+              start: a("period").split("–")[0]?.trim() || "",
+              end: a("period").split("–")[1]?.trim() || "Present",
+              bullets: [a("responsibilities"), a("achievements")].filter(Boolean),
             },
           ]
         : [],
-      education: answers.school
+      education: a("school")
         ? [
             {
               id: "edu-new",
-              school: answers.school,
-              program: answers.program || "",
-              start: (answers.years || "").split("–")[0]?.trim() || "",
-              end: (answers.years || "").split("–")[1]?.trim() || "",
+              school: a("school"),
+              program: a("program"),
+              start: a("years").split("–")[0]?.trim() || "",
+              end: a("years").split("–")[1]?.trim() || "",
             },
           ]
         : [],
-      skills: (answers.skills || "").split(",").map((s) => s.trim()).filter(Boolean),
-      languages: (answers.languages || "").split(",").map((s) => s.trim()).filter(Boolean),
-      tools: (answers.tools || "").split(",").map((s) => s.trim()).filter(Boolean),
+      skills: list("skills"),
+      languages: list("languages"),
+      tools: list("tools"),
     };
     return (
       <ReviewStep
