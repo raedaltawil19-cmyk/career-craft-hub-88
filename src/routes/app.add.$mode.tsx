@@ -268,6 +268,7 @@ function UploadFlow() {
 /* --------------------------------- linkedin -------------------------------- */
 
 function LinkedInFlow() {
+  const t = useT();
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<Record<string, boolean>>({
     profile: true,
@@ -278,17 +279,17 @@ function LinkedInFlow() {
   const create = useCreate();
 
   const sections = [
-    { id: "profile", label: "Headline & about", detail: "Title, summary, location" },
-    { id: "experience", label: "Experience", detail: "3 positions found" },
-    { id: "education", label: "Education", detail: "2 entries found" },
-    { id: "skills", label: "Skills & endorsements", detail: "12 skills found" },
+    { id: "profile", label: t("add.linkedinSectionProfileLabel"), detail: t("add.linkedinSectionProfileDetail") },
+    { id: "experience", label: t("add.linkedinSectionExperienceLabel"), detail: t("add.linkedinSectionExperienceDetail") },
+    { id: "education", label: t("add.linkedinSectionEducationLabel"), detail: t("add.linkedinSectionEducationDetail") },
+    { id: "skills", label: t("add.linkedinSectionSkillsLabel"), detail: t("add.linkedinSectionSkillsDetail") },
   ];
 
   if (step === 2)
     return (
       <ReviewStep
         draft={demoMasterCv}
-        note="Only the sections you selected were imported. LinkedIn data is often shorter than a full CV — add detail after confirming."
+        note={t("add.linkedinNote")}
         onConfirm={() => create(demoMasterCv)}
       />
     );
@@ -296,38 +297,35 @@ function LinkedInFlow() {
   return (
     <div className="space-y-4">
       <Panel>
-        <h2 className="text-lg">How the import works</h2>
+        <h2 className="text-lg">{t("add.linkedinHowTitle")}</h2>
         <ol className="mt-3 space-y-2.5 text-sm text-foreground/85">
           <li>
-            <span className="font-semibold">1.</span> In LinkedIn, open Settings → Data privacy →
-            Get a copy of your data.
+            <span className="font-semibold">1.</span> {t("add.linkedinStep1")}
           </li>
           <li>
-            <span className="font-semibold">2.</span> Request your profile archive and download the
-            file when it arrives.
+            <span className="font-semibold">2.</span> {t("add.linkedinStep2")}
           </li>
           <li>
-            <span className="font-semibold">3.</span> Upload it here, or paste your profile text.
-            We never ask for your LinkedIn password.
+            <span className="font-semibold">3.</span> {t("add.linkedinStep3")}
           </li>
         </ol>
         <label className="tap mt-4 inline-flex cursor-pointer items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
-          Upload LinkedIn export
+          {t("add.linkedinUploadExport")}
           <input type="file" className="sr-only" onChange={() => setStep(1)} />
         </label>
         <button
           onClick={() => setStep(1)}
-          className="tap ml-2 inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
+          className="tap ms-2 inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
         >
-          Paste profile text instead
+          {t("add.linkedinPasteInstead")}
         </button>
       </Panel>
 
       {step >= 1 ? (
         <Panel>
-          <h2 className="text-lg">Choose what to import</h2>
+          <h2 className="text-lg">{t("add.linkedinChooseTitle")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            You stay in control — unselected sections are never read.
+            {t("add.linkedinChooseSubtitle")}
           </p>
           <ul className="mt-3 space-y-2">
             {sections.map((s) => (
@@ -356,7 +354,7 @@ function LinkedInFlow() {
             onClick={() => setStep(2)}
             className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
-            Organize with the assistant
+            {t("add.linkedinOrganize")}
           </button>
         </Panel>
       ) : null}
