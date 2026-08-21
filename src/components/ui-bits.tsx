@@ -23,9 +23,9 @@ export function PageHeader({
     <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:flex sm:items-end sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-        <h1 className="display mt-1 text-[1.75rem] leading-tight sm:text-4xl">{title}</h1>
+        <h1 className="display mt-1 text-[1.9rem] leading-tight sm:text-4xl">{title}</h1>
         {description ? (
-          <p className="mt-2 max-w-prose text-sm text-muted-foreground">{description}</p>
+          <p className="mt-2 max-w-prose text-base text-muted-foreground">{description}</p>
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
@@ -42,17 +42,98 @@ export function Panel({
   className?: string;
   as?: "section" | "div" | "article";
 }) {
+  return <As className={cn("tile p-5 sm:p-6", className)}>{children}</As>;
+}
+
+/** Big, unmistakable primary action card. Renders a link when `to` is given. */
+export function ActionCard({
+  icon,
+  title,
+  description,
+  onClick,
+  to,
+  className,
+}: {
+  icon?: ReactNode;
+  title: string;
+  description?: string;
+  onClick?: () => void;
+  to?: string;
+  className?: string;
+}) {
+  const classes = cn(
+    "pressable block w-full rounded-3xl bg-primary p-6 text-start text-primary-foreground",
+    className,
+  );
+  const inner = (
+    <>
+      {icon ? (
+        <span className="mb-4 grid size-14 place-items-center rounded-2xl bg-white/20">{icon}</span>
+      ) : null}
+      <span className="display block text-xl sm:text-2xl">{title}</span>
+      {description ? (
+        <span className="mt-1 block text-sm text-primary-foreground/85">{description}</span>
+      ) : null}
+    </>
+  );
+  if (to) {
+    return (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <Link to={to as any} className={classes} style={{ boxShadow: "var(--shadow-press)" }}>
+        {inner}
+      </Link>
+    );
+  }
   return (
-    <As
-      className={cn(
-        "rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-5",
-        className,
-      )}
+    <button
+      type="button"
+      onClick={onClick}
+      className={classes}
+      style={{ boxShadow: "var(--shadow-press)" }}
     >
-      {children}
-    </As>
+      {inner}
+    </button>
+  );
+
+}
+
+/** Large, equal-size navigation tile with a coloured icon square. */
+export function NavTile({
+  to,
+  params,
+  icon,
+  label,
+  hint,
+  tone = "primary",
+}: {
+  to: string;
+  params?: Record<string, string>;
+  icon: ReactNode;
+  label: string;
+  hint?: string;
+  tone?: "primary" | "accent" | "indigo" | "success";
+}) {
+  const tones = {
+    primary: "bg-primary-soft text-primary",
+    accent: "bg-accent-soft text-accent",
+    indigo: "bg-secondary text-secondary-foreground",
+    success: "bg-success-soft text-success",
+  } as const;
+  return (
+    <Link
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      to={to as any}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      params={params as any}
+      className="tile flex min-h-[7.5rem] flex-col items-center justify-center gap-3 p-5 text-center hover:-translate-y-0.5 hover:shadow-lift"
+    >
+      <span className={cn("grid size-13 place-items-center rounded-2xl", tones[tone])}>{icon}</span>
+      <span className="text-base font-bold leading-tight">{label}</span>
+      {hint ? <span className="text-sm text-muted-foreground">{hint}</span> : null}
+    </Link>
   );
 }
+
 
 export function MatchRing({
   value,
@@ -129,7 +210,7 @@ export function StatusPill({ status }: { status: ApplicationStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold tracking-wide",
+        "inline-flex items-center rounded-full px-3 py-1.5 text-xs font-bold tracking-wide",
         statusTone[status],
       )}
     >
@@ -154,7 +235,7 @@ export function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium",
+        "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold",
         tones[tone],
       )}
     >
@@ -175,15 +256,16 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border-strong bg-surface/60 px-5 py-10 text-center">
+    <div className="tile px-6 py-10 text-center">
       {icon ? (
-        <div className="mx-auto mb-3 grid size-11 place-items-center rounded-full bg-card text-primary shadow-soft">
+        <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary-soft text-primary">
           {icon}
         </div>
       ) : null}
-      <h3 className="text-lg">{title}</h3>
-      <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">{description}</p>
-      {action ? <div className="mt-5 flex justify-center">{action}</div> : null}
+      <h3 className="display text-xl">{title}</h3>
+      <p className="mx-auto mt-2 max-w-sm text-base text-muted-foreground">{description}</p>
+      {action ? <div className="mt-6 flex justify-center">{action}</div> : null}
+
     </div>
   );
 }
