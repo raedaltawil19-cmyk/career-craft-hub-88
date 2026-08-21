@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppApplicationsIndexRouteImport } from './routes/app.applications.index'
 import { Route as AppApplicationsAppIdRouteImport } from './routes/app.applications.$appId'
 import { Route as AppCvIndexRouteImport } from './routes/app.cv.index'
+import { Route as AppCvEditRouteImport } from './routes/app.cv.edit'
 import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
 import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
 import { Route as AppJobsAnalyzeRouteImport } from './routes/app.jobs.analyze'
@@ -49,6 +50,11 @@ const AppCvIndexRoute = AppCvIndexRouteImport.update({
   path: '/cv/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCvEditRoute = AppCvEditRouteImport.update({
+  id: '/cv/edit',
+  path: '/cv/edit',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppJobsIndexRoute = AppJobsIndexRouteImport.update({
   id: '/jobs/',
   path: '/jobs/',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/applications/': typeof AppApplicationsIndexRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppIndexRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/applications': typeof AppApplicationsIndexRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/applications/': typeof AppApplicationsIndexRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/'
     | '/app/applications/$appId'
+    | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/applications/'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/applications/$appId'
+    | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/applications'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/'
     | '/app/applications/$appId'
+    | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/applications/'
@@ -182,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCvIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/cv/edit': {
+      id: '/app/cv/edit'
+      path: '/cv/edit'
+      fullPath: '/app/cv/edit'
+      preLoaderRoute: typeof AppCvEditRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/jobs/': {
       id: '/app/jobs/'
       path: '/jobs'
@@ -209,6 +228,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppApplicationsAppIdRoute: typeof AppApplicationsAppIdRoute
+  AppCvEditRoute: typeof AppCvEditRoute
   AppJobsJobIdRoute: typeof AppJobsJobIdRoute
   AppJobsAnalyzeRoute: typeof AppJobsAnalyzeRoute
   AppApplicationsIndexRoute: typeof AppApplicationsIndexRoute
@@ -219,6 +239,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppApplicationsAppIdRoute: AppApplicationsAppIdRoute,
+  AppCvEditRoute: AppCvEditRoute,
   AppJobsJobIdRoute: AppJobsJobIdRoute,
   AppJobsAnalyzeRoute: AppJobsAnalyzeRoute,
   AppApplicationsIndexRoute: AppApplicationsIndexRoute,
