@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Bookmark, BookmarkCheck, Filter, Link2, Search } from "lucide-react";
+import { Bookmark, BookmarkCheck, Filter, Link2, Search, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
