@@ -82,7 +82,7 @@ function HomePage() {
             title={t("ws.improveGeneral")}
             description={t("ws.improveGeneralDesc")}
             onClick={() => setOpenWindow("improve")}
-            primary
+            tone="coral"
           />
           <BigAction
             icon={<Target className="size-6" />}
@@ -92,12 +92,14 @@ function HomePage() {
               setTailorPreset(undefined);
               setOpenWindow("tailor");
             }}
+            tone="violet"
           />
           <BigAction
             icon={<Compass className="size-6" />}
             title={t("ws.careersTitle")}
             description={t("ws.careersHint")}
             onClick={() => setShowCareers((v) => !v)}
+            tone="green"
           />
 
           {improved ? (
@@ -175,49 +177,38 @@ function HomePage() {
   );
 }
 
+const TONES: Record<string, string> = {
+  coral: "#ff6b6b",
+  violet: "#574b90",
+  green: "#12946a",
+};
+
 function BigAction({
   icon,
   title,
   description,
   onClick,
-  primary = false,
+  tone = "coral",
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
   onClick: () => void;
-  primary?: boolean;
+  tone?: "coral" | "violet" | "green";
 }) {
+  const color = TONES[tone];
   return (
     <button
       type="button"
       onClick={onClick}
-      className={
-        primary
-          ? "pressable rounded-3xl bg-primary p-5 text-start text-primary-foreground"
-          : "pressable rounded-3xl border-2 border-primary bg-card p-5 text-start"
-      }
-      style={{ boxShadow: "var(--shadow-press)" }}
+      className="pressable block w-full rounded-3xl p-5 text-start text-white"
+      style={{ background: color, boxShadow: "var(--shadow-press)" }}
     >
-      <span
-        className={
-          primary
-            ? "mb-3 grid size-12 place-items-center rounded-2xl bg-white/20"
-            : "mb-3 grid size-12 place-items-center rounded-2xl bg-primary-soft text-primary"
-        }
-      >
+      <span className="mb-3 grid size-12 place-items-center rounded-2xl bg-white/20">
         {icon}
       </span>
       <span className="block text-lg font-bold leading-tight">{title}</span>
-      <span
-        className={
-          primary
-            ? "mt-1 block text-sm text-primary-foreground/85"
-            : "mt-1 block text-sm text-muted-foreground"
-        }
-      >
-        {description}
-      </span>
+      <span className="mt-1 block text-sm text-white/85">{description}</span>
     </button>
   );
 }
