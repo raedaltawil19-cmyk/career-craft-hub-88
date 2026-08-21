@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Bookmark, BookmarkCheck, Filter, Link2, Search } from "lucide-react";
+import { Bookmark, BookmarkCheck, Filter, Link2, Search, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
@@ -143,8 +143,15 @@ function JobsPage() {
                     </div>
                   </Link>
                   <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
-                    <span className="text-xs text-muted-foreground">
-                      {j.salary ?? t("jobs.salaryNotDisclosed")}
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-2 py-1 text-xs font-semibold text-foreground">
+                      {j.salary ? (
+                        <>
+                          <Wallet className="size-3.5 text-primary" />
+                          {j.salary}
+                        </>
+                      ) : (
+                        t("jobs.salaryNotDisclosed")
+                      )}
                     </span>
                     <button
                       onClick={() => toggleSavedJob(j.id)}
