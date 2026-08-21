@@ -143,8 +143,15 @@ function JobsPage() {
                     </div>
                   </Link>
                   <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
-                    <span className="text-xs text-muted-foreground">
-                      {j.salary ?? t("jobs.salaryNotDisclosed")}
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-2 py-1 text-xs font-semibold text-foreground">
+                      {j.salary ? (
+                        <>
+                          <Wallet className="size-3.5 text-primary" />
+                          {j.salary}
+                        </>
+                      ) : (
+                        t("jobs.salaryNotDisclosed")
+                      )}
                     </span>
                     <button
                       onClick={() => toggleSavedJob(j.id)}
