@@ -222,12 +222,6 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
 
   return (
     <div className="space-y-4">
-      <div className="relative w-full">
-        <CvPreview cv={sample} className="w-full" />
-      </div>
-
-
-
       <div className="tile flex flex-col items-center gap-4 p-6 text-center">
         <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
           <FilePlus2 className="size-7" />
@@ -245,6 +239,10 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
         >
           {t("ws.addCvCta")}
         </button>
+      </div>
+
+      <div className="relative w-full">
+        <CvPreview cv={sample} className="w-full" />
       </div>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
