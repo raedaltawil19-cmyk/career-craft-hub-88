@@ -247,11 +247,11 @@ function AddCvTile() {
         <span className="grid size-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
           <FilePlus2 className="size-6" />
         </span>
-        <span className="text-base font-bold leading-tight">{t("ws.emptyPreviewTitle")}</span>
-        <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
-        <span className="mt-1 rounded-xl bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">
+        <span className="rounded-xl bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">
           {t("ws.addCvCta")}
         </span>
+        <span className="text-base font-bold leading-tight">{t("ws.emptyPreviewTitle")}</span>
+        <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
       </button>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
