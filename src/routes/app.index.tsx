@@ -217,10 +217,19 @@ function BigAction({
 }
 
 function EmptyTemplate({ template }: { template: CvTemplateId }) {
-  const t = useT();
   const { lang } = useI18n();
-  const [sheetOpen, setSheetOpen] = useState(false);
   const sample = blankCvFor(lang, template);
+
+  return (
+    <div className="relative w-full">
+      <CvPreview cv={sample} className="w-full" placeholder />
+    </div>
+  );
+}
+
+function AddCvTile() {
+  const t = useT();
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -241,10 +250,6 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
         >
           {t("ws.addCvCta")}
         </button>
-      </div>
-
-      <div className="relative w-full">
-        <CvPreview cv={sample} className="w-full" placeholder />
       </div>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
