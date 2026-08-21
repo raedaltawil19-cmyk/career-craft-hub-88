@@ -1,14 +1,26 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
+  Briefcase,
   CalendarClock,
   FileText,
+  Send,
   Sparkles,
   TrendingUp,
+  User,
 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
-import { EmptyState, Eyebrow, MatchRing, Panel, StatusPill, Tag } from "@/components/ui-bits";
+import {
+  ActionCard,
+  EmptyState,
+  Eyebrow,
+  MatchRing,
+  NavTile,
+  Panel,
+  StatusPill,
+  Tag,
+} from "@/components/ui-bits";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
@@ -25,6 +37,32 @@ export const Route = createFileRoute("/app/")({
   component: HomePage,
 });
 
+function QuickTiles({ t }: { t: ReturnType<typeof useT> }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <NavTile to="/app/cv" icon={<FileText className="size-6" />} label={t("nav.masterCv")} />
+      <NavTile
+        to="/app/jobs"
+        tone="accent"
+        icon={<Briefcase className="size-6" />}
+        label={t("nav.jobs")}
+      />
+      <NavTile
+        to="/app/applications"
+        tone="success"
+        icon={<Send className="size-6" />}
+        label={t("nav.applications")}
+      />
+      <NavTile
+        to="/app/profile"
+        tone="indigo"
+        icon={<User className="size-6" />}
+        label={t("nav.profile")}
+      />
+    </div>
+  );
+}
+
 function HomePage() {
   const t = useT();
   const { state, jobs, loadDemo } = useWorkspace();
@@ -40,18 +78,18 @@ function HomePage() {
         <div>
           <Eyebrow>{t("dashboard.workspaceEyebrow")}</Eyebrow>
           <h1 className="display mt-1 text-3xl sm:text-4xl">{t("dashboard.startTitle")}</h1>
-          <p className="mt-2 max-w-prose text-sm text-muted-foreground">
+          <p className="mt-2 max-w-prose text-base text-muted-foreground">
             {t("dashboard.startDescription")}
           </p>
         </div>
         <EmptyState
-          icon={<FileText className="size-5" />}
+          icon={<FileText className="size-7" />}
           title={t("dashboard.emptyCvTitle")}
           description={t("dashboard.emptyCvDescription")}
           action={
             <button
               onClick={loadDemo}
-              className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
+              className="tap inline-flex items-center gap-2 rounded-2xl border border-border-strong bg-card px-5 text-base font-semibold hover:bg-muted"
             >
               {t("dashboard.exploreSampleData")}
             </button>
@@ -64,13 +102,13 @@ function HomePage() {
   const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       <header>
         <Eyebrow>{t("dashboard.workspaceEyebrow")}</Eyebrow>
-        <h1 className="display mt-1 text-3xl sm:text-4xl">
+        <h1 className="display mt-1 text-[2rem] leading-tight sm:text-4xl">
           {t("dashboard.greeting", { name: cv.name.split(" ")[0] ?? cv.name })}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-base text-muted-foreground">
           {t("dashboard.summaryStats", {
             pending: pendingSuggestions.length,
             attention: attention.length,
@@ -78,13 +116,24 @@ function HomePage() {
         </p>
       </header>
 
+      {/* One clear primary action */}
+      <Link to="/app/cv/edit" className="block">
+        <ActionCard
+          icon={<Sparkles className="size-7" />}
+          title={t("dashboard.editAndImprove")}
+          description={cv.title}
+        />
+      </Link>
+
+      <QuickTiles t={t} />
+
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Master CV status */}
         <Panel className="lg:col-span-2">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
             <div className="min-w-0">
               <Eyebrow>{t("dashboard.masterCvEyebrow")}</Eyebrow>
-              <h2 className="mt-1 truncate text-xl">{cv.title}</h2>
+              <h2 className="display mt-1 truncate text-xl">{cv.title}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 {t("dashboard.versionUpdated", {
                   version: cv.version,
@@ -102,18 +151,12 @@ function HomePage() {
             </div>
             <MatchRing value={78} size={64} label={t("dashboard.cvQuality")} />
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5">
             <Link
               to="/app/cv"
-              className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+              className="tap inline-flex items-center gap-2 rounded-2xl bg-secondary px-5 text-base font-semibold text-secondary-foreground"
             >
               {t("dashboard.openMasterCv")}
-            </Link>
-            <Link
-              to="/app/cv/edit"
-              className="tap inline-flex items-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
-            >
-              {t("dashboard.editAndImprove")}
             </Link>
           </div>
         </Panel>
@@ -121,33 +164,34 @@ function HomePage() {
         {/* AI recommendations */}
         <Panel>
           <Eyebrow>{t("dashboard.assistantEyebrow")}</Eyebrow>
-          <h2 className="mt-1 text-xl">{t("dashboard.recommendationsTitle")}</h2>
+          <h2 className="display mt-1 text-xl">{t("dashboard.recommendationsTitle")}</h2>
           {pendingSuggestions.length ? (
             <>
               <ul className="mt-3 space-y-2.5">
                 {pendingSuggestions.slice(0, 2).map((s) => (
-                  <li key={s.id} className="rounded-xl bg-surface p-3">
-                    <p className="text-xs font-semibold text-accent">{s.section}</p>
-                    <p className="mt-0.5 text-sm">{s.issue}</p>
+                  <li key={s.id} className="rounded-2xl bg-surface p-4">
+                    <p className="text-sm font-bold text-accent">{s.section}</p>
+                    <p className="mt-1 text-sm">{s.issue}</p>
                   </li>
                 ))}
               </ul>
               <Link
                 to="/app/cv/edit"
                 search={{ panel: "ai" }}
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+                className="mt-4 inline-flex items-center gap-1.5 text-base font-bold text-primary"
               >
                 {t("dashboard.reviewAll", { count: pendingSuggestions.length })}{" "}
                 <ArrowRight className="size-4 rtl:rotate-180" />
               </Link>
             </>
           ) : (
-            <p className="mt-3 text-sm text-muted-foreground">
+            <p className="mt-3 text-base text-muted-foreground">
               {t("dashboard.noRecommendations")}
             </p>
           )}
         </Panel>
       </div>
+
 
       {/* Applications needing attention */}
       <section>
