@@ -70,78 +70,79 @@ function HomePage() {
 
       <TemplateGallery value={template} onChange={setTemplate} />
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-5">
-          {cv ? (
-            <>
-              <CvPreview cv={{ ...cv, template }} />
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                <BigAction
-                  icon={<Sparkles className="size-6" />}
-                  title={t("ws.improveGeneral")}
-                  description={t("ws.improveGeneralDesc")}
-                  onClick={() => setOpenWindow("improve")}
-                  primary
-                />
-                <BigAction
-                  icon={<Target className="size-6" />}
-                  title={t("ws.tailorJob")}
-                  description={t("ws.tailorJobDesc")}
-                  onClick={() => {
-                    setTailorPreset(undefined);
-                    setOpenWindow("tailor");
-                  }}
-                />
-              </div>
-
-              {improved ? (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <p className="sm:col-span-2 inline-flex w-fit items-center gap-2 rounded-full bg-success-soft px-3 py-1.5 text-xs font-bold text-success">
-                    {t("ws.improvedBadge", { count: applied })}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setOpenWindow("chat")}
-                    className="tap flex items-center gap-3 rounded-2xl border border-border-strong bg-card px-4 text-start font-bold hover:bg-muted"
-                  >
-                    <MessageSquare className="size-5 text-primary" />
-                    {t("ws.chatOpen")}
-                  </button>
-                  <Link
-                    to="/app/cv/edit"
-                    className="tap flex items-center gap-3 rounded-2xl border border-border-strong bg-card px-4 text-start font-bold hover:bg-muted"
-                  >
-                    <Pencil className="size-5 text-primary" />
-                    <span>
-                      {t("ws.manualEdit")}
-                      <span className="block text-xs font-medium text-muted-foreground">
-                        {t("ws.manualEditHint")}
-                      </span>
-                    </span>
-                  </Link>
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <EmptyTemplate template={template} />
-          )}
+          {cv ? <CvPreview cv={{ ...cv, template }} /> : <EmptyTemplate template={template} />}
         </div>
 
-        {cv && improved ? (
-          <aside className="space-y-5">
-            <SimilarJobsPanel jobs={topJobs} onOpenJobs={openJobs} />
-            <CareerSuggestionsPanel
-              careers={careers}
-              onOpenJobs={openJobs}
-              onTailor={(career) => {
-                setTailorPreset(career.title);
-                setOpenWindow("tailor");
-              }}
-            />
-          </aside>
-        ) : null}
+        <aside className="space-y-4 lg:sticky lg:top-6">
+          <BigAction
+            icon={<Sparkles className="size-6" />}
+            title={t("ws.improveGeneral")}
+            description={t("ws.improveGeneralDesc")}
+            onClick={() => setOpenWindow("improve")}
+            primary
+          />
+          <BigAction
+            icon={<Target className="size-6" />}
+            title={t("ws.tailorJob")}
+            description={t("ws.tailorJobDesc")}
+            onClick={() => {
+              setTailorPreset(undefined);
+              setOpenWindow("tailor");
+            }}
+          />
+          <BigAction
+            icon={<Compass className="size-6" />}
+            title={t("ws.careersTitle")}
+            description={t("ws.careersHint")}
+            onClick={() => setShowCareers((v) => !v)}
+          />
+
+          {improved ? (
+            <div className="space-y-3">
+              <p className="inline-flex w-fit items-center gap-2 rounded-full bg-success-soft px-3 py-1.5 text-xs font-bold text-success">
+                {t("ws.improvedBadge", { count: applied })}
+              </p>
+              <button
+                type="button"
+                onClick={() => setOpenWindow("chat")}
+                className="tap flex w-full items-center gap-3 rounded-2xl border border-border-strong bg-card px-4 text-start font-bold hover:bg-muted"
+              >
+                <MessageSquare className="size-5 text-primary" />
+                {t("ws.chatOpen")}
+              </button>
+              <Link
+                to="/app/cv/edit"
+                className="tap flex w-full items-center gap-3 rounded-2xl border border-border-strong bg-card px-4 text-start font-bold hover:bg-muted"
+              >
+                <Pencil className="size-5 text-primary" />
+                <span>
+                  {t("ws.manualEdit")}
+                  <span className="block text-xs font-medium text-muted-foreground">
+                    {t("ws.manualEditHint")}
+                  </span>
+                </span>
+              </Link>
+            </div>
+          ) : null}
+
+          {showCareers ? (
+            <>
+              <CareerSuggestionsPanel
+                careers={careers}
+                onOpenJobs={openJobs}
+                onTailor={(career) => {
+                  setTailorPreset(career.title);
+                  setOpenWindow("tailor");
+                }}
+              />
+              <SimilarJobsPanel jobs={topJobs} onOpenJobs={openJobs} />
+            </>
+          ) : null}
+        </aside>
       </div>
+
 
       {openWindow === "improve" ? (
         <ImproveWindow
