@@ -68,7 +68,7 @@ function HomePage() {
       <header>
         <Eyebrow>{t("dashboard.workspaceEyebrow")}</Eyebrow>
         <h1 className="display mt-1 text-3xl sm:text-4xl">
-          {t("dashboard.greeting", { name: cv.name.split(" ")[0] })}
+          {t("dashboard.greeting", { name: cv.name.split(" ")[0] ?? cv.name })}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {t("dashboard.summaryStats", {
