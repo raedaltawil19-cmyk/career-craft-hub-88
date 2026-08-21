@@ -82,7 +82,7 @@ function HomePage() {
             title={t("ws.improveGeneral")}
             description={t("ws.improveGeneralDesc")}
             onClick={() => setOpenWindow("improve")}
-            primary
+            tone="coral"
           />
           <BigAction
             icon={<Target className="size-6" />}
@@ -92,12 +92,14 @@ function HomePage() {
               setTailorPreset(undefined);
               setOpenWindow("tailor");
             }}
+            tone="violet"
           />
           <BigAction
             icon={<Compass className="size-6" />}
             title={t("ws.careersTitle")}
             description={t("ws.careersHint")}
             onClick={() => setShowCareers((v) => !v)}
+            tone="green"
           />
 
           {improved ? (
