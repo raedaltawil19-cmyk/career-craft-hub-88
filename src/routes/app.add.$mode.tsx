@@ -15,12 +15,13 @@ import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
+import { translate, useI18n, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/add/$mode")({
   head: () => ({
     meta: [
-      { title: "Add a CV — Smart CV" },
-      { name: "description", content: "Paste, upload, import from LinkedIn or fill a guided form." },
+      { title: translate("en", "add.headTitle") },
+      { name: "description", content: translate("en", "add.headDescription") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -28,16 +29,18 @@ export const Route = createFileRoute("/app/add/$mode")({
 });
 
 const meta = {
-  paste: { title: "Paste your CV", icon: ClipboardType },
-  upload: { title: "Upload your CV", icon: FileUp },
-  linkedin: { title: "Import from LinkedIn", icon: Linkedin },
-  manual: { title: "Guided form", icon: PenLine },
+  paste: { titleKey: "add.modePasteTitle", icon: ClipboardType },
+  upload: { titleKey: "add.modeUploadTitle", icon: FileUp },
+  linkedin: { titleKey: "add.modeLinkedinTitle", icon: Linkedin },
+  manual: { titleKey: "add.modeManualTitle", icon: PenLine },
 } as const;
 
 type Mode = keyof typeof meta;
 
 function AddCvPage() {
   const { mode } = Route.useParams();
+  const t = useT();
+  const { isRtl } = useI18n();
   const m = (Object.keys(meta).includes(mode) ? mode : "paste") as Mode;
   const Icon = meta[m].icon;
 
@@ -47,7 +50,7 @@ function AddCvPage() {
         to="/app"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
       >
-        <ArrowLeft className="size-4" /> Workspace
+        <ArrowLeft className={cn("size-4", isRtl && "rotate-180")} /> {t("add.backToWorkspace")}
       </Link>
 
       <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
@@ -55,8 +58,8 @@ function AddCvPage() {
           <Icon className="size-5" />
         </span>
         <div className="min-w-0">
-          <Eyebrow>Add a CV</Eyebrow>
-          <h1 className="display text-2xl leading-tight sm:text-3xl">{meta[m].title}</h1>
+          <Eyebrow>{t("add.eyebrow")}</Eyebrow>
+          <h1 className="display text-2xl leading-tight sm:text-3xl">{t(meta[m].titleKey)}</h1>
         </div>
       </header>
 
@@ -79,6 +82,7 @@ function ReviewStep({
   onConfirm: () => void;
   note: string;
 }) {
+  const t = useT();
   return (
     <div className="space-y-4">
       <Panel className="border-primary/25 bg-primary-soft/40">
@@ -89,14 +93,14 @@ function ReviewStep({
       </Panel>
 
       <Panel>
-        <h2 className="text-lg">Review what we extracted</h2>
+        <h2 className="text-lg">{t("add.reviewTitle")}</h2>
         <dl className="mt-3 space-y-3 text-sm">
-          <Field label="Name" value={draft.name} />
-          <Field label="Title" value={draft.title} />
-          <Field label="Contact" value={[draft.email, draft.phone].filter(Boolean).join(" · ")} />
-          <Field label="Location" value={draft.location} />
+          <Field label={t("add.fieldName")} value={draft.name} />
+          <Field label={t("add.fieldTitle")} value={draft.title} />
+          <Field label={t("add.fieldContact")} value={[draft.email, draft.phone].filter(Boolean).join(" · ")} />
+          <Field label={t("add.fieldLocation")} value={draft.location} />
         </dl>
-        <h3 className="eyebrow mt-5">Experience ({draft.experience.length})</h3>
+        <h3 className="eyebrow mt-5">{t("add.experienceHeading", { count: draft.experience.length })}</h3>
         <ul className="mt-2 space-y-2">
           {draft.experience.map((e) => (
             <li key={e.id} className="rounded-xl bg-surface p-3">
@@ -104,12 +108,12 @@ function ReviewStep({
                 {e.role} · {e.company}
               </p>
               <p className="text-xs text-muted-foreground">
-                {e.start} – {e.end} · {e.bullets.length} bullet points
+                {e.start} – {e.end} · {t("add.bulletPoints", { count: e.bullets.length })}
               </p>
             </li>
           ))}
         </ul>
-        <h3 className="eyebrow mt-5">Skills</h3>
+        <h3 className="eyebrow mt-5">{t("add.skillsHeading")}</h3>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {draft.skills.map((s) => (
             <Tag key={s}>{s}</Tag>
@@ -122,14 +126,14 @@ function ReviewStep({
           onClick={onConfirm}
           className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
         >
-          <Check className="size-4" /> Confirm & create Master CV
+          <Check className="size-4" /> {t("add.confirmCreate")}
         </button>
         <Link
           to="/app/cv/edit"
           search={{ panel: "sections" }}
           className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
         >
-          Correct something first
+          {t("add.correctFirst")}
         </Link>
       </div>
     </div>
@@ -137,10 +141,11 @@ function ReviewStep({
 }
 
 function Field({ label, value }: { label: string; value: string }) {
+  const t = useT();
   return (
     <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2">
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 font-medium">{value || "—"}</dd>
+      <dd className="min-w-0 font-medium">{value || t("add.emptyValue")}</dd>
     </div>
   );
 }
@@ -157,6 +162,7 @@ function useCreate() {
 /* ---------------------------------- paste ---------------------------------- */
 
 function PasteFlow() {
+  const t = useT();
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
@@ -164,27 +170,27 @@ function PasteFlow() {
   return phase === "review" ? (
     <ReviewStep
       draft={demoMasterCv}
-      note="Extracted from the text you pasted. Nothing was added that wasn't in your text — correct anything that looks wrong before confirming."
+      note={t("add.pasteNote")}
       onConfirm={() => create(demoMasterCv)}
     />
   ) : phase === "working" ? (
-    <Working label="Reading your CV text…" />
+    <Working label={t("add.pasteWorkingLabel")} />
   ) : (
     <Panel>
       <label className="block">
-        <span className="text-sm font-medium">Paste the full text of your CV</span>
+        <span className="text-sm font-medium">{t("add.pasteLabel")}</span>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={12}
-          placeholder="Name, contact details, experience, education, skills…"
+          placeholder={t("add.pastePlaceholder")}
           className="mt-2 w-full resize-y rounded-xl border border-border bg-background p-3.5 text-sm leading-relaxed outline-none focus:border-primary"
         />
       </label>
       {phase === "error" ? (
         <div className="mt-4">
           <ErrorState
-            description="That text was too short to structure reliably. Paste the whole CV, including roles and dates."
+            description={t("add.pasteErrorDescription")}
             onRetry={() => setPhase("input")}
           />
         </div>
@@ -199,7 +205,7 @@ function PasteFlow() {
         }}
         className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
       >
-        Continue
+        {t("add.continue")}
       </button>
     </Panel>
   );
@@ -208,6 +214,7 @@ function PasteFlow() {
 /* ---------------------------------- upload --------------------------------- */
 
 function UploadFlow() {
+  const t = useT();
   const [file, setFile] = useState<string | null>(null);
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
@@ -216,20 +223,20 @@ function UploadFlow() {
     return (
       <ReviewStep
         draft={demoMasterCv}
-        note={`Parsed from ${file}. Formatting from the original file is not carried over — only your information.`}
+        note={t("add.uploadNote", { file: file ?? "" })}
         onConfirm={() => create(demoMasterCv)}
       />
     );
-  if (phase === "working") return <Working label={`Extracting content from ${file}…`} />;
+  if (phase === "working") return <Working label={t("add.uploadWorkingLabel", { file: file ?? "" })} />;
 
   return (
     <Panel>
       <div className="rounded-2xl border border-dashed border-border-strong bg-surface/60 p-8 text-center">
         <FileUp className="mx-auto size-7 text-primary" />
-        <p className="mt-3 font-medium">Drop your CV file here</p>
-        <p className="mt-1 text-xs text-muted-foreground">PDF, DOC or DOCX · up to 10 MB</p>
+        <p className="mt-3 font-medium">{t("add.uploadDropTitle")}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{t("add.uploadHint")}</p>
         <label className="tap mt-4 inline-flex cursor-pointer items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
-          Choose file
+          {t("add.uploadChooseFile")}
           <input
             type="file"
             accept=".pdf,.doc,.docx"
@@ -247,10 +254,10 @@ function UploadFlow() {
       {phase === "error" ? (
         <div className="mt-4">
           <ErrorState
-            title="We couldn't read that file"
-            description="Scanned or image-only PDFs often fail. Try another file, or paste the text instead."
+            title={t("add.uploadErrorTitle")}
+            description={t("add.uploadErrorDescription")}
             onRetry={() => setPhase("input")}
-            retryLabel="Choose another file"
+            retryLabel={t("add.uploadErrorRetryLabel")}
           />
         </div>
       ) : null}
@@ -261,6 +268,7 @@ function UploadFlow() {
 /* --------------------------------- linkedin -------------------------------- */
 
 function LinkedInFlow() {
+  const t = useT();
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<Record<string, boolean>>({
     profile: true,
@@ -271,17 +279,17 @@ function LinkedInFlow() {
   const create = useCreate();
 
   const sections = [
-    { id: "profile", label: "Headline & about", detail: "Title, summary, location" },
-    { id: "experience", label: "Experience", detail: "3 positions found" },
-    { id: "education", label: "Education", detail: "2 entries found" },
-    { id: "skills", label: "Skills & endorsements", detail: "12 skills found" },
+    { id: "profile", label: t("add.linkedinSectionProfileLabel"), detail: t("add.linkedinSectionProfileDetail") },
+    { id: "experience", label: t("add.linkedinSectionExperienceLabel"), detail: t("add.linkedinSectionExperienceDetail") },
+    { id: "education", label: t("add.linkedinSectionEducationLabel"), detail: t("add.linkedinSectionEducationDetail") },
+    { id: "skills", label: t("add.linkedinSectionSkillsLabel"), detail: t("add.linkedinSectionSkillsDetail") },
   ];
 
   if (step === 2)
     return (
       <ReviewStep
         draft={demoMasterCv}
-        note="Only the sections you selected were imported. LinkedIn data is often shorter than a full CV — add detail after confirming."
+        note={t("add.linkedinNote")}
         onConfirm={() => create(demoMasterCv)}
       />
     );
@@ -289,38 +297,35 @@ function LinkedInFlow() {
   return (
     <div className="space-y-4">
       <Panel>
-        <h2 className="text-lg">How the import works</h2>
+        <h2 className="text-lg">{t("add.linkedinHowTitle")}</h2>
         <ol className="mt-3 space-y-2.5 text-sm text-foreground/85">
           <li>
-            <span className="font-semibold">1.</span> In LinkedIn, open Settings → Data privacy →
-            Get a copy of your data.
+            <span className="font-semibold">1.</span> {t("add.linkedinStep1")}
           </li>
           <li>
-            <span className="font-semibold">2.</span> Request your profile archive and download the
-            file when it arrives.
+            <span className="font-semibold">2.</span> {t("add.linkedinStep2")}
           </li>
           <li>
-            <span className="font-semibold">3.</span> Upload it here, or paste your profile text.
-            We never ask for your LinkedIn password.
+            <span className="font-semibold">3.</span> {t("add.linkedinStep3")}
           </li>
         </ol>
         <label className="tap mt-4 inline-flex cursor-pointer items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
-          Upload LinkedIn export
+          {t("add.linkedinUploadExport")}
           <input type="file" className="sr-only" onChange={() => setStep(1)} />
         </label>
         <button
           onClick={() => setStep(1)}
-          className="tap ml-2 inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
+          className="tap ms-2 inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
         >
-          Paste profile text instead
+          {t("add.linkedinPasteInstead")}
         </button>
       </Panel>
 
       {step >= 1 ? (
         <Panel>
-          <h2 className="text-lg">Choose what to import</h2>
+          <h2 className="text-lg">{t("add.linkedinChooseTitle")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            You stay in control — unselected sections are never read.
+            {t("add.linkedinChooseSubtitle")}
           </p>
           <ul className="mt-3 space-y-2">
             {sections.map((s) => (
@@ -349,7 +354,7 @@ function LinkedInFlow() {
             onClick={() => setStep(2)}
             className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
-            Organize with the assistant
+            {t("add.linkedinOrganize")}
           </button>
         </Panel>
       ) : null}
@@ -361,46 +366,58 @@ function LinkedInFlow() {
 
 type Answer = Record<string, string>;
 
-const questionGroups = [
-  {
-    title: "Personal information",
-    questions: [
-      { id: "name", q: "What's your full name?", placeholder: "Amina Haddad" },
-      { id: "title", q: "What professional title describes you today?", placeholder: "Senior Product Designer" },
-      { id: "email", q: "Best email for recruiters?", placeholder: "you@mail.com" },
-      { id: "location", q: "Where are you based?", placeholder: "Stockholm, Sweden" },
-    ],
-  },
-  {
-    title: "Work experience",
-    questions: [
-      { id: "company", q: "Where did you work most recently?", placeholder: "Company name" },
-      { id: "role", q: "What was your role there?", placeholder: "Job title" },
-      { id: "period", q: "When did you start and finish?", placeholder: "Mar 2022 – Present" },
-      { id: "responsibilities", q: "What were your main responsibilities?", placeholder: "In your own words" },
-      { id: "achievements", q: "What are you proudest of in that role?", placeholder: "One concrete result" },
-    ],
-  },
-  {
-    title: "Education",
-    questions: [
-      { id: "school", q: "Where did you study?", placeholder: "School or university" },
-      { id: "program", q: "What did you study?", placeholder: "Programme or degree" },
-      { id: "years", q: "During which years?", placeholder: "2015 – 2017" },
-    ],
-  },
-  {
-    title: "Skills & more",
-    questions: [
-      { id: "skills", q: "What are your main skills?", placeholder: "Comma separated" },
-      { id: "languages", q: "Which languages do you speak?", placeholder: "Swedish, English…" },
-      { id: "tools", q: "Which tools or software do you use?", placeholder: "Figma, Linear…" },
-      { id: "extra", q: "Anything else worth including?", placeholder: "Projects, volunteering, courses" },
-    ],
-  },
-] as const;
+function useQuestionGroups() {
+  const t = useT();
+  return [
+    {
+      titleKey: "add.groupPersonalTitle",
+      questions: [
+        { id: "name", qKey: "add.qName", placeholderKey: "add.qNamePlaceholder" },
+        { id: "title", qKey: "add.qTitle", placeholderKey: "add.qTitlePlaceholder" },
+        { id: "email", qKey: "add.qEmail", placeholderKey: "add.qEmailPlaceholder" },
+        { id: "location", qKey: "add.qLocation", placeholderKey: "add.qLocationPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupWorkTitle",
+      questions: [
+        { id: "company", qKey: "add.qCompany", placeholderKey: "add.qCompanyPlaceholder" },
+        { id: "role", qKey: "add.qRole", placeholderKey: "add.qRolePlaceholder" },
+        { id: "period", qKey: "add.qPeriod", placeholderKey: "add.qPeriodPlaceholder" },
+        { id: "responsibilities", qKey: "add.qResponsibilities", placeholderKey: "add.qResponsibilitiesPlaceholder" },
+        { id: "achievements", qKey: "add.qAchievements", placeholderKey: "add.qAchievementsPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupEducationTitle",
+      questions: [
+        { id: "school", qKey: "add.qSchool", placeholderKey: "add.qSchoolPlaceholder" },
+        { id: "program", qKey: "add.qProgram", placeholderKey: "add.qProgramPlaceholder" },
+        { id: "years", qKey: "add.qYears", placeholderKey: "add.qYearsPlaceholder" },
+      ],
+    },
+    {
+      titleKey: "add.groupSkillsTitle",
+      questions: [
+        { id: "skills", qKey: "add.qSkills", placeholderKey: "add.qSkillsPlaceholder" },
+        { id: "languages", qKey: "add.qLanguages", placeholderKey: "add.qLanguagesPlaceholder" },
+        { id: "tools", qKey: "add.qTools", placeholderKey: "add.qToolsPlaceholder" },
+        { id: "extra", qKey: "add.qExtra", placeholderKey: "add.qExtraPlaceholder" },
+      ],
+    },
+  ].map((g) => ({
+    title: t(g.titleKey),
+    questions: g.questions.map((q) => ({
+      id: q.id,
+      q: t(q.qKey),
+      placeholder: t(q.placeholderKey),
+    })),
+  }));
+}
 
 function ManualFlow() {
+  const t = useT();
+  const questionGroups = useQuestionGroups();
   const [groupIndex, setGroupIndex] = useState(0);
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer>({});
@@ -457,7 +474,7 @@ function ManualFlow() {
     return (
       <ReviewStep
         draft={draft}
-        note="Only what you typed is here. The assistant can polish wording later, but it will never add facts."
+        note={t("add.manualNote")}
         onConfirm={() => create(draft)}
       />
     );
@@ -515,39 +532,40 @@ function ManualFlow() {
             disabled={groupIndex === 0 && qIndex === 0}
             className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium disabled:opacity-40"
           >
-            Back
+            {t("add.manualBack")}
           </button>
           <div className="flex gap-2">
             <button
               onClick={next}
               className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
             >
-              Skip
+              {t("add.manualSkip")}
             </button>
             <button
               onClick={next}
               className="tap inline-flex items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
             >
-              Continue
+              {t("add.manualContinue")}
             </button>
           </div>
         </div>
       </Panel>
 
       <p className="text-center text-xs text-muted-foreground">
-        You'll review every section before anything becomes your Master CV.
+        {t("add.manualFooterNote")}
       </p>
     </div>
   );
 }
 
 function Working({ label }: { label: string }) {
+  const t = useT();
   return (
     <Panel className="text-center">
       <Loader2 className="mx-auto size-6 animate-spin text-primary" />
       <p className="mt-3 text-sm font-medium">{label}</p>
       <p className="mt-1 text-xs text-muted-foreground">
-        Structuring sections, dates and skills — nothing is saved yet
+        {t("add.workingSubtext")}
       </p>
     </Panel>
   );

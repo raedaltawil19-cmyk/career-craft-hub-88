@@ -4,6 +4,7 @@ import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/cv/")({
   head: () => ({
@@ -16,22 +17,25 @@ export const Route = createFileRoute("/app/cv/")({
   component: MasterCvPage,
 });
 
-const templates = [
-  { id: "editorial", label: "Editorial" },
-  { id: "compact", label: "Compact" },
-  { id: "classic", label: "Classic" },
-] as const;
+const templateIds = ["editorial", "compact", "classic"] as const;
 
 function MasterCvPage() {
+  const t = useT();
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv;
+
+  const templates = [
+    { id: "editorial", label: t("cv.templateEditorial") },
+    { id: "compact", label: t("cv.templateCompact") },
+    { id: "classic", label: t("cv.templateClassic") },
+  ] as const;
 
   if (!cv) {
     return (
       <EmptyState
         icon={<FileText className="size-5" />}
-        title="No Master CV yet"
-        description="Use the + action to paste, upload, import or fill in your career profile. Everything else builds on it."
+        title={t("cv.emptyMasterCvTitle")}
+        description={t("cv.emptyMasterCvDescription")}
       />
     );
   }
@@ -41,15 +45,15 @@ function MasterCvPage() {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow={`Version ${cv.version} · source of truth`}
-        title="Master CV"
-        description="Structured career data, not a document. Tailored versions inherit from here."
+        eyebrow={t("cv.versionMeta", { version: cv.version })}
+        title={t("cv.title")}
+        description={t("cv.description")}
         action={
           <Link
             to="/app/cv/edit"
             className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
           >
-            <Pencil className="size-4" /> Edit
+            <Pencil className="size-4" /> {t("cv.editAction")}
           </Link>
         }
       />
@@ -62,16 +66,16 @@ function MasterCvPage() {
         <div className="order-1 space-y-4 lg:order-2">
           <Panel>
             <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
-              <MatchRing value={78} size={56} label="CV quality" />
+              <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
               <div className="min-w-0">
-                <h2 className="text-base font-semibold">CV quality</h2>
-                <p className="text-xs text-muted-foreground">ATS readability: good</p>
+                <h2 className="text-base font-semibold">{t("cv.cvQuality")}</h2>
+                <p className="text-xs text-muted-foreground">{t("cv.atsReadability")}</p>
               </div>
             </div>
             <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-              <li>· Consistent structure detected</li>
-              <li>· 2 achievements lack measurable results</li>
-              <li>· Mixed date formats</li>
+              <li>· {t("cv.insightConsistentStructure")}</li>
+              <li>· {t("cv.insightAchievements")}</li>
+              <li>· {t("cv.insightDateFormats")}</li>
             </ul>
             {pending ? (
               <Link
@@ -79,26 +83,26 @@ function MasterCvPage() {
                 search={{ panel: "ai" }}
                 className="tap mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
               >
-                <Sparkles className="size-4" /> {pending} recommendations
+                <Sparkles className="size-4" /> {t("cv.recommendationsCount", { count: pending })}
               </Link>
             ) : null}
           </Panel>
 
           <Panel>
-            <h2 className="eyebrow">Template</h2>
+            <h2 className="eyebrow">{t("cv.templateLabel")}</h2>
             <div className="mt-2.5 grid grid-cols-3 gap-2">
-              {templates.map((t) => (
+              {templates.map((tpl) => (
                 <button
-                  key={t.id}
-                  onClick={() => updateMasterCv({ template: t.id })}
+                  key={tpl.id}
+                  onClick={() => updateMasterCv({ template: tpl.id })}
                   className={cn(
                     "tap rounded-xl border px-2 text-sm font-medium",
-                    cv.template === t.id
+                    cv.template === tpl.id
                       ? "border-primary bg-primary-soft text-primary"
                       : "border-border text-muted-foreground hover:bg-muted",
                   )}
                 >
-                  {t.label}
+                  {tpl.label}
                 </button>
               ))}
             </div>
@@ -107,19 +111,19 @@ function MasterCvPage() {
                 onClick={() => window.print()}
                 className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
               >
-                <Printer className="size-4" /> Print
+                <Printer className="size-4" /> {t("cv.print")}
               </button>
               <button
                 onClick={() => window.print()}
                 className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
               >
-                <Download className="size-4" /> PDF
+                <Download className="size-4" /> {t("cv.pdf")}
               </button>
             </div>
           </Panel>
 
           <Panel>
-            <h2 className="eyebrow">Versions</h2>
+            <h2 className="eyebrow">{t("cv.versionsLabel")}</h2>
             <ul className="mt-2.5 space-y-2">
               {state.docs.map((d) => (
                 <li
@@ -129,7 +133,7 @@ function MasterCvPage() {
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-medium">{d.name}</span>
                     <span className="block text-xs text-muted-foreground">
-                      {d.kind === "master" ? "Master" : "Tailored"} · {d.updatedAt}
+                      {d.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")} · {d.updatedAt}
                     </span>
                   </span>
                   <Tag tone={d.score >= 80 ? "match" : "neutral"}>{d.score}</Tag>

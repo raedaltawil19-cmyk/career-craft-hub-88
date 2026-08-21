@@ -1,5 +1,6 @@
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export function CvPreview({
   cv,
@@ -12,19 +13,20 @@ export function CvPreview({
   className?: string;
   compact?: boolean;
 }) {
+  const t = useT();
   const isClassic = cv.template === "classic";
   const isCompact = cv.template === "compact" || compact;
 
   return (
     <article
       className={cn("paper overflow-hidden", className)}
-      aria-label={`CV preview for ${cv.name || "your CV"}`}
+      aria-label={t("cv.previewAriaLabel", { name: cv.name || t("cv.yourName") })}
     >
       <div className={cn("px-5 py-6 sm:px-8 sm:py-8", isCompact && "px-4 py-5 sm:px-6 sm:py-6")}>
         <header className={cn("pb-4", isClassic ? "text-center" : "")}>
-          <h2 className="display text-2xl leading-tight sm:text-3xl">{cv.name || "Your name"}</h2>
+          <h2 className="display text-2xl leading-tight sm:text-3xl">{cv.name || t("cv.yourName")}</h2>
           <p className="mt-1 text-sm font-semibold tracking-wide text-primary">
-            {cv.title || "Professional title"}
+            {cv.title || t("cv.yourTitle")}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
             {[cv.location, cv.email, cv.phone, ...cv.links].filter(Boolean).join("  ·  ")}
@@ -34,13 +36,13 @@ export function CvPreview({
         <div className="h-px w-full bg-border" />
 
         {cv.summary ? (
-          <Section title="Profile">
+          <Section title={t("cv.profileSection")}>
             <p className="text-sm leading-relaxed text-foreground/85">{cv.summary}</p>
           </Section>
         ) : null}
 
         {cv.experience.length ? (
-          <Section title="Experience">
+          <Section title={t("cv.experienceSection")}>
             <ul className="space-y-4">
               {cv.experience.map((e) => (
                 <li key={e.id}>
@@ -57,7 +59,7 @@ export function CvPreview({
                     {e.bullets.map((b, i) => (
                       <li
                         key={i}
-                        className="relative pl-4 text-sm leading-relaxed text-foreground/85 before:absolute before:left-0 before:top-2.5 before:size-1 before:rounded-full before:bg-accent"
+                        className="relative ps-4 text-sm leading-relaxed text-foreground/85 before:absolute before:start-0 before:top-2.5 before:size-1 before:rounded-full before:bg-accent"
                       >
                         <Highlighted text={b} terms={highlight} />
                       </li>
@@ -70,7 +72,7 @@ export function CvPreview({
         ) : null}
 
         {cv.education.length ? (
-          <Section title="Education">
+          <Section title={t("cv.educationSection")}>
             <ul className="space-y-2">
               {cv.education.map((ed) => (
                 <li key={ed.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3">
@@ -88,7 +90,7 @@ export function CvPreview({
         ) : null}
 
         {cv.skills.length ? (
-          <Section title="Skills">
+          <Section title={t("cv.skillsSection")}>
             <p className="text-sm leading-relaxed text-foreground/85">
               <Highlighted text={cv.skills.join(" · ")} terms={highlight} />
             </p>
@@ -96,20 +98,20 @@ export function CvPreview({
         ) : null}
 
         {(cv.tools.length || cv.languages.length) ? (
-          <Section title="Tools & languages">
+          <Section title={t("cv.toolsLanguagesSection")}>
             {cv.tools.length ? (
-              <p className="text-sm text-foreground/85">Tools: {cv.tools.join(", ")}</p>
+              <p className="text-sm text-foreground/85">{t("cv.toolsLabel", { tools: cv.tools.join(", ") })}</p>
             ) : null}
             {cv.languages.length ? (
               <p className="mt-1 text-sm text-foreground/85">
-                Languages: {cv.languages.join(", ")}
+                {t("cv.languagesLabel", { languages: cv.languages.join(", ") })}
               </p>
             ) : null}
           </Section>
         ) : null}
 
         {cv.projects.length ? (
-          <Section title="Projects">
+          <Section title={t("cv.projectsSection")}>
             <ul className="space-y-2">
               {cv.projects.map((p) => (
                 <li key={p.id}>
@@ -124,7 +126,7 @@ export function CvPreview({
         ) : null}
 
         {cv.certifications.length || cv.volunteer.length ? (
-          <Section title="Additional">
+          <Section title={t("cv.additionalSection")}>
             <ul className="space-y-1 text-sm text-foreground/85">
               {[...cv.certifications, ...cv.volunteer].map((x, i) => (
                 <li key={i}>{x}</li>

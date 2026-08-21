@@ -5,6 +5,7 @@ import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/tailor/$jobId")({
   head: () => ({
@@ -18,9 +19,9 @@ export const Route = createFileRoute("/app/tailor/$jobId")({
 });
 
 type Step = 0 | 1 | 2 | 3;
-const steps = ["Analyze", "Compare", "Review changes", "Generate"] as const;
 
 function TailorPage() {
+  const t = useT();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
   const { jobs, state, addTailoredCv } = useWorkspace();
@@ -30,14 +31,21 @@ function TailorPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [approved, setApproved] = useState<Record<string, boolean>>({});
 
+  const steps = [
+    t("tailor.stepAnalyze"),
+    t("tailor.stepCompare"),
+    t("tailor.stepReview"),
+    t("tailor.stepGenerate"),
+  ] as const;
+
   if (!job || !cv) {
     return (
       <EmptyState
-        title="Can't tailor yet"
-        description="A Master CV and a selected job are both required for tailoring."
+        title={t("tailor.cantTailorTitle")}
+        description={t("tailor.cantTailorDescription")}
         action={
           <Link to="/app/jobs" className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium">
-            Back to jobs
+            {t("tailor.backToJobs")}
           </Link>
         }
       />
@@ -47,24 +55,24 @@ function TailorPage() {
   const changes = [
     {
       id: "c1",
-      section: "Summary",
+      section: t("tailor.sectionSummary"),
       before: cv.summary,
-      after: `${cv.title} with 8 years in fintech and B2B SaaS, focused on ${job.keywords[0]} work and end-to-end delivery for data-heavy products.`,
-      why: `Mirrors the posting's language ("${job.keywords[0]}") using facts already in your CV.`,
+      after: t("tailor.changeSummaryAfter", { title: cv.title, keyword: job.keywords[0] ?? "" }),
+      why: t("tailor.changeSummaryWhy", { keyword: job.keywords[0] ?? "" }),
     },
     {
       id: "c2",
-      section: "Experience order",
-      before: "Chronological order",
-      after: "Move Northlane Fintech design-system work to the top bullet",
-      why: "The posting lists systems contribution as a core requirement.",
+      section: t("tailor.sectionExperienceOrder"),
+      before: t("tailor.changeExperienceBefore"),
+      after: t("tailor.changeExperienceAfter"),
+      why: t("tailor.changeExperienceWhy"),
     },
     {
       id: "c3",
-      section: "Skills",
+      section: t("tailor.sectionSkills"),
       before: cv.skills.slice(0, 4).join(", "),
-      after: `${job.matchingSkills.join(", ")} first, then the rest`,
-      why: "Puts the employer's required skills where they are scanned first.",
+      after: t("tailor.changeSkillsAfter", { skills: job.matchingSkills.join(", ") }),
+      why: t("tailor.changeSkillsWhy"),
     },
   ];
 
@@ -77,17 +85,17 @@ function TailorPage() {
         params={{ jobId: job.id }}
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
       >
-        <ArrowLeft className="size-4" /> {job.title}
+        <ArrowLeft className="size-4 rtl:rotate-180" /> {job.title}
       </Link>
 
       <header>
         <Eyebrow>
-          Tailoring · {job.company} · linked to Master CV v{cv.version}
+          {t("tailor.eyebrowTailoring", { company: job.company, version: cv.version })}
         </Eyebrow>
-        <h1 className="display mt-1 text-[1.75rem] sm:text-4xl">Tailored CV</h1>
+        <h1 className="display mt-1 text-[1.75rem] sm:text-4xl">{t("tailor.heading")}</h1>
       </header>
 
-      <ol className="grid grid-cols-4 gap-1.5" aria-label="Tailoring progress">
+      <ol className="grid grid-cols-4 gap-1.5" aria-label={t("tailor.progressLabel")}>
         {steps.map((s, i) => (
           <li key={s} className="min-w-0">
             <div
@@ -110,9 +118,9 @@ function TailorPage() {
 
       {step === 0 ? (
         <Panel>
-          <h2 className="text-lg">Analyze the posting</h2>
+          <h2 className="text-lg">{t("tailor.analyzeTitle")}</h2>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            The assistant reads the requirements and keywords for {job.title} at {job.company}.
+            {t("tailor.analyzeDescription", { title: job.title, company: job.company })}
           </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {job.keywords.map((k) => (
@@ -132,7 +140,7 @@ function TailorPage() {
             className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
             {analyzing ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
-            {analyzing ? "Analyzing…" : "Analyze job"}
+            {analyzing ? t("tailor.analyzing") : t("tailor.analyzeJob")}
           </button>
         </Panel>
       ) : null}
@@ -143,13 +151,12 @@ function TailorPage() {
             <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
               <MatchRing value={job.match} size={64} />
               <p className="min-w-0 text-sm text-muted-foreground">
-                Your Master CV against this posting. Nothing below invents experience you don't
-                have.
+                {t("tailor.matchIntro")}
               </p>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <div>
-                <p className="eyebrow">Strong</p>
+                <p className="eyebrow">{t("tailor.strong")}</p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {job.matchingSkills.map((s) => (
                     <Tag key={s} tone="match">
@@ -159,7 +166,7 @@ function TailorPage() {
                 </div>
               </div>
               <div>
-                <p className="eyebrow">Transferable</p>
+                <p className="eyebrow">{t("tailor.transferable")}</p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {cv.skills.slice(0, 3).map((s) => (
                     <Tag key={s}>{s}</Tag>
@@ -167,7 +174,7 @@ function TailorPage() {
                 </div>
               </div>
               <div>
-                <p className="eyebrow">Missing</p>
+                <p className="eyebrow">{t("tailor.missing")}</p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {job.gaps.map((s) => (
                     <Tag key={s} tone="gap">
@@ -182,7 +189,7 @@ function TailorPage() {
             onClick={() => setStep(2)}
             className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
-            See proposed changes
+            {t("tailor.seeProposedChanges")}
           </button>
         </div>
       ) : null}
@@ -190,8 +197,7 @@ function TailorPage() {
       {step === 2 ? (
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            {approvedCount} of {changes.length} changes approved. Nothing is applied until you
-            generate.
+            {t("tailor.changesApproved", { approved: approvedCount, total: changes.length })}
           </p>
           <ul className="space-y-3">
             {changes.map((c) => (
@@ -202,15 +208,15 @@ function TailorPage() {
                       <p className="text-xs font-semibold text-accent">{c.section}</p>
                       <p className="mt-1 text-sm text-muted-foreground">{c.why}</p>
                     </div>
-                    {approved[c.id] ? <Tag tone="match">Approved</Tag> : null}
+                    {approved[c.id] ? <Tag tone="match">{t("tailor.approved")}</Tag> : null}
                   </div>
                   <div className="mt-3 space-y-2 text-sm">
                     <div className="rounded-lg bg-muted p-2.5">
-                      <p className="eyebrow mb-1">Master CV</p>
+                      <p className="eyebrow mb-1">{t("tailor.masterCv")}</p>
                       <p className="text-foreground/75">{c.before}</p>
                     </div>
                     <div className="rounded-lg bg-success-soft p-2.5">
-                      <p className="eyebrow mb-1">Tailored</p>
+                      <p className="eyebrow mb-1">{t("tailor.tailored")}</p>
                       <p>{c.after}</p>
                     </div>
                   </div>
@@ -219,13 +225,13 @@ function TailorPage() {
                       onClick={() => setApproved((a) => ({ ...a, [c.id]: true }))}
                       className="tap inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 text-sm font-semibold text-primary-foreground"
                     >
-                      <Check className="size-4" /> Approve
+                      <Check className="size-4" /> {t("tailor.approve")}
                     </button>
                     <button
                       onClick={() => setApproved((a) => ({ ...a, [c.id]: false }))}
                       className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 text-sm font-medium"
                     >
-                      <X className="size-4" /> Skip
+                      <X className="size-4" /> {t("tailor.skip")}
                     </button>
                   </div>
                 </Panel>
@@ -247,7 +253,7 @@ function TailorPage() {
             }}
             className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground disabled:opacity-40"
           >
-            Generate tailored CV
+            {t("tailor.generateTailoredCv")}
           </button>
         </div>
       ) : null}
@@ -255,23 +261,22 @@ function TailorPage() {
       {step === 3 ? (
         <div className="space-y-4">
           <Panel className="border-success/40 bg-success-soft/40">
-            <h2 className="text-lg">Tailored CV created</h2>
+            <h2 className="text-lg">{t("tailor.createdTitle")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Linked to Master CV v{cv.version} and to {job.company} · {job.title}. Editing the
-              Master CV later will flag this version for review.
+              {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Link
                 to="/app/applications"
                 className="tap inline-flex items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                Track this application
+                {t("tailor.trackApplication")}
               </Link>
               <button
                 onClick={() => navigate({ to: "/app/cv" })}
                 className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
               >
-                All versions
+                {t("tailor.allVersions")}
               </button>
             </div>
           </Panel>

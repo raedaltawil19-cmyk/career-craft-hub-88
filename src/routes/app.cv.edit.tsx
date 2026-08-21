@@ -7,6 +7,7 @@ import { CvPreview } from "@/components/cv-preview";
 import { EmptyState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import type { Suggestion } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 const searchSchema = z.object({
   panel: z.enum(["sections", "ai", "preview"]).catch("sections"),
@@ -24,23 +25,24 @@ export const Route = createFileRoute("/app/cv/edit")({
   component: CvEditor,
 });
 
-const panels = [
-  { id: "sections", label: "Sections" },
-  { id: "ai", label: "Assistant" },
-  { id: "preview", label: "Preview" },
-] as const;
-
 function CvEditor() {
+  const t = useT();
   const { panel } = Route.useSearch();
   const navigate = useNavigate();
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv;
 
+  const panels = [
+    { id: "sections", label: t("cv.panelSections") },
+    { id: "ai", label: t("cv.panelAssistant") },
+    { id: "preview", label: t("cv.panelPreview") },
+  ] as const;
+
   if (!cv) {
     return (
       <EmptyState
-        title="Nothing to edit yet"
-        description="Create your Master CV first using the + action."
+        title={t("cv.emptyEditTitle")}
+        description={t("cv.emptyEditDescription")}
       />
     );
   }
@@ -55,17 +57,17 @@ function CvEditor() {
           to="/app/cv"
           className="inline-flex min-w-0 items-center gap-1.5 text-sm font-medium text-muted-foreground"
         >
-          <ArrowLeft className="size-4 shrink-0" /> Master CV
+          <ArrowLeft className="size-4 shrink-0 rtl:rotate-180" /> {t("cv.backToMaster")}
         </Link>
         <span className="shrink-0 rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
-          Saved · v{cv.version}
+          {t("cv.savedVersion", { version: cv.version })}
         </span>
       </div>
 
       {/* Mobile panel switcher */}
       <div
         role="tablist"
-        aria-label="Editor panels"
+        aria-label={t("cv.editorPanelsAria")}
         className="flex gap-1 rounded-xl border border-border bg-surface p-1 lg:hidden"
       >
         {panels.map((p) => (
@@ -91,7 +93,7 @@ function CvEditor() {
         <div className={cn(panel === "preview" ? "block" : "hidden", "lg:block")}>
           <CvPreview cv={cv} />
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            Preview reflects the {cv.template} template
+            {t("cv.previewNote", { template: cv.template })}
           </p>
         </div>
         <div className={cn(panel === "ai" ? "block" : "hidden", "lg:block")}>
@@ -100,13 +102,11 @@ function CvEditor() {
       </div>
 
       <Panel className="lg:hidden">
-        <p className="text-xs text-muted-foreground">
-          Editing on a larger screen shows sections, preview and the assistant side by side.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("cv.desktopHint")}</p>
       </Panel>
 
       <div className="sr-only" aria-live="polite">
-        Editing {cv.name} master CV
+        {t("cv.editingSrLive", { name: cv.name })}
       </div>
       <button
         onClick={() => updateMasterCv({ version: cv.version + 1 })}
@@ -118,6 +118,7 @@ function CvEditor() {
 }
 
 function SectionsPanel() {
+  const t = useT();
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv!;
   const [editingSummary, setEditingSummary] = useState(false);
@@ -138,11 +139,11 @@ function SectionsPanel() {
     <div className="space-y-3">
       <Panel>
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-          <h2 className="min-w-0 text-base font-semibold">Professional summary</h2>
+          <h2 className="min-w-0 text-base font-semibold">{t("cv.summaryTitle")}</h2>
           <button
             onClick={() => setEditingSummary((v) => !v)}
             className="tap grid place-items-center rounded-lg text-muted-foreground hover:text-foreground"
-            aria-label="Edit summary"
+            aria-label={t("cv.editSummaryAria")}
           >
             <Pencil className="size-4" />
           </button>
@@ -163,7 +164,7 @@ function SectionsPanel() {
                 }}
                 className="tap rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                Save
+                {t("common.save")}
               </button>
               <button
                 onClick={() => {
@@ -172,7 +173,7 @@ function SectionsPanel() {
                 }}
                 className="tap rounded-xl border border-border px-4 text-sm font-medium"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
             </div>
           </>
@@ -182,7 +183,7 @@ function SectionsPanel() {
       </Panel>
 
       <Panel>
-        <h2 className="text-base font-semibold">Experience</h2>
+        <h2 className="text-base font-semibold">{t("cv.experienceTitle")}</h2>
         <ul className="mt-2 space-y-2">
           {cv.experience.map((e, i) => (
             <li
@@ -198,14 +199,14 @@ function SectionsPanel() {
               <span className="flex shrink-0 gap-1">
                 <button
                   onClick={() => move(i, -1)}
-                  aria-label={`Move ${e.role} up`}
+                  aria-label={t("cv.moveUpAria", { role: e.role })}
                   className="tap grid place-items-center rounded-lg text-muted-foreground hover:text-foreground"
                 >
                   ↑
                 </button>
                 <button
                   onClick={() => move(i, 1)}
-                  aria-label={`Move ${e.role} down`}
+                  aria-label={t("cv.moveDownAria", { role: e.role })}
                   className="tap grid place-items-center rounded-lg text-muted-foreground hover:text-foreground"
                 >
                   ↓
@@ -217,7 +218,7 @@ function SectionsPanel() {
       </Panel>
 
       <Panel>
-        <h2 className="text-base font-semibold">Skills</h2>
+        <h2 className="text-base font-semibold">{t("cv.skillsTitle")}</h2>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {cv.skills.map((s) => (
             <span
@@ -227,7 +228,7 @@ function SectionsPanel() {
               {s}
               <button
                 onClick={() => updateMasterCv({ skills: cv.skills.filter((x) => x !== s) })}
-                aria-label={`Remove ${s}`}
+                aria-label={t("cv.removeSkillAria", { skill: s })}
                 className="text-muted-foreground hover:text-destructive"
               >
                 <X className="size-3" />
@@ -239,12 +240,12 @@ function SectionsPanel() {
       </Panel>
 
       <Panel>
-        <h2 className="text-base font-semibold">Other sections</h2>
+        <h2 className="text-base font-semibold">{t("cv.otherSectionsTitle")}</h2>
         <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
-          <li>Education · {cv.education.length}</li>
-          <li>Projects · {cv.projects.length}</li>
-          <li>Certifications · {cv.certifications.length}</li>
-          <li>Volunteer · {cv.volunteer.length}</li>
+          <li>{t("cv.educationCount", { count: cv.education.length })}</li>
+          <li>{t("cv.projectsCount", { count: cv.projects.length })}</li>
+          <li>{t("cv.certificationsCount", { count: cv.certifications.length })}</li>
+          <li>{t("cv.volunteerCount", { count: cv.volunteer.length })}</li>
         </ul>
       </Panel>
     </div>
@@ -252,6 +253,7 @@ function SectionsPanel() {
 }
 
 function AddSkill() {
+  const t = useT();
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv!;
   const [value, setValue] = useState("");
@@ -269,17 +271,18 @@ function AddSkill() {
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Add a skill"
+        placeholder={t("cv.addSkillPlaceholder")}
         className="tap min-w-0 rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-primary"
       />
       <button className="tap shrink-0 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted">
-        Add
+        {t("cv.addButton")}
       </button>
     </form>
   );
 }
 
 function AiPanel() {
+  const t = useT();
   const { state, setSuggestionState, acceptAllSuggestions, updateMasterCv } = useWorkspace();
   const cv = state.masterCv!;
   const pending = state.suggestions.filter((s) => s.state === "pending");
@@ -289,40 +292,42 @@ function AiPanel() {
     setSuggestionState(s.id, "accepted");
   };
 
+  const quickActions = [
+    t("cv.quickActionImprove"),
+    t("cv.quickActionAchievements"),
+    t("cv.quickActionKeywords"),
+  ];
+
   return (
     <div className="space-y-3">
       <Panel className="border-primary/25 bg-primary-soft/40">
         <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2.5">
           <Sparkles className="mt-0.5 size-5 shrink-0 text-primary" />
           <div className="min-w-0">
-            <h2 className="text-base font-semibold">Assistant · CV context</h2>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Read-only analysis. Nothing changes until you accept a recommendation.
-            </p>
+            <h2 className="text-base font-semibold">{t("cv.assistantTitle")}</h2>
+            <p className="mt-1 text-xs text-muted-foreground">{t("cv.assistantDescription")}</p>
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {["Improve this section", "Make achievements stronger", "Find missing keywords"].map(
-            (a) => (
-              <button
-                key={a}
-                className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium hover:bg-muted"
-              >
-                {a}
-              </button>
-            ),
-          )}
+          {quickActions.map((a) => (
+            <button
+              key={a}
+              className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium hover:bg-muted"
+            >
+              {a}
+            </button>
+          ))}
         </div>
       </Panel>
 
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-        <Eyebrow>{pending.length} open recommendations</Eyebrow>
+        <Eyebrow>{t("cv.openRecommendations", { count: pending.length })}</Eyebrow>
         {pending.length ? (
           <button
             onClick={acceptAllSuggestions}
             className="shrink-0 text-xs font-semibold text-primary"
           >
-            Accept all
+            {t("cv.acceptAll")}
           </button>
         ) : null}
       </div>
@@ -349,11 +354,11 @@ function AiPanel() {
 
                 <div className="mt-3 space-y-2 text-sm">
                   <div className="rounded-lg bg-muted p-2.5">
-                    <p className="eyebrow mb-1">Current</p>
+                    <p className="eyebrow mb-1">{t("cv.current")}</p>
                     <p className="text-foreground/75">{s.before}</p>
                   </div>
                   <div className="rounded-lg bg-success-soft p-2.5">
-                    <p className="eyebrow mb-1">Suggested</p>
+                    <p className="eyebrow mb-1">{t("cv.suggested")}</p>
                     <p>{s.after}</p>
                   </div>
                 </div>
@@ -364,16 +369,16 @@ function AiPanel() {
                       onClick={() => apply(s)}
                       className="tap inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 text-sm font-semibold text-primary-foreground"
                     >
-                      <Check className="size-4" /> Accept
+                      <Check className="size-4" /> {t("cv.accept")}
                     </button>
                     <button
                       onClick={() => setSuggestionState(s.id, "rejected")}
                       className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 text-sm font-medium"
                     >
-                      <X className="size-4" /> Reject
+                      <X className="size-4" /> {t("cv.reject")}
                     </button>
                     <button className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 text-sm font-medium">
-                      <Pencil className="size-4" /> Edit
+                      <Pencil className="size-4" /> {t("cv.editSuggestion")}
                     </button>
                   </div>
                 ) : (
@@ -384,13 +389,13 @@ function AiPanel() {
                         s.state === "accepted" ? "text-success" : "text-muted-foreground",
                       )}
                     >
-                      {s.state === "accepted" ? "Accepted" : "Rejected"}
+                      {s.state === "accepted" ? t("cv.accepted") : t("cv.rejected")}
                     </span>
                     <button
                       onClick={() => setSuggestionState(s.id, "pending")}
                       className="inline-flex items-center gap-1 text-xs font-medium text-primary"
                     >
-                      <Undo2 className="size-3.5" /> Undo
+                      <Undo2 className="size-3.5" /> {t("cv.undo")}
                     </button>
                   </div>
                 )}
@@ -400,8 +405,8 @@ function AiPanel() {
         </ul>
       ) : (
         <EmptyState
-          title="No recommendations"
-          description={`The assistant found nothing to flag in ${cv.name.split(" ")[0]}'s CV right now.`}
+          title={t("cv.noRecommendationsTitle")}
+          description={t("cv.noRecommendationsDescription", { name: cv.name.split(" ")[0] ?? "" })}
         />
       )}
     </div>

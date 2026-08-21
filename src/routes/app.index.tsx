@@ -6,14 +6,19 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, Eyebrow, MatchRing, Panel, StatusPill, Tag } from "@/components/ui-bits";
+import dashboardNs from "@/lib/i18n/ns/dashboard";
+
+const dashboardHeadTitle = dashboardNs.en.headTitle;
+const dashboardHeadDescription = dashboardNs.en.headDescription;
 
 export const Route = createFileRoute("/app/")({
   head: () => ({
     meta: [
-      { title: "Home — Smart CV workspace" },
-      { name: "description", content: "Overview of your Master CV, matches and applications." },
+      { title: dashboardHeadTitle },
+      { name: "description", content: dashboardHeadDescription },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -21,6 +26,7 @@ export const Route = createFileRoute("/app/")({
 });
 
 function HomePage() {
+  const t = useT();
   const { state, jobs, loadDemo } = useWorkspace();
   const cv = state.masterCv;
   const pendingSuggestions = state.suggestions.filter((s) => s.state === "pending");
@@ -32,23 +38,22 @@ function HomePage() {
     return (
       <div className="space-y-6">
         <div>
-          <Eyebrow>Career workspace</Eyebrow>
-          <h1 className="display mt-1 text-3xl sm:text-4xl">Start with your Master CV</h1>
+          <Eyebrow>{t("dashboard.workspaceEyebrow")}</Eyebrow>
+          <h1 className="display mt-1 text-3xl sm:text-4xl">{t("dashboard.startTitle")}</h1>
           <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-            Everything here — job matches, tailored versions, application tracking — grows out of
-            one central career profile.
+            {t("dashboard.startDescription")}
           </p>
         </div>
         <EmptyState
           icon={<FileText className="size-5" />}
-          title="No Master CV yet"
-          description="Tap the + button in the navigation to paste, upload, import from LinkedIn or fill in a short guided form."
+          title={t("dashboard.emptyCvTitle")}
+          description={t("dashboard.emptyCvDescription")}
           action={
             <button
               onClick={loadDemo}
               className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
             >
-              Explore with sample data
+              {t("dashboard.exploreSampleData")}
             </button>
           }
         />
@@ -61,13 +66,15 @@ function HomePage() {
   return (
     <div className="space-y-6">
       <header>
-        <Eyebrow>Career workspace</Eyebrow>
+        <Eyebrow>{t("dashboard.workspaceEyebrow")}</Eyebrow>
         <h1 className="display mt-1 text-3xl sm:text-4xl">
-          Good to see you, {cv.name.split(" ")[0]}
+          {t("dashboard.greeting", { name: cv.name.split(" ")[0] ?? cv.name })}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          {pendingSuggestions.length} open recommendations · {attention.length} applications need
-          attention
+          {t("dashboard.summaryStats", {
+            pending: pendingSuggestions.length,
+            attention: attention.length,
+          })}
         </p>
       </header>
 
@@ -76,43 +83,45 @@ function HomePage() {
         <Panel className="lg:col-span-2">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
             <div className="min-w-0">
-              <Eyebrow>Master CV</Eyebrow>
+              <Eyebrow>{t("dashboard.masterCvEyebrow")}</Eyebrow>
               <h2 className="mt-1 truncate text-xl">{cv.title}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Version {cv.version} · updated{" "}
-                {new Date(cv.updatedAt).toLocaleDateString(undefined, {
-                  day: "numeric",
-                  month: "short",
+                {t("dashboard.versionUpdated", {
+                  version: cv.version,
+                  date: new Date(cv.updatedAt).toLocaleDateString(undefined, {
+                    day: "numeric",
+                    month: "short",
+                  }),
                 })}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                <Tag tone="match">{cv.experience.length} roles</Tag>
-                <Tag tone="key">{cv.skills.length} skills</Tag>
-                <Tag>{cv.education.length} education entries</Tag>
+                <Tag tone="match">{t("dashboard.rolesCount", { count: cv.experience.length })}</Tag>
+                <Tag tone="key">{t("dashboard.skillsCount", { count: cv.skills.length })}</Tag>
+                <Tag>{t("dashboard.educationCount", { count: cv.education.length })}</Tag>
               </div>
             </div>
-            <MatchRing value={78} size={64} label="CV quality" />
+            <MatchRing value={78} size={64} label={t("dashboard.cvQuality")} />
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               to="/app/cv"
               className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
             >
-              Open Master CV
+              {t("dashboard.openMasterCv")}
             </Link>
             <Link
               to="/app/cv/edit"
               className="tap inline-flex items-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
             >
-              Edit & improve
+              {t("dashboard.editAndImprove")}
             </Link>
           </div>
         </Panel>
 
         {/* AI recommendations */}
         <Panel>
-          <Eyebrow>Assistant</Eyebrow>
-          <h2 className="mt-1 text-xl">Recommendations</h2>
+          <Eyebrow>{t("dashboard.assistantEyebrow")}</Eyebrow>
+          <h2 className="mt-1 text-xl">{t("dashboard.recommendationsTitle")}</h2>
           {pendingSuggestions.length ? (
             <>
               <ul className="mt-3 space-y-2.5">
@@ -128,12 +137,13 @@ function HomePage() {
                 search={{ panel: "ai" }}
                 className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
               >
-                Review all {pendingSuggestions.length} <ArrowRight className="size-4" />
+                {t("dashboard.reviewAll", { count: pendingSuggestions.length })}{" "}
+                <ArrowRight className="size-4 rtl:rotate-180" />
               </Link>
             </>
           ) : (
             <p className="mt-3 text-sm text-muted-foreground">
-              Nothing pending. The assistant re-checks your CV after every edit.
+              {t("dashboard.noRecommendations")}
             </p>
           )}
         </Panel>
@@ -142,9 +152,9 @@ function HomePage() {
       {/* Applications needing attention */}
       <section>
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3">
-          <h2 className="min-w-0 text-xl">Needs your attention</h2>
+          <h2 className="min-w-0 text-xl">{t("dashboard.needsAttentionTitle")}</h2>
           <Link to="/app/applications" className="shrink-0 text-sm font-semibold text-primary">
-            All applications
+            {t("dashboard.allApplications")}
           </Link>
         </div>
         <ul className="mt-3 space-y-3">
@@ -177,7 +187,7 @@ function HomePage() {
             ))
           ) : (
             <li className="rounded-2xl border border-dashed border-border-strong p-5 text-sm text-muted-foreground">
-              No follow-ups scheduled. Saved jobs appear here once you apply.
+              {t("dashboard.noFollowUps")}
             </li>
           )}
         </ul>
@@ -186,9 +196,9 @@ function HomePage() {
       {/* Recommended jobs */}
       <section>
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3">
-          <h2 className="min-w-0 text-xl">Matched to your Master CV</h2>
+          <h2 className="min-w-0 text-xl">{t("dashboard.matchedJobsTitle")}</h2>
           <Link to="/app/jobs" className="shrink-0 text-sm font-semibold text-primary">
-            All jobs
+            {t("dashboard.allJobs")}
           </Link>
         </div>
         <ul className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -228,18 +238,20 @@ function HomePage() {
             <TrendingUp className="size-5" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-lg">Career progress</h2>
+            <h2 className="text-lg">{t("dashboard.careerProgressTitle")}</h2>
             <p className="text-sm text-muted-foreground">
-              {state.applications.length} applications · {state.docs.length} CV versions ·{" "}
-              {state.savedJobIds.length} saved roles
+              {t("dashboard.progressSummary", {
+                applications: state.applications.length,
+                docs: state.docs.length,
+                saved: state.savedJobIds.length,
+              })}
             </p>
           </div>
         </div>
         <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
           <Sparkles className="size-3.5 shrink-0 text-accent" />
           <p>
-            The assistant only suggests changes. Nothing is written to your CV without your
-            approval.
+            {t("dashboard.assistantDisclaimer")}
           </p>
         </div>
       </Panel>

@@ -3,6 +3,7 @@ import { ArrowLeft, FileUp, Link2, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/jobs/analyze")({
   head: () => ({
@@ -19,6 +20,7 @@ type Method = "paste" | "upload" | "url";
 type Phase = "input" | "working" | "done" | "error";
 
 function AnalyzePage() {
+  const t = useT();
   const [method, setMethod] = useState<Method>("paste");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
@@ -30,32 +32,29 @@ function AnalyzePage() {
     window.setTimeout(() => setPhase(hasInput ? "done" : "error"), 1200);
   };
 
+  const methods = [
+    { id: "paste" as const, label: t("jobs.methodPaste"), icon: Sparkles },
+    { id: "upload" as const, label: t("jobs.methodUpload"), icon: FileUp },
+    { id: "url" as const, label: t("jobs.methodUrl"), icon: Link2 },
+  ];
+
   return (
     <div className="space-y-5">
       <Link
         to="/app/jobs"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
       >
-        <ArrowLeft className="size-4" /> Jobs
+        <ArrowLeft className="size-4 rtl:rotate-180" /> {t("jobs.backToJobsShort")}
       </Link>
 
       <div>
-        <Eyebrow>Job analysis</Eyebrow>
-        <h1 className="display mt-1 text-[1.75rem] sm:text-4xl">Analyze a specific posting</h1>
-        <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-          The assistant extracts responsibilities, requirements and keywords, then compares them
-          with your Master CV. It never invents requirements that aren't in the text.
-        </p>
+        <Eyebrow>{t("jobs.analyzeEyebrow")}</Eyebrow>
+        <h1 className="display mt-1 text-[1.75rem] sm:text-4xl">{t("jobs.analyzeTitle")}</h1>
+        <p className="mt-2 max-w-prose text-sm text-muted-foreground">{t("jobs.analyzeIntro")}</p>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-3">
-        {(
-          [
-            { id: "paste", label: "Paste description", icon: Sparkles },
-            { id: "upload", label: "Upload file", icon: FileUp },
-            { id: "url", label: "Job URL", icon: Link2 },
-          ] as const
-        ).map((m) => (
+        {methods.map((m) => (
           <button
             key={m.id}
             onClick={() => {
@@ -79,40 +78,38 @@ function AnalyzePage() {
         <Panel>
           {method === "url" ? (
             <label className="block">
-              <span className="text-sm font-medium">Link to the posting</span>
+              <span className="text-sm font-medium">{t("jobs.linkToPosting")}</span>
               <input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://company.com/careers/role"
+                placeholder={t("jobs.urlPlaceholder")}
                 className="tap mt-2 w-full rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus:border-primary"
               />
-              <span className="mt-2 block text-xs text-muted-foreground">
-                Public postings only. If the page can't be read, paste the text instead.
-              </span>
+              <span className="mt-2 block text-xs text-muted-foreground">{t("jobs.urlHint")}</span>
             </label>
           ) : method === "upload" ? (
             <div className="rounded-xl border border-dashed border-border-strong bg-surface/60 p-6 text-center">
               <FileUp className="mx-auto size-6 text-primary" />
-              <p className="mt-2 text-sm font-medium">Drop the job description here</p>
-              <p className="mt-1 text-xs text-muted-foreground">PDF, DOC, DOCX or TXT</p>
+              <p className="mt-2 text-sm font-medium">{t("jobs.dropZoneTitle")}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("jobs.dropZoneHint")}</p>
               <label className="tap mt-4 inline-flex cursor-pointer items-center rounded-xl border border-border bg-card px-4 text-sm font-medium">
-                Choose file
+                {t("jobs.chooseFile")}
                 <input
                   type="file"
                   className="sr-only"
                   onChange={(e) => setText(e.target.files?.[0]?.name ? "x".repeat(60) : "")}
                 />
               </label>
-              {text ? <p className="mt-3 text-xs text-success">File ready to analyze</p> : null}
+              {text ? <p className="mt-3 text-xs text-success">{t("jobs.fileReady")}</p> : null}
             </div>
           ) : (
             <label className="block">
-              <span className="text-sm font-medium">Job description</span>
+              <span className="text-sm font-medium">{t("jobs.jobDescriptionLabel")}</span>
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 rows={10}
-                placeholder="Paste the full posting here…"
+                placeholder={t("jobs.jobDescriptionPlaceholder")}
                 className="mt-2 w-full resize-y rounded-xl border border-border bg-background p-3.5 text-sm leading-relaxed outline-none focus:border-primary"
               />
             </label>
@@ -121,8 +118,8 @@ function AnalyzePage() {
           {phase === "error" ? (
             <div className="mt-4">
               <ErrorState
-                title="Couldn't analyze that"
-                description="There wasn't enough text to work with. Paste the full posting, including requirements."
+                title={t("jobs.couldNotAnalyzeTitle")}
+                description={t("jobs.couldNotAnalyzeDescription")}
                 onRetry={() => setPhase("input")}
               />
             </div>
@@ -132,7 +129,7 @@ function AnalyzePage() {
             onClick={start}
             className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
-            Analyze posting
+            {t("jobs.analyzePosting")}
           </button>
         </Panel>
       ) : null}
@@ -140,24 +137,22 @@ function AnalyzePage() {
       {phase === "working" ? (
         <Panel className="text-center">
           <Loader2 className="mx-auto size-6 animate-spin text-primary" />
-          <p className="mt-3 text-sm font-medium">Reading the posting…</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Extracting responsibilities, requirements and keywords
-          </p>
+          <p className="mt-3 text-sm font-medium">{t("jobs.readingPosting")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("jobs.extracting")}</p>
         </Panel>
       ) : null}
 
       {phase === "done" ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <Panel>
-            <h2 className="text-lg">Extracted requirements</h2>
+            <h2 className="text-lg">{t("jobs.extractedRequirements")}</h2>
             <ul className="mt-3 space-y-2 text-sm text-foreground/85">
-              <li>6+ years product design experience</li>
-              <li>Portfolio with complex, data-heavy products</li>
-              <li>Systems thinking and documentation habits</li>
-              <li>Comfort working with engineers day to day</li>
+              <li>{t("jobs.extractedReq1")}</li>
+              <li>{t("jobs.extractedReq2")}</li>
+              <li>{t("jobs.extractedReq3")}</li>
+              <li>{t("jobs.extractedReq4")}</li>
             </ul>
-            <h3 className="eyebrow mt-5">Keywords</h3>
+            <h3 className="eyebrow mt-5">{t("jobs.keywords")}</h3>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {["design system", "research", "end-to-end", "stakeholders", "accessibility"].map(
                 (k) => (
@@ -169,20 +164,20 @@ function AnalyzePage() {
             </div>
           </Panel>
           <Panel>
-            <h2 className="text-lg">Compared with your Master CV</h2>
+            <h2 className="text-lg">{t("jobs.comparedWithMasterCv")}</h2>
             <div className="mt-3 space-y-3 text-sm">
               <div>
-                <p className="eyebrow">Strong</p>
+                <p className="eyebrow">{t("jobs.strong")}</p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  <Tag tone="match">Design systems</Tag>
-                  <Tag tone="match">User research</Tag>
+                  <Tag tone="match">{t("jobs.designSystems")}</Tag>
+                  <Tag tone="match">{t("jobs.userResearch")}</Tag>
                 </div>
               </div>
               <div>
-                <p className="eyebrow">Gaps to address</p>
+                <p className="eyebrow">{t("jobs.gapsToAddress")}</p>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  <Tag tone="gap">Stakeholder examples</Tag>
-                  <Tag tone="gap">Measurable outcomes</Tag>
+                  <Tag tone="gap">{t("jobs.stakeholderExamples")}</Tag>
+                  <Tag tone="gap">{t("jobs.measurableOutcomes")}</Tag>
                 </div>
               </div>
             </div>
@@ -191,7 +186,7 @@ function AnalyzePage() {
               params={{ jobId: "job-1" }}
               className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
             >
-              <Sparkles className="size-4" /> Tailor my CV for this
+              <Sparkles className="size-4" /> {t("jobs.tailorMyCvForThis")}
             </Link>
           </Panel>
         </div>

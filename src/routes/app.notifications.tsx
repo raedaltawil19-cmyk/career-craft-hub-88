@@ -3,6 +3,7 @@ import { Bell, Briefcase, CheckCheck, Send, Sparkles } from "lucide-react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, PageHeader, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/app/notifications")({
   head: () => ({
@@ -23,23 +24,30 @@ const icons = {
 } as const;
 
 function NotificationsPage() {
+  const t = useT();
   const { state, markAllNotificationsRead } = useWorkspace();
   const items = state.notifications;
   const unread = items.filter((n) => !n.read).length;
 
+  const settings = [
+    [t("notifications.newMatchesLabel"), t("notifications.newMatchesDetail")],
+    [t("notifications.applicationRemindersLabel"), t("notifications.applicationRemindersDetail")],
+    [t("notifications.assistantSuggestionsLabel"), t("notifications.assistantSuggestionsDetail")],
+  ];
+
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="Stay in the loop"
-        title="Notifications"
-        description={unread ? `${unread} unread updates` : "You're all caught up"}
+        eyebrow={t("notifications.eyebrow")}
+        title={t("notifications.title")}
+        description={unread ? t("notifications.unreadCount", { count: unread }) : t("notifications.allCaughtUp")}
         action={
           unread ? (
             <button
               onClick={markAllNotificationsRead}
               className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-4 text-sm font-medium"
             >
-              <CheckCheck className="size-4" /> Mark all read
+              <CheckCheck className="size-4" /> {t("notifications.markAllRead")}
             </button>
           ) : null
         }
@@ -47,8 +55,8 @@ function NotificationsPage() {
 
       {items.length === 0 ? (
         <EmptyState
-          title="Nothing yet"
-          description="New job matches and application reminders will land here."
+          title={t("notifications.emptyTitle")}
+          description={t("notifications.emptyDescription")}
         />
       ) : (
         <ul className="space-y-2.5">
@@ -79,13 +87,9 @@ function NotificationsPage() {
       )}
 
       <Panel>
-        <h2 className="text-base font-semibold">Notification settings</h2>
+        <h2 className="text-base font-semibold">{t("notifications.settingsTitle")}</h2>
         <ul className="mt-3 space-y-3 text-sm">
-          {[
-            ["New job matches", "When a role scores above 80%"],
-            ["Application reminders", "Follow-ups and interview dates"],
-            ["Assistant suggestions", "Improvements to your Master CV"],
-          ].map(([label, detail]) => (
+          {settings.map(([label, detail]) => (
             <li key={label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
               <span className="min-w-0">
                 <span className="block font-medium">{label}</span>
@@ -103,9 +107,9 @@ function NotificationsPage() {
       </Panel>
 
       <p className="text-center text-sm text-muted-foreground">
-        Looking for your account?{" "}
+        {t("notifications.lookingForAccount")}{" "}
         <Link to="/app/profile" className="font-medium text-primary underline-offset-4 hover:underline">
-          Open profile
+          {t("notifications.openProfile")}
         </Link>
       </p>
     </div>
