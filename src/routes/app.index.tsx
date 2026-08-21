@@ -70,8 +70,6 @@ function HomePage() {
         </h1>
       </header>
 
-      {cv ? null : <AddCvTile />}
-
       <TemplateGallery value={template} onChange={setTemplate} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
@@ -80,6 +78,8 @@ function HomePage() {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-6">
+          {cv ? null : <AddCvTile />}
+
           <BigAction
             icon={<Sparkles className="size-6" />}
             title={t("ws.improveGeneral")}
@@ -232,28 +232,24 @@ function AddCvTile() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
-    <div className="space-y-4">
-      <div className="tile flex flex-col items-center gap-4 p-6 text-center">
-        <span className="grid size-14 place-items-center rounded-2xl bg-primary-soft text-primary">
-          <FilePlus2 className="size-7" />
+    <>
+      <button
+        type="button"
+        onClick={() => setSheetOpen(true)}
+        className="pressable flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-primary/40 bg-primary-soft px-4 py-6 text-center text-primary hover:bg-primary/10"
+      >
+        <span className="grid size-12 place-items-center rounded-2xl bg-primary text-primary-foreground">
+          <FilePlus2 className="size-6" />
         </span>
-        <div>
-          <h2 className="text-xl font-bold">{t("ws.emptyPreviewTitle")}</h2>
-          <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-            {t("ws.emptyPreviewHint")}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setSheetOpen(true)}
-          className="tap flex w-full max-w-xs items-center justify-center rounded-2xl bg-primary px-5 text-base font-bold text-primary-foreground"
-        >
+        <span className="text-base font-bold leading-tight">{t("ws.emptyPreviewTitle")}</span>
+        <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
+        <span className="mt-1 rounded-xl bg-primary px-5 py-2 text-sm font-bold text-primary-foreground">
           {t("ws.addCvCta")}
-        </button>
-      </div>
+        </span>
+      </button>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
-    </div>
+    </>
   );
 }
 
