@@ -74,11 +74,11 @@ function HomePage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-5">
+          {cv ? null : <AddCvTile />}
           {cv ? <CvPreview cv={{ ...cv, template }} /> : <EmptyTemplate template={template} />}
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-6">
-          {cv ? null : <AddCvTile />}
 
           <BigAction
             icon={<Sparkles className="size-6" />}
