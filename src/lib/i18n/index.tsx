@@ -34,7 +34,7 @@ export function translate(lang: Language, key: string, vars?: Vars): string {
   const table = dictionary[lang] ?? dictionary[DEFAULT_LANGUAGE];
   const raw = table[key] ?? dictionary[DEFAULT_LANGUAGE][key] ?? key;
   if (!vars) return raw;
-  return raw.replace(/\{(\w+)\}/g, (m, name: string) =>
+  return raw.replace(/\{(\w+)\}/g, (m: string, name: string) =>
     vars[name] === undefined ? m : String(vars[name]),
   );
 }
