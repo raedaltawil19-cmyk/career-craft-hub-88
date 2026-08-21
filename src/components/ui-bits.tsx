@@ -193,7 +193,7 @@ export function StatusPill({ status }: { status: ApplicationStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[0.6875rem] font-semibold tracking-wide",
+        "inline-flex items-center rounded-full px-3 py-1.5 text-xs font-bold tracking-wide",
         statusTone[status],
       )}
     >
@@ -218,7 +218,7 @@ export function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium",
+        "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold",
         tones[tone],
       )}
     >
@@ -239,15 +239,16 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border-strong bg-surface/60 px-5 py-10 text-center">
+    <div className="tile px-6 py-10 text-center">
       {icon ? (
-        <div className="mx-auto mb-3 grid size-11 place-items-center rounded-full bg-card text-primary shadow-soft">
+        <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary-soft text-primary">
           {icon}
         </div>
       ) : null}
-      <h3 className="text-lg">{title}</h3>
-      <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">{description}</p>
-      {action ? <div className="mt-5 flex justify-center">{action}</div> : null}
+      <h3 className="display text-xl">{title}</h3>
+      <p className="mx-auto mt-2 max-w-sm text-base text-muted-foreground">{description}</p>
+      {action ? <div className="mt-6 flex justify-center">{action}</div> : null}
+
     </div>
   );
 }
