@@ -3,6 +3,7 @@ import {
   Bell,
   Briefcase,
   FileText,
+  HelpCircle,
   Home,
   Plus,
   Send,
@@ -81,6 +82,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         <LanguageSelect className="mb-3 self-start" />
 
         <Link
+          to="/how-it-works"
+          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          <HelpCircle className="size-4.5" />
+          {t("nav.howItWorks")}
+        </Link>
+
+        <Link
           to="/app/notifications"
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
         >
@@ -92,6 +101,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           ) : null}
         </Link>
+
       </aside>
 
       {/* Mobile top bar */}
