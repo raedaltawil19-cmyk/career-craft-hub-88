@@ -1,6 +1,6 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import { Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
@@ -48,6 +48,7 @@ function HomePage() {
 
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
   const [tailorPreset, setTailorPreset] = useState<string | undefined>(undefined);
+  const [showCareers, setShowCareers] = useState(false);
 
   const cv = state.masterCv;
   const template = cv?.template ?? state.template;
