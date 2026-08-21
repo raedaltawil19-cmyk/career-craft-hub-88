@@ -10,33 +10,192 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppAddModeRouteImport } from './routes/app.add.$mode'
+import { Route as AppApplicationsIndexRouteImport } from './routes/app.applications.index'
+import { Route as AppApplicationsAppIdRouteImport } from './routes/app.applications.$appId'
+import { Route as AppCvIndexRouteImport } from './routes/app.cv.index'
+import { Route as AppCvEditRouteImport } from './routes/app.cv.edit'
+import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
+import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
+import { Route as AppJobsAnalyzeRouteImport } from './routes/app.jobs.analyze'
+import { Route as AppTailorJobIdRouteImport } from './routes/app.tailor.$jobId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAddModeRoute = AppAddModeRouteImport.update({
+  id: '/add/$mode',
+  path: '/add/$mode',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppApplicationsIndexRoute = AppApplicationsIndexRouteImport.update({
+  id: '/applications/',
+  path: '/applications/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppApplicationsAppIdRoute = AppApplicationsAppIdRouteImport.update({
+  id: '/applications/$appId',
+  path: '/applications/$appId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCvIndexRoute = AppCvIndexRouteImport.update({
+  id: '/cv/',
+  path: '/cv/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCvEditRoute = AppCvEditRouteImport.update({
+  id: '/cv/edit',
+  path: '/cv/edit',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJobsIndexRoute = AppJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJobsJobIdRoute = AppJobsJobIdRouteImport.update({
+  id: '/jobs/$jobId',
+  path: '/jobs/$jobId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJobsAnalyzeRoute = AppJobsAnalyzeRouteImport.update({
+  id: '/jobs/analyze',
+  path: '/jobs/analyze',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTailorJobIdRoute = AppTailorJobIdRouteImport.update({
+  id: '/tailor/$jobId',
+  path: '/tailor/$jobId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/': typeof AppIndexRoute
+  '/app/add/$mode': typeof AppAddModeRoute
+  '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
+  '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
+  '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/app/applications/': typeof AppApplicationsIndexRoute
+  '/app/cv/': typeof AppCvIndexRoute
+  '/app/jobs/': typeof AppJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app': typeof AppIndexRoute
+  '/app/add/$mode': typeof AppAddModeRoute
+  '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
+  '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
+  '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/app/applications': typeof AppApplicationsIndexRoute
+  '/app/cv': typeof AppCvIndexRoute
+  '/app/jobs': typeof AppJobsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/notifications': typeof AppNotificationsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/': typeof AppIndexRoute
+  '/app/add/$mode': typeof AppAddModeRoute
+  '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/edit': typeof AppCvEditRoute
+  '/app/jobs/$jobId': typeof AppJobsJobIdRoute
+  '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
+  '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/app/applications/': typeof AppApplicationsIndexRoute
+  '/app/cv/': typeof AppCvIndexRoute
+  '/app/jobs/': typeof AppJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app/'
+    | '/app/add/$mode'
+    | '/app/applications/$appId'
+    | '/app/cv/edit'
+    | '/app/jobs/$jobId'
+    | '/app/jobs/analyze'
+    | '/app/tailor/$jobId'
+    | '/app/applications/'
+    | '/app/cv/'
+    | '/app/jobs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app'
+    | '/app/add/$mode'
+    | '/app/applications/$appId'
+    | '/app/cv/edit'
+    | '/app/jobs/$jobId'
+    | '/app/jobs/analyze'
+    | '/app/tailor/$jobId'
+    | '/app/applications'
+    | '/app/cv'
+    | '/app/jobs'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/notifications'
+    | '/app/profile'
+    | '/app/'
+    | '/app/add/$mode'
+    | '/app/applications/$appId'
+    | '/app/cv/edit'
+    | '/app/jobs/$jobId'
+    | '/app/jobs/analyze'
+    | '/app/tailor/$jobId'
+    | '/app/applications/'
+    | '/app/cv/'
+    | '/app/jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +207,135 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/add/$mode': {
+      id: '/app/add/$mode'
+      path: '/add/$mode'
+      fullPath: '/app/add/$mode'
+      preLoaderRoute: typeof AppAddModeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/applications/': {
+      id: '/app/applications/'
+      path: '/applications'
+      fullPath: '/app/applications/'
+      preLoaderRoute: typeof AppApplicationsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/applications/$appId': {
+      id: '/app/applications/$appId'
+      path: '/applications/$appId'
+      fullPath: '/app/applications/$appId'
+      preLoaderRoute: typeof AppApplicationsAppIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cv/': {
+      id: '/app/cv/'
+      path: '/cv'
+      fullPath: '/app/cv/'
+      preLoaderRoute: typeof AppCvIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cv/edit': {
+      id: '/app/cv/edit'
+      path: '/cv/edit'
+      fullPath: '/app/cv/edit'
+      preLoaderRoute: typeof AppCvEditRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jobs/': {
+      id: '/app/jobs/'
+      path: '/jobs'
+      fullPath: '/app/jobs/'
+      preLoaderRoute: typeof AppJobsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jobs/$jobId': {
+      id: '/app/jobs/$jobId'
+      path: '/jobs/$jobId'
+      fullPath: '/app/jobs/$jobId'
+      preLoaderRoute: typeof AppJobsJobIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/jobs/analyze': {
+      id: '/app/jobs/analyze'
+      path: '/jobs/analyze'
+      fullPath: '/app/jobs/analyze'
+      preLoaderRoute: typeof AppJobsAnalyzeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/tailor/$jobId': {
+      id: '/app/tailor/$jobId'
+      path: '/tailor/$jobId'
+      fullPath: '/app/tailor/$jobId'
+      preLoaderRoute: typeof AppTailorJobIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppAddModeRoute: typeof AppAddModeRoute
+  AppApplicationsAppIdRoute: typeof AppApplicationsAppIdRoute
+  AppCvEditRoute: typeof AppCvEditRoute
+  AppJobsJobIdRoute: typeof AppJobsJobIdRoute
+  AppJobsAnalyzeRoute: typeof AppJobsAnalyzeRoute
+  AppTailorJobIdRoute: typeof AppTailorJobIdRoute
+  AppApplicationsIndexRoute: typeof AppApplicationsIndexRoute
+  AppCvIndexRoute: typeof AppCvIndexRoute
+  AppJobsIndexRoute: typeof AppJobsIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppAddModeRoute: AppAddModeRoute,
+  AppApplicationsAppIdRoute: AppApplicationsAppIdRoute,
+  AppCvEditRoute: AppCvEditRoute,
+  AppJobsJobIdRoute: AppJobsJobIdRoute,
+  AppJobsAnalyzeRoute: AppJobsAnalyzeRoute,
+  AppTailorJobIdRoute: AppTailorJobIdRoute,
+  AppApplicationsIndexRoute: AppApplicationsIndexRoute,
+  AppCvIndexRoute: AppCvIndexRoute,
+  AppJobsIndexRoute: AppJobsIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
