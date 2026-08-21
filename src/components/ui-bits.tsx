@@ -45,30 +45,28 @@ export function Panel({
   return <As className={cn("tile p-5 sm:p-6", className)}>{children}</As>;
 }
 
-/** Big, unmistakable primary action card. */
+/** Big, unmistakable primary action card. Renders a link when `to` is given. */
 export function ActionCard({
   icon,
   title,
   description,
   onClick,
+  to,
   className,
 }: {
   icon?: ReactNode;
   title: string;
   description?: string;
   onClick?: () => void;
+  to?: string;
   className?: string;
 }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "pressable w-full rounded-3xl bg-primary p-6 text-start text-primary-foreground shadow-lift",
-        className,
-      )}
-      style={{ boxShadow: "var(--shadow-press)" }}
-    >
+  const classes = cn(
+    "pressable block w-full rounded-3xl bg-primary p-6 text-start text-primary-foreground",
+    className,
+  );
+  const inner = (
+    <>
       {icon ? (
         <span className="mb-4 grid size-14 place-items-center rounded-2xl bg-white/20">{icon}</span>
       ) : null}
@@ -76,8 +74,27 @@ export function ActionCard({
       {description ? (
         <span className="mt-1 block text-sm text-primary-foreground/85">{description}</span>
       ) : null}
+    </>
+  );
+  if (to) {
+    return (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <Link to={to as any} className={classes} style={{ boxShadow: "var(--shadow-press)" }}>
+        {inner}
+      </Link>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={classes}
+      style={{ boxShadow: "var(--shadow-press)" }}
+    >
+      {inner}
     </button>
   );
+
 }
 
 /** Large, equal-size navigation tile with a coloured icon square. */
