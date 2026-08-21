@@ -242,7 +242,7 @@ function EmptyTemplate({ template }: { template: CvTemplateId }) {
       </div>
 
       <div className="relative w-full">
-        <CvPreview cv={sample} className="w-full" />
+        <CvPreview cv={sample} className="w-full" placeholder />
       </div>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
