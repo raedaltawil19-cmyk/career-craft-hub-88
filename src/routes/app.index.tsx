@@ -1,6 +1,6 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import { ChevronRight, Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
 import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
