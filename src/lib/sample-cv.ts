@@ -194,41 +194,198 @@ export function sampleCvFor(lang: Language, template: CvTemplateId): MasterCv {
   };
 }
 
-const BLANK = "\u00A0";
+/**
+ * Placeholder copy — the same sections and spacing as the sample, but with
+ * clearly "ghost" placeholder text of a fictional person (gray / italic) that
+ * hints at what the user should type. No real personal data is implied.
+ */
+const placeholderEn: SampleCopy = {
+  name: "Fictional Person",
+  title: "Your job title",
+  email: "you@example.com",
+  phone: "+46 700 000 000",
+  location: "City, Country",
+  links: ["linkedin.com/in/your-profile"],
+  summary:
+    "Write 2–3 sentences about your experience, your main strengths and the role you are looking for.",
+  experience: [
+    {
+      id: "p-exp-1",
+      role: "Job title",
+      company: "Company name",
+      location: "City",
+      start: "Year",
+      end: "Year",
+      bullets: [
+        "Describe your main responsibility here.",
+        "Add a measurable achievement, e.g. numbers or percentages.",
+      ],
+    },
+    {
+      id: "p-exp-2",
+      role: "Job title",
+      company: "Company name",
+      location: "City",
+      start: "Year",
+      end: "Year",
+      bullets: [
+        "Describe your main responsibility here.",
+        "Add a measurable achievement, e.g. numbers or percentages.",
+      ],
+    },
+  ],
+  education: [
+    {
+      id: "p-edu-1",
+      school: "School or university",
+      program: "Degree / Field of study",
+      start: "Year",
+      end: "Year",
+    },
+  ],
+  skills: ["Key skill 1", "Key skill 2", "Key skill 3", "Key skill 4", "Key skill 5"],
+  languages: ["Language (level)"],
+  tools: ["Tool 1", "Tool 2", "Tool 3"],
+  certifications: ["Certification or course, Year"],
+  projects: [
+    {
+      id: "p-proj-1",
+      name: "Project name",
+      description: "One line describing the project and its outcome.",
+      year: "Year",
+    },
+  ],
+  volunteer: ["Volunteer work or other activity"],
+};
 
-/** Same sections and spacing as the sample, but with no personal data. */
+const placeholderSv: SampleCopy = {
+  name: "Fiktiv Person",
+  title: "Din yrkestitel",
+  email: "du@exempel.se",
+  phone: "+46 700 000 000",
+  location: "Stad, Land",
+  links: ["linkedin.com/in/din-profil"],
+  summary:
+    "Skriv 2–3 meningar om din erfarenhet, dina främsta styrkor och vad du söker.",
+  experience: [
+    {
+      id: "p-exp-1",
+      role: "Yrkestitel",
+      company: "Företagsnamn",
+      location: "Stad",
+      start: "År",
+      end: "År",
+      bullets: [
+        "Beskriv din huvuduppgift här.",
+        "Lägg till ett mätbart resultat, t.ex. siffror eller procent.",
+      ],
+    },
+    {
+      id: "p-exp-2",
+      role: "Yrkestitel",
+      company: "Företagsnamn",
+      location: "Stad",
+      start: "År",
+      end: "År",
+      bullets: [
+        "Beskriv din huvuduppgift här.",
+        "Lägg till ett mätbart resultat, t.ex. siffror eller procent.",
+      ],
+    },
+  ],
+  education: [
+    {
+      id: "p-edu-1",
+      school: "Skola eller universitet",
+      program: "Examen / Utbildning",
+      start: "År",
+      end: "År",
+    },
+  ],
+  skills: ["Nyckelkompetens 1", "Nyckelkompetens 2", "Nyckelkompetens 3", "Nyckelkompetens 4", "Nyckelkompetens 5"],
+  languages: ["Språk (nivå)"],
+  tools: ["Verktyg 1", "Verktyg 2", "Verktyg 3"],
+  certifications: ["Certifiering eller kurs, År"],
+  projects: [
+    {
+      id: "p-proj-1",
+      name: "Projektnamn",
+      description: "En rad om projektet och dess resultat.",
+      year: "År",
+    },
+  ],
+  volunteer: ["Volontärarbete eller annan aktivitet"],
+};
+
+const placeholderAr: SampleCopy = {
+  name: "شخص وهمي",
+  title: "المسمى الوظيفي",
+  email: "you@example.com",
+  phone: "+966 50 000 0000",
+  location: "المدينة، الدولة",
+  links: ["linkedin.com/in/ملفك"],
+  summary:
+    "اكتب جملتين أو ثلاث عن خبرتك وأبرز نقاط قوتك والوظيفة التي تبحث عنها.",
+  experience: [
+    {
+      id: "p-exp-1",
+      role: "المسمى الوظيفي",
+      company: "اسم الشركة",
+      location: "المدينة",
+      start: "السنة",
+      end: "السنة",
+      bullets: [
+        "صف مسؤوليتك الرئيسية هنا.",
+        "أضف إنجازًا قابلًا للقياس، مثل أرقام أو نسب.",
+      ],
+    },
+    {
+      id: "p-exp-2",
+      role: "المسمى الوظيفي",
+      company: "اسم الشركة",
+      location: "المدينة",
+      start: "السنة",
+      end: "السنة",
+      bullets: [
+        "صف مسؤوليتك الرئيسية هنا.",
+        "أضف إنجازًا قابلًا للقياس، مثل أرقام أو نسب.",
+      ],
+    },
+  ],
+  education: [
+    {
+      id: "p-edu-1",
+      school: "الجامعة أو المدرسة",
+      program: "الشهادة / التخصص",
+      start: "السنة",
+      end: "السنة",
+    },
+  ],
+  skills: ["مهارة أساسية ١", "مهارة أساسية ٢", "مهارة أساسية ٣", "مهارة أساسية ٤", "مهارة أساسية ٥"],
+  languages: ["اللغة (المستوى)"],
+  tools: ["أداة ١", "أداة ٢", "أداة ٣"],
+  certifications: ["شهادة أو دورة، السنة"],
+  projects: [
+    {
+      id: "p-proj-1",
+      name: "اسم المشروع",
+      description: "سطر واحد يصف المشروع ونتيجته.",
+      year: "السنة",
+    },
+  ],
+  volunteer: ["عمل تطوعي أو نشاط آخر"],
+};
+
+const placeholdersByLang: Record<Language, SampleCopy> = {
+  en: placeholderEn,
+  sv: placeholderSv,
+  ar: placeholderAr,
+};
+
+/** Same sections and spacing as the sample, but with ghost placeholder text. */
 export function blankCvFor(lang: Language, template: CvTemplateId): MasterCv {
-  const base = byLang[lang] ?? en;
   return {
-    name: "",
-    title: "",
-    email: "",
-    phone: "",
-    location: BLANK,
-    links: [],
-    summary: BLANK,
-    experience: base.experience.map((e) => ({
-      ...e,
-      role: BLANK,
-      company: BLANK,
-      location: BLANK,
-      start: BLANK,
-      end: BLANK,
-      bullets: e.bullets.map(() => BLANK),
-    })),
-    education: base.education.map((ed) => ({
-      ...ed,
-      school: BLANK,
-      program: BLANK,
-      start: BLANK,
-      end: BLANK,
-    })),
-    skills: [BLANK],
-    languages: [BLANK],
-    tools: [BLANK],
-    certifications: [BLANK],
-    projects: base.projects.map((p) => ({ ...p, name: BLANK, description: BLANK, year: BLANK })),
-    volunteer: [BLANK],
+    ...(placeholdersByLang[lang] ?? placeholderEn),
     template,
     updatedAt: "2024-01-01T00:00:00.000Z",
     version: 0,
