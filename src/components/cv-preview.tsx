@@ -23,7 +23,11 @@ export function CvPreview({
 
   return (
     <article
-      className={cn("paper overflow-hidden", className)}
+      className={cn(
+        "paper overflow-hidden",
+        placeholder && "placeholder-cv",
+        className,
+      )}
       aria-label={t("cv.previewAriaLabel", { name: cv.name || t("cv.yourName") })}
     >
       {isModern ? <div className="h-2.5 w-full bg-primary" /> : null}
