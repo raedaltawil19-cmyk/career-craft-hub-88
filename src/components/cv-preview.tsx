@@ -1,0 +1,169 @@
+import type { MasterCv } from "@/lib/career-types";
+import { cn } from "@/lib/utils";
+
+export function CvPreview({
+  cv,
+  highlight = [],
+  className,
+  compact = false,
+}: {
+  cv: MasterCv;
+  highlight?: string[];
+  className?: string;
+  compact?: boolean;
+}) {
+  const isClassic = cv.template === "classic";
+  const isCompact = cv.template === "compact" || compact;
+
+  return (
+    <article
+      className={cn("paper overflow-hidden", className)}
+      aria-label={`CV preview for ${cv.name || "your CV"}`}
+    >
+      <div className={cn("px-5 py-6 sm:px-8 sm:py-8", isCompact && "px-4 py-5 sm:px-6 sm:py-6")}>
+        <header className={cn("pb-4", isClassic ? "text-center" : "")}>
+          <h2 className="display text-2xl leading-tight sm:text-3xl">{cv.name || "Your name"}</h2>
+          <p className="mt-1 text-sm font-semibold tracking-wide text-primary">
+            {cv.title || "Professional title"}
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {[cv.location, cv.email, cv.phone, ...cv.links].filter(Boolean).join("  ·  ")}
+          </p>
+        </header>
+
+        <div className="h-px w-full bg-border" />
+
+        {cv.summary ? (
+          <Section title="Profile">
+            <p className="text-sm leading-relaxed text-foreground/85">{cv.summary}</p>
+          </Section>
+        ) : null}
+
+        {cv.experience.length ? (
+          <Section title="Experience">
+            <ul className="space-y-4">
+              {cv.experience.map((e) => (
+                <li key={e.id}>
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3">
+                    <p className="min-w-0 truncate text-sm font-semibold">
+                      {e.role} · <span className="font-medium text-foreground/80">{e.company}</span>
+                    </p>
+                    <p className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                      {e.start} – {e.end}
+                    </p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{e.location}</p>
+                  <ul className="mt-1.5 space-y-1">
+                    {e.bullets.map((b, i) => (
+                      <li
+                        key={i}
+                        className="relative pl-4 text-sm leading-relaxed text-foreground/85 before:absolute before:left-0 before:top-2.5 before:size-1 before:rounded-full before:bg-accent"
+                      >
+                        <Highlighted text={b} terms={highlight} />
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
+        {cv.education.length ? (
+          <Section title="Education">
+            <ul className="space-y-2">
+              {cv.education.map((ed) => (
+                <li key={ed.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3">
+                  <p className="min-w-0 text-sm">
+                    <span className="font-semibold">{ed.program}</span>
+                    <span className="text-foreground/75"> · {ed.school}</span>
+                  </p>
+                  <p className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                    {ed.start} – {ed.end}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
+        {cv.skills.length ? (
+          <Section title="Skills">
+            <p className="text-sm leading-relaxed text-foreground/85">
+              <Highlighted text={cv.skills.join(" · ")} terms={highlight} />
+            </p>
+          </Section>
+        ) : null}
+
+        {(cv.tools.length || cv.languages.length) ? (
+          <Section title="Tools & languages">
+            {cv.tools.length ? (
+              <p className="text-sm text-foreground/85">Tools: {cv.tools.join(", ")}</p>
+            ) : null}
+            {cv.languages.length ? (
+              <p className="mt-1 text-sm text-foreground/85">
+                Languages: {cv.languages.join(", ")}
+              </p>
+            ) : null}
+          </Section>
+        ) : null}
+
+        {cv.projects.length ? (
+          <Section title="Projects">
+            <ul className="space-y-2">
+              {cv.projects.map((p) => (
+                <li key={p.id}>
+                  <p className="text-sm font-semibold">
+                    {p.name} <span className="font-normal text-muted-foreground">· {p.year}</span>
+                  </p>
+                  <p className="text-sm text-foreground/85">{p.description}</p>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
+        {cv.certifications.length || cv.volunteer.length ? (
+          <Section title="Additional">
+            <ul className="space-y-1 text-sm text-foreground/85">
+              {[...cv.certifications, ...cv.volunteer].map((x, i) => (
+                <li key={i}>{x}</li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-5">
+      <h3 className="eyebrow mb-2">{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+function Highlighted({ text, terms }: { text: string; terms: string[] }) {
+  if (!terms.length) return <>{text}</>;
+  const pattern = new RegExp(
+    `(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+    "gi",
+  );
+  const parts = text.split(pattern);
+  return (
+    <>
+      {parts.map((p, i) =>
+        terms.some((t) => t.toLowerCase() === p.toLowerCase()) ? (
+          <mark key={i} className="rounded bg-accent-soft px-0.5 text-accent-foreground">
+            {p}
+          </mark>
+        ) : (
+          <span key={i}>{p}</span>
+        ),
+      )}
+    </>
+  );
+}
