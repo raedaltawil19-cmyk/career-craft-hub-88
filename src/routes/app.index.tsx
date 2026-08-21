@@ -80,7 +80,7 @@ function HomePage() {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-6">
-          {cv ? null : <AddCvTile />}
+          
 
           <BigAction
             icon={<Sparkles className="size-6" />}
