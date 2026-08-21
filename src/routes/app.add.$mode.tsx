@@ -416,6 +416,8 @@ function useQuestionGroups() {
 }
 
 function ManualFlow() {
+  const t = useT();
+  const questionGroups = useQuestionGroups();
   const [groupIndex, setGroupIndex] = useState(0);
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer>({});
@@ -472,7 +474,7 @@ function ManualFlow() {
     return (
       <ReviewStep
         draft={draft}
-        note="Only what you typed is here. The assistant can polish wording later, but it will never add facts."
+        note={t("add.manualNote")}
         onConfirm={() => create(draft)}
       />
     );
@@ -530,39 +532,40 @@ function ManualFlow() {
             disabled={groupIndex === 0 && qIndex === 0}
             className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium disabled:opacity-40"
           >
-            Back
+            {t("add.manualBack")}
           </button>
           <div className="flex gap-2">
             <button
               onClick={next}
               className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
             >
-              Skip
+              {t("add.manualSkip")}
             </button>
             <button
               onClick={next}
               className="tap inline-flex items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
             >
-              Continue
+              {t("add.manualContinue")}
             </button>
           </div>
         </div>
       </Panel>
 
       <p className="text-center text-xs text-muted-foreground">
-        You'll review every section before anything becomes your Master CV.
+        {t("add.manualFooterNote")}
       </p>
     </div>
   );
 }
 
 function Working({ label }: { label: string }) {
+  const t = useT();
   return (
     <Panel className="text-center">
       <Loader2 className="mx-auto size-6 animate-spin text-primary" />
       <p className="mt-3 text-sm font-medium">{label}</p>
       <p className="mt-1 text-xs text-muted-foreground">
-        Structuring sections, dates and skills — nothing is saved yet
+        {t("add.workingSubtext")}
       </p>
     </Panel>
   );
