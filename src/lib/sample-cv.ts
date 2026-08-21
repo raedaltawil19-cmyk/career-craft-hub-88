@@ -1,5 +1,5 @@
 import type { CvTemplateId, MasterCv } from "./career-types";
-import type { Language } from "./i18n/languages";
+import type { Language } from "./i18n/types";
 
 type SampleCopy = Omit<MasterCv, "template" | "updatedAt" | "version">;
 
