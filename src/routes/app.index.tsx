@@ -1,7 +1,7 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { TemplateGallery } from "@/components/template-gallery";
@@ -15,7 +15,8 @@ import {
 import { Eyebrow } from "@/components/ui-bits";
 import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
-import type { CvTemplateId, MasterCv } from "@/lib/career-types";
+import { sampleCvFor } from "@/lib/sample-cv";
+import type { CvTemplateId } from "@/lib/career-types";
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
