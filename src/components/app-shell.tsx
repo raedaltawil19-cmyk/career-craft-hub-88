@@ -3,6 +3,7 @@ import {
   Bell,
   Briefcase,
   FileText,
+  HelpCircle,
   Home,
   Plus,
   Send,
