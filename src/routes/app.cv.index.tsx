@@ -93,6 +93,12 @@ function MasterCvPage() {
       </Panel>
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="order-2 lg:order-1">
+          <CvPreview cv={cv} />
+        </div>
+
+        <div className="order-1 space-y-4 lg:order-2">
+          <Panel>
             <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
               <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
               <div className="min-w-0">
