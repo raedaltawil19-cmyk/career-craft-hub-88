@@ -246,7 +246,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         parentId: doc.kind === "master" ? doc.id : (doc.parentId ?? doc.id),
         createdAt: new Date().toISOString(),
         updatedAt: "just now",
-        data: doc.data ?? (doc.kind === "master" && s.masterCv ? s.masterCv : doc.data),
+        ...(doc.data
+          ? { data: doc.data }
+          : doc.kind === "master" && s.masterCv
+            ? { data: s.masterCv }
+            : {}),
       };
       const at = s.docs.findIndex((d) => d.id === id);
       const docs = [...s.docs];
