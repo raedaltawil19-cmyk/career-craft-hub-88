@@ -4,7 +4,7 @@ import { Check, ChevronRight, Compass, MessageSquare, Pencil, Sparkles, Target }
 import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvLibrary } from "@/components/cv-library";
-import { AddAnotherCvButton, CvIntake } from "@/components/cv-intake";
+import { CvIntake } from "@/components/cv-intake";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
@@ -83,14 +83,9 @@ function HomePage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-7">
-          {state.docs.length ? (
-            <>
-              <CvLibrary />
-              <AddAnotherCvButton />
-            </>
-          ) : (
-            <CvIntake />
-          )}
+          {state.docs.length ? <CvLibrary /> : null}
+          <CvIntake />
+
         </div>
 
 
