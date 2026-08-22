@@ -171,6 +171,21 @@ function PasteFlow() {
   });
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
+  const autoStarted = useRef(false);
+
+  // Text handed over from the home intake box: run extraction right away so the
+  // user never has to press "continue" twice before the template step.
+  useEffect(() => {
+    if (autoStarted.current) return;
+    autoStarted.current = true;
+    if (text.trim().length <= 60) return;
+    setPhase("working");
+    const id = window.setTimeout(() => setPhase("review"), 1100);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
 
 
   return phase === "review" ? (
