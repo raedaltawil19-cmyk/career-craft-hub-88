@@ -24,6 +24,8 @@ import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
 import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
 import { Route as AppJobsAnalyzeRouteImport } from './routes/app.jobs.analyze'
 import { Route as AppTailorJobIdRouteImport } from './routes/app.tailor.$jobId'
+import { Route as AppCvDocIdIndexRouteImport } from './routes/app.cv.$docId.index'
+import { Route as AppCvDocIdViewRouteImport } from './routes/app.cv.$docId.view'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -100,6 +102,16 @@ const AppTailorJobIdRoute = AppTailorJobIdRouteImport.update({
   path: '/tailor/$jobId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCvDocIdIndexRoute = AppCvDocIdIndexRouteImport.update({
+  id: '/cv/$docId/',
+  path: '/cv/$docId/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCvDocIdViewRoute = AppCvDocIdViewRouteImport.update({
+  id: '/cv/$docId/view',
+  path: '/cv/$docId/view',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -117,6 +129,8 @@ export interface FileRoutesByFullPath {
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
+  '/app/cv/$docId/': typeof AppCvDocIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -133,6 +147,8 @@ export interface FileRoutesByTo {
   '/app/applications': typeof AppApplicationsIndexRoute
   '/app/cv': typeof AppCvIndexRoute
   '/app/jobs': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
+  '/app/cv/$docId': typeof AppCvDocIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -151,6 +167,8 @@ export interface FileRoutesById {
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
+  '/app/cv/$docId/': typeof AppCvDocIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -170,6 +188,8 @@ export interface FileRouteTypes {
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
+    | '/app/cv/$docId/view'
+    | '/app/cv/$docId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -186,6 +206,8 @@ export interface FileRouteTypes {
     | '/app/applications'
     | '/app/cv'
     | '/app/jobs'
+    | '/app/cv/$docId/view'
+    | '/app/cv/$docId'
   id:
     | '__root__'
     | '/'
@@ -203,6 +225,8 @@ export interface FileRouteTypes {
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
+    | '/app/cv/$docId/view'
+    | '/app/cv/$docId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,6 +342,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTailorJobIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/cv/$docId/': {
+      id: '/app/cv/$docId/'
+      path: '/cv/$docId'
+      fullPath: '/app/cv/$docId/'
+      preLoaderRoute: typeof AppCvDocIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cv/$docId/view': {
+      id: '/app/cv/$docId/view'
+      path: '/cv/$docId/view'
+      fullPath: '/app/cv/$docId/view'
+      preLoaderRoute: typeof AppCvDocIdViewRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -334,6 +372,8 @@ interface AppRouteChildren {
   AppApplicationsIndexRoute: typeof AppApplicationsIndexRoute
   AppCvIndexRoute: typeof AppCvIndexRoute
   AppJobsIndexRoute: typeof AppJobsIndexRoute
+  AppCvDocIdViewRoute: typeof AppCvDocIdViewRoute
+  AppCvDocIdIndexRoute: typeof AppCvDocIdIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -349,6 +389,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppApplicationsIndexRoute: AppApplicationsIndexRoute,
   AppCvIndexRoute: AppCvIndexRoute,
   AppJobsIndexRoute: AppJobsIndexRoute,
+  AppCvDocIdViewRoute: AppCvDocIdViewRoute,
+  AppCvDocIdIndexRoute: AppCvDocIdIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
