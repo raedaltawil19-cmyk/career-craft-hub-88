@@ -39,14 +39,14 @@ export function CvIntake() {
           onChange={(e) => setText(e.target.value)}
           rows={7}
           placeholder={t("ws.intakePlaceholder")}
-          className="w-full resize-y rounded-xl border border-border bg-background p-3.5 pe-14 text-sm leading-relaxed outline-none focus:border-primary"
+          className="w-full resize-y rounded-xl border border-border bg-background p-3.5 pl-14 text-sm leading-relaxed outline-none focus:border-primary"
         />
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
           aria-label={t("ws.intakeMore")}
           title={t("ws.intakeMore")}
-          className="tap absolute bottom-4 end-4 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
+          className="tap absolute bottom-4 left-4 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
         >
           <Plus className="size-5" aria-hidden />
         </button>
