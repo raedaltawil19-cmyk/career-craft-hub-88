@@ -72,7 +72,7 @@ function HomePage() {
 
       <TemplateGallery value={template} onChange={setTemplate} />
 
-      {cv ? null : <AddCvTile />}
+      {cv ? null : <div className="hidden lg:block"><AddCvTile /></div>}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-5">
