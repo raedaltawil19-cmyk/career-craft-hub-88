@@ -1,6 +1,8 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
+  ArrowUp,
+
   ClipboardType,
   FileUp,
   Linkedin,
