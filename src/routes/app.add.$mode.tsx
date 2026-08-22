@@ -35,12 +35,16 @@ const meta = {
 
 type Mode = keyof typeof meta;
 
+/** Holds the parsed draft so the page can show the template step before saving. */
+const DraftContext = createContext<(cv: MasterCv) => void>(() => {});
+
 function AddCvPage() {
   const { mode } = Route.useParams();
   const t = useT();
   const { isRtl } = useI18n();
   const m = (Object.keys(meta).includes(mode) ? mode : "paste") as Mode;
   const Icon = meta[m].icon;
+  const [draft, setDraft] = useState<MasterCv | null>(null);
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
@@ -61,13 +65,62 @@ function AddCvPage() {
         </div>
       </header>
 
-      {m === "paste" ? <PasteFlow /> : null}
-      {m === "upload" ? <UploadFlow /> : null}
-      {m === "linkedin" ? <LinkedInFlow /> : null}
-      {m === "manual" ? <ManualFlow /> : null}
+      {draft ? (
+        <TemplateStep draft={draft} />
+      ) : (
+        <DraftContext.Provider value={setDraft}>
+          {m === "paste" ? <PasteFlow /> : null}
+          {m === "upload" ? <UploadFlow /> : null}
+          {m === "linkedin" ? <LinkedInFlow /> : null}
+          {m === "manual" ? <ManualFlow /> : null}
+        </DraftContext.Provider>
+      )}
     </div>
   );
 }
+
+/** Step shown after extraction: pick a template, then save the master CV. */
+function TemplateStep({ draft }: { draft: MasterCv }) {
+  const t = useT();
+  const navigate = useNavigate();
+  const { state, setTemplate, createMasterCv } = useWorkspace();
+  const [tpl, setTpl] = useState<CvTemplateId>(draft.template ?? state.template);
+  const [previewTpl, setPreviewTpl] = useState<CvTemplateId | null>(null);
+
+  return (
+    <div className="space-y-4">
+      <Panel>
+        <h2 className="display text-xl">{t("add.templateStepTitle")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("add.templateStepHint")}</p>
+        <div className="mt-3">
+          <TemplateGallery value={tpl} onChange={setTpl} onPreview={setPreviewTpl} />
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setTemplate(tpl);
+            createMasterCv({ ...draft, template: tpl });
+            navigate({ to: "/app/cv" });
+          }}
+          className="tap mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold text-primary-foreground"
+        >
+          {t("add.templateStepCta")}
+        </button>
+      </Panel>
+
+      <TemplatePreviewSheet
+        templateId={previewTpl}
+        onOpenChange={(o) => !o && setPreviewTpl(null)}
+        onNavigate={setPreviewTpl}
+        onSelect={(id) => {
+          setTpl(id);
+          setPreviewTpl(null);
+        }}
+      />
+    </div>
+  );
+}
+
 
 /* ---------------------------------- shared --------------------------------- */
 
