@@ -34,6 +34,8 @@ export default makeBundle({
     intakeCreate: "Create my CV",
     intakeMore: "More ways to add a CV",
     intakeEmptyError: "Please add some text, attach a file or choose another method before creating your CV.",
+    addAnotherCv: "Add another CV",
+    addAnotherCvHint: "Add a new CV from a paste, a file, LinkedIn or the form.",
 
 
 
@@ -137,6 +139,8 @@ export default makeBundle({
     intakeCreate: "Skapa mitt CV",
     intakeMore: "Fler sätt att lägga till CV",
     intakeEmptyError: "Lägg till lite text, bifoga en fil eller välj ett annat sätt innan du skapar ditt CV.",
+    addAnotherCv: "Lägg till ett CV till",
+    addAnotherCvHint: "Lägg till ett nytt CV via klistrad text, en fil, LinkedIn eller formuläret.",
 
 
 
@@ -239,6 +243,8 @@ export default makeBundle({
     intakeCreate: "أنشئ سيرتي الذاتية",
     intakeMore: "طرق أخرى لإضافة السيرة",
     intakeEmptyError: "أضف نصًا أو أرفق ملفًا أو اختر طريقة أخرى قبل إنشاء سيرتك الذاتية.",
+    addAnotherCv: "أضف سيرة ذاتية أخرى",
+    addAnotherCvHint: "أضف سيرة ذاتية جديدة من لصق نص، ملف، LinkedIn، أو نموذج.",
 
 
 
