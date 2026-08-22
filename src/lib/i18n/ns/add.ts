@@ -105,6 +105,10 @@ export default makeBundle({
     qExtraPlaceholder: "Projects, volunteering, courses",
 
     workingSubtext: "Structuring sections, dates and skills — nothing is saved yet",
+    templateStepTitle: "Choose a template for your CV",
+    templateStepHint: "You can change it at any time.",
+    templateStepCta: "Create the CV",
+
   },
   sv: {
     headTitle: "Lägg till ett CV — Smart CV",
