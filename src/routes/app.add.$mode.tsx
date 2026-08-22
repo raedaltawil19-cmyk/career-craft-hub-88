@@ -7,11 +7,14 @@ import {
   Loader2,
   PenLine,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { ErrorState, Eyebrow, Panel } from "@/components/ui-bits";
+import { TemplateGallery } from "@/components/template-gallery";
+import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
-import type { MasterCv } from "@/lib/career-types";
+import type { CvTemplateId, MasterCv } from "@/lib/career-types";
+
 import { cn } from "@/lib/utils";
 import { translate, useI18n, useT } from "@/lib/i18n";
 
