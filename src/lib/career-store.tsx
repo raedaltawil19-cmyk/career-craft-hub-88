@@ -78,6 +78,9 @@ type Ctx = {
   setApplicationStatus: (id: string, status: ApplicationStatus) => void;
   toggleSavedJob: (jobId: string) => void;
   addTailoredCv: (doc: CvDoc) => void;
+  duplicateCv: (id: string, copyLabel: string) => string;
+  deleteCv: (id: string) => void;
+  updateCvDoc: (id: string, patch: Partial<CvDoc>) => void;
   markAllNotificationsRead: () => void;
 };
 
