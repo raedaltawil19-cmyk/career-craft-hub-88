@@ -21,6 +21,8 @@ export default makeBundle({
 
     emptyPreviewTitle: "Your CV will appear here",
     emptyPreviewHint: "Press the + button to add your CV — paste text, upload a file or fill the form.",
+    previewTitle: "Template preview",
+    previewOnlyBadge: "Preview only — add your CV to fill it in",
     addCvCta: "Add my CV",
 
     improveGeneral: "Improve my CV",
@@ -106,6 +108,8 @@ export default makeBundle({
     emptyPreviewTitle: "Ditt CV visas här",
     emptyPreviewHint:
       "Tryck på +-knappen för att lägga till ditt CV — klistra in text, ladda upp en fil eller fyll i formuläret.",
+    previewTitle: "Förhandsvisning av mallen",
+    previewOnlyBadge: "Endast förhandsvisning — lägg till ditt CV för att fylla i",
     addCvCta: "Lägg till mitt CV",
 
     improveGeneral: "Förbättra mitt CV",
@@ -190,6 +194,8 @@ export default makeBundle({
 
     emptyPreviewTitle: "سيظهر سيرتك الذاتية هنا",
     emptyPreviewHint: "اضغط على زر + لإضافة سيرتك الذاتية — الصق النص أو ارفع ملفًا أو املأ النموذج.",
+    previewTitle: "معاينة القالب",
+    previewOnlyBadge: "معاينة فقط — أضف سيرتك لتعبئتها",
     addCvCta: "أضف سيرتي الذاتية",
 
     improveGeneral: "تحسين السيرة الذاتية",
