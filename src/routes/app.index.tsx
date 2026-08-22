@@ -76,7 +76,27 @@ function HomePage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-5">
-          {cv ? <CvPreview cv={{ ...cv, template }} /> : <EmptyTemplate template={template} />}
+          {cv ? (
+            <CvPreview cv={{ ...cv, template }} />
+          ) : (
+            <section aria-label={t("ws.tplPreviewTitle")}>
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                <h2 className="display text-xl sm:text-2xl">{t("ws.tplPreviewTitle")}</h2>
+              </div>
+              <p className="mt-1 inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
+                {t("ws.previewOnlyBadge")}
+              </p>
+              <div className="relative mt-3 max-h-[26rem] overflow-hidden rounded-2xl lg:max-h-none lg:overflow-visible">
+                <div className="pointer-events-none select-none lg:pointer-events-auto">
+                  <EmptyTemplate template={template} />
+                </div>
+                <div
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent lg:hidden"
+                  aria-hidden
+                />
+              </div>
+            </section>
+          )}
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-6">
