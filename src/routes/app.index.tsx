@@ -112,6 +112,13 @@ function HomePage() {
               <p className="inline-flex w-fit items-center gap-2 rounded-full bg-success-soft px-3 py-1.5 text-xs font-bold text-success">
                 {t("ws.improvedBadge", { count: applied })}
               </p>
+              <Link
+                to="/app/cv"
+                className="tap flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-center text-sm font-bold text-primary-foreground"
+              >
+                <Check className="size-5" />
+                {t("add.confirmCreate")}
+              </Link>
               <button
                 type="button"
                 onClick={() => setOpenWindow("chat")}
@@ -120,6 +127,7 @@ function HomePage() {
                 <MessageSquare className="size-5 text-primary" />
                 {t("ws.chatOpen")}
               </button>
+
               <Link
                 to="/app/cv/edit"
                 className="tap flex w-full items-center gap-3 rounded-2xl border border-border-strong bg-card px-4 text-start font-bold hover:bg-muted"
