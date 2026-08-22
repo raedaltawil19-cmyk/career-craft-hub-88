@@ -5,6 +5,7 @@ import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { TemplateGallery } from "@/components/template-gallery";
+import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { EditorChatWindow } from "@/components/editor-chat-window";
@@ -50,6 +51,7 @@ function HomePage() {
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
   const [tailorPreset, setTailorPreset] = useState<string | undefined>(undefined);
   const [showCareers, setShowCareers] = useState(false);
+  const [previewTpl, setPreviewTpl] = useState<CvTemplateId | null>(null);
 
   const cv = state.masterCv;
   const template = cv?.template ?? state.template;
@@ -70,7 +72,17 @@ function HomePage() {
         </h1>
       </header>
 
-      <TemplateGallery value={template} onChange={setTemplate} />
+      <TemplateGallery value={template} onChange={setTemplate} onPreview={setPreviewTpl} />
+
+      <TemplatePreviewSheet
+        templateId={previewTpl}
+        onOpenChange={(o) => !o && setPreviewTpl(null)}
+        onNavigate={setPreviewTpl}
+        onSelect={(id) => {
+          setTemplate(id);
+          setPreviewTpl(null);
+        }}
+      />
 
       {cv ? null : <div className="hidden lg:block"><AddCvTile /></div>}
 
@@ -79,25 +91,20 @@ function HomePage() {
           {cv ? (
             <CvPreview cv={{ ...cv, template }} />
           ) : (
-            <section aria-label={t("ws.tplPreviewTitle")}>
+            <section aria-label={t("ws.tplPreviewTitle")} className="hidden lg:block">
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                 <h2 className="display text-xl sm:text-2xl">{t("ws.tplPreviewTitle")}</h2>
               </div>
               <p className="mt-1 inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
                 {t("ws.previewOnlyBadge")}
               </p>
-              <div className="relative mt-3 max-h-[26rem] overflow-hidden rounded-2xl lg:max-h-none lg:overflow-visible">
-                <div className="pointer-events-none select-none lg:pointer-events-auto">
-                  <EmptyTemplate template={template} />
-                </div>
-                <div
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent lg:hidden"
-                  aria-hidden
-                />
+              <div className="relative mt-3 rounded-2xl">
+                <EmptyTemplate template={template} />
               </div>
             </section>
           )}
         </div>
+
 
         <aside className="space-y-4 lg:sticky lg:top-6">
           

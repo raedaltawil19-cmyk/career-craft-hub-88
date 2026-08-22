@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Eye } from "lucide-react";
 import type { CvTemplateId } from "@/lib/career-types";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -15,9 +15,11 @@ export const CV_TEMPLATES: { id: CvTemplateId; nameKey: string; descKey: string 
 export function TemplateGallery({
   value,
   onChange,
+  onPreview,
 }: {
   value: CvTemplateId;
   onChange: (id: CvTemplateId) => void;
+  onPreview?: (id: CvTemplateId) => void;
 }) {
   const t = useT();
   return (
@@ -30,31 +32,46 @@ export function TemplateGallery({
           const active = tpl.id === value;
           return (
             <li key={tpl.id} className="lg:w-44 lg:shrink-0 lg:snap-start">
-              <button
-                type="button"
-                onClick={() => onChange(tpl.id)}
-                aria-pressed={active}
+              <div
                 className={cn(
-                  "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-full border-2 bg-card px-4 py-2.5 text-start transition-all lg:block lg:rounded-2xl lg:p-3",
-                  active
-                    ? "border-primary shadow-lift"
-                    : "border-border hover:border-border-strong",
+                  "grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 rounded-full border-2 bg-card ps-4 pe-2 py-1.5 transition-all lg:block lg:rounded-2xl lg:p-3",
+                  active ? "border-primary shadow-lift" : "border-border hover:border-border-strong",
                 )}
               >
-                <span className="hidden lg:relative lg:block lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-background">
-                  <TemplateThumb id={tpl.id} />
-                  {active ? (
-                    <span className="absolute end-1.5 top-1.5 grid size-6 place-items-center rounded-full bg-primary text-primary-foreground">
-                      <Check className="size-3.5" />
-                    </span>
-                  ) : null}
-                </span>
-                <span className="min-w-0 lg:mt-2 lg:block">
-                  <span className="block truncate text-sm font-bold">{t(tpl.nameKey)}</span>
-                  <span className="mt-0.5 block truncate text-xs leading-snug text-muted-foreground">
-                    {t(tpl.descKey)}
+                <button
+                  type="button"
+                  onClick={() => onChange(tpl.id)}
+                  aria-pressed={active}
+                  className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-1 text-start lg:block lg:w-full"
+                >
+                  <span className="hidden lg:relative lg:block lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-background">
+                    <TemplateThumb id={tpl.id} />
+                    {active ? (
+                      <span className="absolute end-1.5 top-1.5 grid size-6 place-items-center rounded-full bg-primary text-primary-foreground">
+                        <Check className="size-3.5" />
+                      </span>
+                    ) : null}
                   </span>
-                </span>
+                  <span className="min-w-0 lg:mt-2 lg:block">
+                    <span className="block truncate text-sm font-bold">{t(tpl.nameKey)}</span>
+                    <span className="mt-0.5 block truncate text-xs leading-snug text-muted-foreground">
+                      {t(tpl.descKey)}
+                    </span>
+                  </span>
+                </button>
+                {onPreview ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onPreview(tpl.id);
+                    }}
+                    className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-muted px-3 text-xs font-bold text-foreground lg:hidden"
+                  >
+                    <Eye className="size-4" aria-hidden />
+                    {t("ws.previewTemplate")}
+                  </button>
+                ) : null}
                 <span
                   className={cn(
                     "grid size-6 shrink-0 place-items-center rounded-full lg:hidden",
@@ -66,7 +83,7 @@ export function TemplateGallery({
                 >
                   <Check className="size-3.5" />
                 </span>
-              </button>
+              </div>
             </li>
           );
         })}
@@ -74,6 +91,7 @@ export function TemplateGallery({
     </section>
   );
 }
+
 
 function Line({ w, strong = false }: { w: string; strong?: boolean }) {
   return (

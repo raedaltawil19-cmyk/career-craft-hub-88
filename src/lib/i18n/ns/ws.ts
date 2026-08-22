@@ -23,6 +23,10 @@ export default makeBundle({
     emptyPreviewHint: "Press the + button to add your CV — paste text, upload a file or fill the form.",
     tplPreviewTitle: "Template preview",
     previewOnlyBadge: "Preview only — add your CV to fill it in",
+    previewTemplate: "Preview",
+    useThisTemplate: "Use this template",
+    prevTemplate: "Previous template",
+    nextTemplate: "Next template",
     addCvCta: "Add my CV",
 
     improveGeneral: "Improve my CV",
@@ -110,6 +114,10 @@ export default makeBundle({
       "Tryck på +-knappen för att lägga till ditt CV — klistra in text, ladda upp en fil eller fyll i formuläret.",
     tplPreviewTitle: "Förhandsvisning av mallen",
     previewOnlyBadge: "Endast förhandsvisning — lägg till ditt CV för att fylla i",
+    previewTemplate: "Förhandsvisa",
+    useThisTemplate: "Använd den här mallen",
+    prevTemplate: "Föregående mall",
+    nextTemplate: "Nästa mall",
     addCvCta: "Lägg till mitt CV",
 
     improveGeneral: "Förbättra mitt CV",
@@ -196,6 +204,10 @@ export default makeBundle({
     emptyPreviewHint: "اضغط على زر + لإضافة سيرتك الذاتية — الصق النص أو ارفع ملفًا أو املأ النموذج.",
     tplPreviewTitle: "معاينة القالب",
     previewOnlyBadge: "معاينة فقط — أضف سيرتك لتعبئتها",
+    previewTemplate: "معاينة",
+    useThisTemplate: "استخدام هذا القالب",
+    prevTemplate: "القالب السابق",
+    nextTemplate: "القالب التالي",
     addCvCta: "أضف سيرتي الذاتية",
 
     improveGeneral: "تحسين السيرة الذاتية",
