@@ -19,11 +19,13 @@ import { Route as AppAddModeRouteImport } from './routes/app.add.$mode'
 import { Route as AppApplicationsIndexRouteImport } from './routes/app.applications.index'
 import { Route as AppApplicationsAppIdRouteImport } from './routes/app.applications.$appId'
 import { Route as AppCvIndexRouteImport } from './routes/app.cv.index'
+import { Route as AppCvDocIdRouteImport } from './routes/app.cv.$docId'
 import { Route as AppCvEditRouteImport } from './routes/app.cv.edit'
 import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
 import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
 import { Route as AppJobsAnalyzeRouteImport } from './routes/app.jobs.analyze'
 import { Route as AppTailorJobIdRouteImport } from './routes/app.tailor.$jobId'
+import { Route as AppCvDocIdViewRouteImport } from './routes/app.cv.$docId.view'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -75,6 +77,11 @@ const AppCvIndexRoute = AppCvIndexRouteImport.update({
   path: '/cv/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCvDocIdRoute = AppCvDocIdRouteImport.update({
+  id: '/cv/$docId',
+  path: '/cv/$docId',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCvEditRoute = AppCvEditRouteImport.update({
   id: '/cv/edit',
   path: '/cv/edit',
@@ -100,6 +107,11 @@ const AppTailorJobIdRoute = AppTailorJobIdRouteImport.update({
   path: '/tailor/$jobId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCvDocIdViewRoute = AppCvDocIdViewRouteImport.update({
+  id: '/view',
+  path: '/view',
+  getParentRoute: () => AppCvDocIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/$docId': typeof AppCvDocIdRouteWithChildren
   '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
@@ -117,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +140,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/$docId': typeof AppCvDocIdRouteWithChildren
   '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
@@ -133,6 +148,7 @@ export interface FileRoutesByTo {
   '/app/applications': typeof AppApplicationsIndexRoute
   '/app/cv': typeof AppCvIndexRoute
   '/app/jobs': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -144,6 +160,7 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/app/add/$mode': typeof AppAddModeRoute
   '/app/applications/$appId': typeof AppApplicationsAppIdRoute
+  '/app/cv/$docId': typeof AppCvDocIdRouteWithChildren
   '/app/cv/edit': typeof AppCvEditRoute
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
@@ -151,6 +168,7 @@ export interface FileRoutesById {
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
+  '/app/cv/$docId/view': typeof AppCvDocIdViewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -163,6 +181,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/add/$mode'
     | '/app/applications/$appId'
+    | '/app/cv/$docId'
     | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
@@ -170,6 +189,7 @@ export interface FileRouteTypes {
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
+    | '/app/cv/$docId/view'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -179,6 +199,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/add/$mode'
     | '/app/applications/$appId'
+    | '/app/cv/$docId'
     | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
@@ -186,6 +207,7 @@ export interface FileRouteTypes {
     | '/app/applications'
     | '/app/cv'
     | '/app/jobs'
+    | '/app/cv/$docId/view'
   id:
     | '__root__'
     | '/'
@@ -196,6 +218,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/add/$mode'
     | '/app/applications/$appId'
+    | '/app/cv/$docId'
     | '/app/cv/edit'
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
@@ -203,6 +226,7 @@ export interface FileRouteTypes {
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
+    | '/app/cv/$docId/view'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -283,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCvIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/cv/$docId': {
+      id: '/app/cv/$docId'
+      path: '/cv/$docId'
+      fullPath: '/app/cv/$docId'
+      preLoaderRoute: typeof AppCvDocIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/cv/edit': {
       id: '/app/cv/edit'
       path: '/cv/edit'
@@ -318,8 +349,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTailorJobIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/cv/$docId/view': {
+      id: '/app/cv/$docId/view'
+      path: '/view'
+      fullPath: '/app/cv/$docId/view'
+      preLoaderRoute: typeof AppCvDocIdViewRouteImport
+      parentRoute: typeof AppCvDocIdRoute
+    }
   }
 }
+
+interface AppCvDocIdRouteChildren {
+  AppCvDocIdViewRoute: typeof AppCvDocIdViewRoute
+}
+
+const AppCvDocIdRouteChildren: AppCvDocIdRouteChildren = {
+  AppCvDocIdViewRoute: AppCvDocIdViewRoute,
+}
+
+const AppCvDocIdRouteWithChildren = AppCvDocIdRoute._addFileChildren(
+  AppCvDocIdRouteChildren,
+)
 
 interface AppRouteChildren {
   AppNotificationsRoute: typeof AppNotificationsRoute
@@ -327,6 +377,7 @@ interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppAddModeRoute: typeof AppAddModeRoute
   AppApplicationsAppIdRoute: typeof AppApplicationsAppIdRoute
+  AppCvDocIdRoute: typeof AppCvDocIdRouteWithChildren
   AppCvEditRoute: typeof AppCvEditRoute
   AppJobsJobIdRoute: typeof AppJobsJobIdRoute
   AppJobsAnalyzeRoute: typeof AppJobsAnalyzeRoute
@@ -342,6 +393,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppAddModeRoute: AppAddModeRoute,
   AppApplicationsAppIdRoute: AppApplicationsAppIdRoute,
+  AppCvDocIdRoute: AppCvDocIdRouteWithChildren,
   AppCvEditRoute: AppCvEditRoute,
   AppJobsJobIdRoute: AppJobsJobIdRoute,
   AppJobsAnalyzeRoute: AppJobsAnalyzeRoute,

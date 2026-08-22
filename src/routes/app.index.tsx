@@ -89,7 +89,7 @@ function HomePage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-5">
           {cv ? (
-            <CvPreview cv={{ ...cv, template }} />
+            <CvLibrary />
           ) : (
             <section aria-label={t("ws.tplPreviewTitle")} className="hidden lg:block">
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
