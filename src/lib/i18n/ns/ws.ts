@@ -128,6 +128,10 @@ export default makeBundle({
     improveGeneralDesc: "Allmänna förbättringar av formuleringar och struktur",
     tailorJob: "Anpassa för ett jobb",
     tailorJobDesc: "Matcha ditt CV mot en specifik annons",
+    barImprove: "Allmän förbättring",
+    barTailor: "Matcha mot jobb",
+    barCareers: "Yrken för dig",
+    barTemplate: "Byt mall",
 
     recTitle: "Föreslagna förbättringar",
     recSubtitle: "Välj ett förslag i taget. Inget ändras förrän du godkänner.",
