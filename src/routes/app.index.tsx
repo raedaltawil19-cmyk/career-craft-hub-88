@@ -244,37 +244,4 @@ function BigAction({
   );
 }
 
-function EmptyTemplate({ template }: { template: CvTemplateId }) {
-  const { lang } = useI18n();
-  const sample = blankCvFor(lang, template);
-
-  return (
-    <div className="relative w-full">
-      <CvPreview cv={sample} className="w-full" placeholder />
-    </div>
-  );
-}
-
-function AddCvTile() {
-  const t = useT();
-  const [sheetOpen, setSheetOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setSheetOpen(true)}
-        className="pressable flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-primary/40 bg-primary-soft px-4 py-6 text-center text-primary hover:bg-primary/10"
-      >
-        <span className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-center text-sm font-bold text-primary-foreground">
-          <FilePlus2 className="size-5" />
-          {t("ws.addCvCta")}
-        </span>
-        <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
-      </button>
-
-      <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
-    </>
-  );
-}
 
