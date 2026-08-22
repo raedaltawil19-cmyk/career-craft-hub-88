@@ -83,8 +83,14 @@ function HomePage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="space-y-7">
-          {state.docs.length ? <CvLibrary /> : null}
-          <CvIntake />
+          {state.docs.length ? (
+            <>
+              <CvLibrary />
+              <AddAnotherCvButton />
+            </>
+          ) : (
+            <CvIntake />
+          )}
 
         </div>
 
