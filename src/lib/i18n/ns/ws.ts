@@ -33,6 +33,8 @@ export default makeBundle({
     intakePlaceholder: "Paste the text of your CV here…",
     intakeCreate: "Create my CV",
     intakeMore: "More ways to add a CV",
+    intakeEmptyError: "Please add some text, attach a file or choose another method before creating your CV.",
+
 
 
     improveGeneral: "Improve my CV",
@@ -134,6 +136,8 @@ export default makeBundle({
     intakePlaceholder: "Klistra in texten från ditt CV här…",
     intakeCreate: "Skapa mitt CV",
     intakeMore: "Fler sätt att lägga till CV",
+    intakeEmptyError: "Lägg till lite text, bifoga en fil eller välj ett annat sätt innan du skapar ditt CV.",
+
 
 
     improveGeneral: "Förbättra mitt CV",
@@ -234,6 +238,8 @@ export default makeBundle({
     intakePlaceholder: "الصق نص سيرتك الذاتية هنا…",
     intakeCreate: "أنشئ سيرتي الذاتية",
     intakeMore: "طرق أخرى لإضافة السيرة",
+    intakeEmptyError: "أضف نصًا أو أرفق ملفًا أو اختر طريقة أخرى قبل إنشاء سيرتك الذاتية.",
+
 
 
     improveGeneral: "تحسين السيرة الذاتية",
