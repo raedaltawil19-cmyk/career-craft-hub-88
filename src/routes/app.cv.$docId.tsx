@@ -152,7 +152,7 @@ function RowAction({
     <button
       type="button"
       onClick={onClick}
-      className={`${actionClass} ${danger ? "text-danger" : ""}`}
+      className={`${actionClass} ${danger ? "text-destructive" : ""}`}
     >
       {icon}
       {label}

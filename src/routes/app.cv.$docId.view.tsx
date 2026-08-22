@@ -95,7 +95,7 @@ function CvVersionPage() {
             type="button"
             onClick={onDelete}
             aria-label={t("cv.deleteAction")}
-            className="tap grid size-11 place-items-center rounded-xl border border-border text-danger hover:bg-muted"
+            className="tap grid size-11 place-items-center rounded-xl border border-border text-destructive hover:bg-muted"
           >
             <Trash2 className="size-5" />
           </button>
