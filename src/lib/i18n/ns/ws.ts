@@ -33,6 +33,10 @@ export default makeBundle({
     improveGeneralDesc: "General improvements to wording and structure",
     tailorJob: "Tailor for a job",
     tailorJobDesc: "Match your CV to one specific job",
+    barImprove: "General improvement",
+    barTailor: "Match to job",
+    barCareers: "Careers for you",
+    barTemplate: "Change template",
 
     recTitle: "Suggested improvements",
     recSubtitle: "Choose one suggestion at a time. Nothing changes until you approve it.",
