@@ -1,17 +1,15 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
-  Check,
   ClipboardType,
   FileUp,
   Linkedin,
   Loader2,
   PenLine,
-  ShieldCheck,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
-import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
+import { ErrorState, Eyebrow, Panel } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
@@ -73,6 +71,7 @@ function AddCvPage() {
 
 /* ---------------------------------- shared --------------------------------- */
 
+/** The draft is now created instantly — the confirm step lives after improvements. */
 function ReviewStep({
   draft,
   onConfirm,
@@ -82,73 +81,16 @@ function ReviewStep({
   onConfirm: () => void;
   note: string;
 }) {
-  const t = useT();
-  return (
-    <div className="space-y-4">
-      <Panel className="border-primary/25 bg-primary-soft/40">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2.5">
-          <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
-          <p className="min-w-0 text-sm text-muted-foreground">{note}</p>
-        </div>
-      </Panel>
-
-      <Panel>
-        <h2 className="text-lg">{t("add.reviewTitle")}</h2>
-        <dl className="mt-3 space-y-3 text-sm">
-          <Field label={t("add.fieldName")} value={draft.name} />
-          <Field label={t("add.fieldTitle")} value={draft.title} />
-          <Field label={t("add.fieldContact")} value={[draft.email, draft.phone].filter(Boolean).join(" · ")} />
-          <Field label={t("add.fieldLocation")} value={draft.location} />
-        </dl>
-        <h3 className="eyebrow mt-5">{t("add.experienceHeading", { count: draft.experience.length })}</h3>
-        <ul className="mt-2 space-y-2">
-          {draft.experience.map((e) => (
-            <li key={e.id} className="rounded-xl bg-surface p-3">
-              <p className="text-sm font-medium">
-                {e.role} · {e.company}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {e.start} – {e.end} · {t("add.bulletPoints", { count: e.bullets.length })}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <h3 className="eyebrow mt-5">{t("add.skillsHeading")}</h3>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {draft.skills.map((s) => (
-            <Tag key={s}>{s}</Tag>
-          ))}
-        </div>
-      </Panel>
-
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={onConfirm}
-          className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
-        >
-          <Check className="size-4" /> {t("add.confirmCreate")}
-        </button>
-        <Link
-          to="/app/cv/edit"
-          search={{ panel: "sections" }}
-          className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
-        >
-          {t("add.correctFirst")}
-        </Link>
-      </div>
-    </div>
-  );
+  const done = useRef(false);
+  useEffect(() => {
+    if (done.current) return;
+    done.current = true;
+    onConfirm();
+  }, [onConfirm]);
+  void draft;
+  return <Working label={note} />;
 }
 
-function Field({ label, value }: { label: string; value: string }) {
-  const t = useT();
-  return (
-    <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 font-medium">{value || t("add.emptyValue")}</dd>
-    </div>
-  );
-}
 
 function useCreate() {
   const { createMasterCv } = useWorkspace();
