@@ -92,56 +92,54 @@ function MasterCvPage() {
         </div>
       </Panel>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="order-2 lg:order-1">
-          <CvPreview cv={cv} />
-        </div>
+      <div className="mx-auto w-full max-w-3xl">
+        <CvPreview cv={cv} />
+      </div>
 
-        <div className="order-1 space-y-4 lg:order-2">
-          <Panel>
-            <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
-              <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
-              <div className="min-w-0">
-                <h2 className="text-base font-semibold">{t("cv.cvQuality")}</h2>
-                <p className="text-xs text-muted-foreground">{t("cv.atsReadability")}</p>
-              </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Panel>
+          <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
+            <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
+            <div className="min-w-0">
+              <h2 className="text-base font-semibold">{t("cv.cvQuality")}</h2>
+              <p className="text-xs text-muted-foreground">{t("cv.atsReadability")}</p>
             </div>
-            <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-              <li>· {t("cv.insightConsistentStructure")}</li>
-              <li>· {t("cv.insightAchievements")}</li>
-              <li>· {t("cv.insightDateFormats")}</li>
-            </ul>
-            {pending ? (
-              <Link
-                to="/app/cv/edit"
-                search={{ panel: "ai" }}
-                className="tap mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
-              >
-                <Sparkles className="size-4" /> {t("cv.recommendationsCount", { count: pending })}
-              </Link>
-            ) : null}
-          </Panel>
+          </div>
+          <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+            <li>· {t("cv.insightConsistentStructure")}</li>
+            <li>· {t("cv.insightAchievements")}</li>
+            <li>· {t("cv.insightDateFormats")}</li>
+          </ul>
+          {pending ? (
+            <Link
+              to="/app/cv/edit"
+              search={{ panel: "ai" }}
+              className="tap mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
+            >
+              <Sparkles className="size-4" /> {t("cv.recommendationsCount", { count: pending })}
+            </Link>
+          ) : null}
+        </Panel>
 
-          <Panel>
-            <h2 className="eyebrow">{t("cv.versionsLabel")}</h2>
-            <ul className="mt-2.5 space-y-2">
-              {state.docs.map((d) => (
-                <li
-                  key={d.id}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-xl bg-surface p-3"
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-medium">{d.name}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {d.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")} · {d.updatedAt}
-                    </span>
+        <Panel>
+          <h2 className="eyebrow">{t("cv.versionsLabel")}</h2>
+          <ul className="mt-2.5 space-y-2">
+            {state.docs.map((d) => (
+              <li
+                key={d.id}
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-xl bg-surface p-3"
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-medium">{d.name}</span>
+                  <span className="block text-xs text-muted-foreground">
+                    {d.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")} · {d.updatedAt}
                   </span>
-                  <Tag tone={d.score >= 80 ? "match" : "neutral"}>{d.score}</Tag>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-        </div>
+                </span>
+                <Tag tone={d.score >= 80 ? "match" : "neutral"}>{d.score}</Tag>
+              </li>
+            ))}
+          </ul>
+        </Panel>
       </div>
     </div>
   );
