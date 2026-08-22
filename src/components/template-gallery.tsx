@@ -24,23 +24,24 @@ export function TemplateGallery({
     <section aria-label={t("ws.chooseTemplate")}>
       <h2 className="display text-xl sm:text-2xl">{t("ws.chooseTemplate")}</h2>
       <p className="mt-1 text-sm text-muted-foreground">{t("ws.chooseTemplateHint")}</p>
-      <ul className="-mx-4 mt-3 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
+      {/* Mobile: stacked pill rows. Desktop (lg+): original horizontal card gallery. */}
+      <ul className="mt-3 grid grid-cols-1 gap-2.5 lg:-mx-0 lg:flex lg:snap-x lg:gap-3 lg:overflow-x-auto lg:pb-2">
         {CV_TEMPLATES.map((tpl) => {
           const active = tpl.id === value;
           return (
-            <li key={tpl.id} className="w-40 shrink-0 snap-start sm:w-44">
+            <li key={tpl.id} className="lg:w-44 lg:shrink-0 lg:snap-start">
               <button
                 type="button"
                 onClick={() => onChange(tpl.id)}
                 aria-pressed={active}
                 className={cn(
-                  "w-full rounded-2xl border-2 bg-card p-3 text-start transition-all",
+                  "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-full border-2 bg-card px-4 py-2.5 text-start transition-all lg:block lg:rounded-2xl lg:p-3",
                   active
                     ? "border-primary shadow-lift"
                     : "border-border hover:border-border-strong",
                 )}
               >
-                <span className="relative block overflow-hidden rounded-xl border border-border bg-background">
+                <span className="hidden lg:relative lg:block lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-background">
                   <TemplateThumb id={tpl.id} />
                   {active ? (
                     <span className="absolute end-1.5 top-1.5 grid size-6 place-items-center rounded-full bg-primary text-primary-foreground">
@@ -48,9 +49,22 @@ export function TemplateGallery({
                     </span>
                   ) : null}
                 </span>
-                <span className="mt-2 block text-sm font-bold">{t(tpl.nameKey)}</span>
-                <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">
-                  {t(tpl.descKey)}
+                <span className="min-w-0 lg:mt-2 lg:block">
+                  <span className="block truncate text-sm font-bold">{t(tpl.nameKey)}</span>
+                  <span className="mt-0.5 block truncate text-xs leading-snug text-muted-foreground">
+                    {t(tpl.descKey)}
+                  </span>
+                </span>
+                <span
+                  className={cn(
+                    "grid size-6 shrink-0 place-items-center rounded-full lg:hidden",
+                    active
+                      ? "bg-primary text-primary-foreground"
+                      : "border border-border text-transparent",
+                  )}
+                  aria-hidden
+                >
+                  <Check className="size-3.5" />
                 </span>
               </button>
             </li>
