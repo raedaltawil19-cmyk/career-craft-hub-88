@@ -1,11 +1,10 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, ChevronRight, Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
-import { useI18n, useT } from "@/lib/i18n";
+import { Check, ChevronRight, Compass, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
-import { CvPreview } from "@/components/cv-preview";
-import { TemplateGallery } from "@/components/template-gallery";
 import { CvLibrary } from "@/components/cv-library";
+import { CvIntake } from "@/components/cv-intake";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
@@ -15,10 +14,9 @@ import {
   SimilarJobsPanel,
 } from "@/components/career-suggestions-panel";
 import { Eyebrow } from "@/components/ui-bits";
-import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
-import { blankCvFor } from "@/lib/sample-cv";
 import type { CvTemplateId } from "@/lib/career-types";
+
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
