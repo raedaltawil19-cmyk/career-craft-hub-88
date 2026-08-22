@@ -73,8 +73,6 @@ function HomePage() {
         </h1>
       </header>
 
-      <TemplateGallery value={template} onChange={setTemplate} onPreview={setPreviewTpl} />
-
       <TemplatePreviewSheet
         templateId={previewTpl}
         onOpenChange={(o) => !o && setPreviewTpl(null)}
@@ -85,26 +83,12 @@ function HomePage() {
         }}
       />
 
-      {cv ? null : <div className="hidden lg:block"><AddCvTile /></div>}
-
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-        <div className="space-y-5">
-          {cv ? (
-            <CvLibrary />
-          ) : (
-            <section aria-label={t("ws.tplPreviewTitle")} className="hidden lg:block">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-                <h2 className="display text-xl sm:text-2xl">{t("ws.tplPreviewTitle")}</h2>
-              </div>
-              <p className="mt-1 inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
-                {t("ws.previewOnlyBadge")}
-              </p>
-              <div className="relative mt-3 rounded-2xl">
-                <EmptyTemplate template={template} />
-              </div>
-            </section>
-          )}
+        <div className="space-y-7">
+          {state.docs.length ? <CvLibrary /> : null}
+          <CvIntake />
         </div>
+
 
 
         <aside className="hidden space-y-4 lg:block lg:sticky lg:top-6">
