@@ -16,8 +16,14 @@ export function CvIntake() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   const submit = () => {
+    if (!text.trim()) {
+      setError(true);
+      return;
+    }
+    setError(false);
     try {
       window.sessionStorage.setItem(INTAKE_TEXT_KEY, text);
     } catch {
@@ -36,9 +42,13 @@ export function CvIntake() {
       <div className="relative rounded-2xl border border-border-strong bg-card p-3.5 shadow-soft">
         <textarea
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            if (e.target.value.trim()) setError(false);
+          }}
           rows={7}
           placeholder={t("ws.intakePlaceholder")}
+          aria-invalid={error}
           className="w-full resize-y rounded-xl border border-border bg-background p-3.5 pl-14 text-sm leading-relaxed outline-none focus:border-primary"
         />
         <button
@@ -46,9 +56,9 @@ export function CvIntake() {
           onClick={() => setSheetOpen(true)}
           aria-label={t("ws.intakeMore")}
           title={t("ws.intakeMore")}
-          className="tap absolute bottom-4 left-4 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
+          className="tap absolute bottom-3 left-3 grid size-9 place-items-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm hover:border-border-strong hover:text-foreground"
         >
-          <Plus className="size-5" aria-hidden />
+          <Plus className="size-4" aria-hidden />
         </button>
       </div>
 
@@ -60,6 +70,12 @@ export function CvIntake() {
         <Sparkles className="size-5" aria-hidden />
         {t("ws.intakeCreate")}
       </button>
+
+      {error ? (
+        <p role="alert" className="text-xs font-medium text-destructive">
+          {t("ws.intakeEmptyError")}
+        </p>
+      ) : null}
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} exclude={["paste"]} />
     </section>
