@@ -67,7 +67,7 @@ function MasterCvPage() {
   const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 pb-24 lg:pb-0">
       <PageHeader
         eyebrow={t("cv.versionMeta", { version: cv.version })}
         title={t("cv.title")}
