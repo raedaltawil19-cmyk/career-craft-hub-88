@@ -210,6 +210,10 @@ export default makeBundle({
     qExtraPlaceholder: "Projekt, volontärarbete, kurser",
 
     workingSubtext: "Strukturerar avsnitt, datum och kompetenser — inget sparas ännu",
+    templateStepTitle: "Välj en mall för ditt CV",
+    templateStepHint: "Du kan byta när som helst.",
+    templateStepCta: "Skapa CV:t",
+
   },
   ar: {
     headTitle: "إضافة سيرة ذاتية — Smart CV",
