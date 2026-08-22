@@ -28,39 +28,38 @@ export function CvIntake() {
 
   return (
     <section aria-label={t("ws.intakeTitle")} className="space-y-3">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
-        <div className="min-w-0">
-          <h2 className="display text-xl leading-snug sm:text-2xl">{t("ws.intakeTitle")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("ws.intakeHint")}</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setSheetOpen(true)}
-          aria-label={t("ws.intakeMore")}
-          title={t("ws.intakeMore")}
-          className="tap grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
-        >
-          <Plus className="size-5" aria-hidden />
-        </button>
+      <div className="space-y-1">
+        <h2 className="display text-xl leading-snug sm:text-2xl">{t("ws.intakeTitle")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("ws.intakeHint")}</p>
       </div>
 
-      <div className="rounded-2xl border border-border-strong bg-card p-3.5 shadow-soft">
+      <div className="relative rounded-2xl border border-border-strong bg-card p-3.5 shadow-soft">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={7}
           placeholder={t("ws.intakePlaceholder")}
-          className="w-full resize-y rounded-xl border border-border bg-background p-3.5 text-sm leading-relaxed outline-none focus:border-primary"
+          className="w-full resize-y rounded-xl border border-border bg-background p-3.5 pe-14 text-sm leading-relaxed outline-none focus:border-primary"
         />
         <button
           type="button"
-          onClick={submit}
-          className="tap mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold text-primary-foreground"
+          onClick={() => setSheetOpen(true)}
+          aria-label={t("ws.intakeMore")}
+          title={t("ws.intakeMore")}
+          className="tap absolute bottom-4 end-4 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
         >
-          <Sparkles className="size-5" aria-hidden />
-          {t("ws.intakeCreate")}
+          <Plus className="size-5" aria-hidden />
         </button>
       </div>
+
+      <button
+        type="button"
+        onClick={submit}
+        className="tap mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-bold text-primary-foreground"
+      >
+        <Sparkles className="size-5" aria-hidden />
+        {t("ws.intakeCreate")}
+      </button>
 
       <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} exclude={["paste"]} />
     </section>
