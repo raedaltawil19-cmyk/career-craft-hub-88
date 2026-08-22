@@ -13,13 +13,14 @@ export const INTAKE_TEXT_KEY = "smartcv:intake-text";
  */
 export function AddAnotherCvButton() {
   const t = useT();
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   return (
     <section aria-label={t("ws.addAnotherCv")} className="space-y-3">
       <button
         type="button"
-        onClick={() => navigate({ to: "/app/add/$mode", params: { mode: "paste" } })}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
         className="tap group flex w-full items-center gap-3.5 rounded-2xl border-2 border-dashed border-primary/40 bg-card p-4 text-start transition-colors hover:border-primary/70 hover:bg-primary-soft/40"
       >
         <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-soft transition-transform duration-150 group-hover:scale-105">
@@ -32,10 +33,12 @@ export function AddAnotherCvButton() {
           </span>
         </span>
         <ChevronRight
-          className="size-5 shrink-0 text-muted-foreground rtl:rotate-180"
+          className={`size-5 shrink-0 text-muted-foreground transition-transform rtl:rotate-180 ${open ? "rotate-90 rtl:-rotate-90" : ""}`}
           aria-hidden
         />
       </button>
+
+      {open ? <CvIntake /> : null}
     </section>
   );
 }
