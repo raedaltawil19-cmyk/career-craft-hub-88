@@ -82,37 +82,6 @@ function MasterCvPage() {
         }
       />
 
-      {/* Mobile-only action bar sitting above the A4 template */}
-      <div className="grid grid-cols-2 gap-2.5 lg:hidden">
-        <ActionTile
-          icon={<Sparkles className="size-5" />}
-          label={t("ws.improveGeneral")}
-          tone="#ff6b6b"
-          onClick={() => setOpenWindow("improve")}
-        />
-        <ActionTile
-          icon={<Target className="size-5" />}
-          label={t("ws.tailorJob")}
-          tone="#574b90"
-          onClick={() => {
-            setTailorPreset(undefined);
-            setOpenWindow("tailor");
-          }}
-        />
-        <ActionTile
-          icon={<Compass className="size-5" />}
-          label={t("ws.careersTitle")}
-          tone="#12946a"
-          onClick={() => setShowCareers((v) => !v)}
-        />
-        <ActionTile
-          icon={<LayoutTemplate className="size-5" />}
-          label={t("ws.chooseTemplate")}
-          tone="#1f6feb"
-          onClick={() => setPreviewTpl(cv.template)}
-        />
-      </div>
-
       {showCareers ? (
         <div className="space-y-4 lg:hidden">
           <CareerSuggestionsPanel
