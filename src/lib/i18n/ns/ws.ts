@@ -222,6 +222,10 @@ export default makeBundle({
     improveGeneralDesc: "تحسينات عامة على الصياغة والترتيب",
     tailorJob: "تخصيص لوظيفة محددة",
     tailorJobDesc: "مطابقة سيرتك مع إعلان وظيفة واحد",
+    barImprove: "تحسين عام",
+    barTailor: "مطابقة مع وظيفة",
+    barCareers: "مهن تناسبك",
+    barTemplate: "تغيير القالب",
 
     recTitle: "التحسينات المقترحة",
     recSubtitle: "اختر توصية واحدة في كل مرة. لا يتغيّر شيء قبل موافقتك.",
