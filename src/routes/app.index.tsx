@@ -50,6 +50,7 @@ function HomePage() {
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
   const [tailorPreset, setTailorPreset] = useState<string | undefined>(undefined);
   const [showCareers, setShowCareers] = useState(false);
+  const [previewTpl, setPreviewTpl] = useState<CvTemplateId | null>(null);
 
   const cv = state.masterCv;
   const template = cv?.template ?? state.template;
