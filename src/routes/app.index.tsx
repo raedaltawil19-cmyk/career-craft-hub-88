@@ -4,7 +4,7 @@ import { Check, ChevronRight, Compass, MessageSquare, Pencil, Sparkles, Target }
 import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvLibrary } from "@/components/cv-library";
-import { AddAnotherCvButton, CvIntake } from "@/components/cv-intake";
+import { CvIntake } from "@/components/cv-intake";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
