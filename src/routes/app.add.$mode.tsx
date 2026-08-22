@@ -148,22 +148,28 @@ function ReviewStep({
 }
 
 
+/** Hands the extracted draft to the template step instead of saving directly. */
 function useCreate() {
-  const { createMasterCv } = useWorkspace();
-  const navigate = useNavigate();
-  return (cv: MasterCv) => {
-    createMasterCv(cv);
-    navigate({ to: "/app/cv" });
-  };
+  return useContext(DraftContext);
 }
 
 /* ---------------------------------- paste ---------------------------------- */
 
 function PasteFlow() {
   const t = useT();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      const v = window.sessionStorage.getItem(INTAKE_TEXT_KEY) ?? "";
+      window.sessionStorage.removeItem(INTAKE_TEXT_KEY);
+      return v;
+    } catch {
+      return "";
+    }
+  });
   const [phase, setPhase] = useState<"input" | "working" | "review" | "error">("input");
   const create = useCreate();
+
 
   return phase === "review" ? (
     <ReviewStep
