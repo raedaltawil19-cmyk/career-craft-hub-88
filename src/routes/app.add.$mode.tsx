@@ -183,13 +183,30 @@ function PasteFlow() {
     <Panel>
       <label className="block">
         <span className="text-sm font-medium">{t("add.pasteLabel")}</span>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={12}
-          placeholder={t("add.pastePlaceholder")}
-          className="mt-2 w-full resize-y rounded-xl border border-border bg-background p-3.5 text-sm leading-relaxed outline-none focus:border-primary"
-        />
+        <div className="relative mt-2">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={12}
+            placeholder={t("add.pastePlaceholder")}
+            className="w-full resize-y rounded-xl border border-border bg-background p-3.5 pb-16 text-sm leading-relaxed outline-none focus:border-primary"
+          />
+          <button
+            type="button"
+            aria-label={t("add.continue")}
+            title={t("add.continue")}
+            onClick={() => {
+              setPhase("working");
+              window.setTimeout(
+                () => setPhase(text.trim().length > 60 ? "review" : "error"),
+                1100,
+              );
+            }}
+            className="tap absolute bottom-4 end-4 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft hover:opacity-90"
+          >
+            <ArrowUp className="size-5" aria-hidden />
+          </button>
+        </div>
       </label>
       {phase === "error" ? (
         <div className="mt-4">
@@ -199,19 +216,8 @@ function PasteFlow() {
           />
         </div>
       ) : null}
-      <button
-        onClick={() => {
-          setPhase("working");
-          window.setTimeout(
-            () => setPhase(text.trim().length > 60 ? "review" : "error"),
-            1100,
-          );
-        }}
-        className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
-      >
-        {t("add.continue")}
-      </button>
     </Panel>
+
   );
 }
 
