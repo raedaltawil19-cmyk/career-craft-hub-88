@@ -1,10 +1,44 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Plus, Sparkles } from "lucide-react";
+import { ChevronRight, Plus, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { AddCvSheet } from "@/components/add-cv-sheet";
 import { useT } from "@/lib/i18n";
 
 export const INTAKE_TEXT_KEY = "smartcv:intake-text";
+
+/**
+ * Single "Add another CV" button shown on the home page once the user already
+ * has at least one CV. Clicking it goes straight to the paste input screen,
+ * where all entry methods (paste / upload / LinkedIn / form) are available.
+ */
+export function AddAnotherCvButton() {
+  const t = useT();
+  const navigate = useNavigate();
+
+  return (
+    <section aria-label={t("ws.addAnotherCv")} className="space-y-3">
+      <button
+        type="button"
+        onClick={() => navigate({ to: "/app/add/$mode", params: { mode: "paste" } })}
+        className="tap group flex w-full items-center gap-3.5 rounded-2xl border-2 border-dashed border-primary/40 bg-card p-4 text-start transition-colors hover:border-primary/70 hover:bg-primary-soft/40"
+      >
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-soft transition-transform duration-150 group-hover:scale-105">
+          <Plus className="size-5" aria-hidden />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-bold">{t("ws.addAnotherCv")}</span>
+          <span className="mt-0.5 block text-sm text-muted-foreground">
+            {t("ws.addAnotherCvHint")}
+          </span>
+        </span>
+        <ChevronRight
+          className="size-5 shrink-0 text-muted-foreground rtl:rotate-180"
+          aria-hidden
+        />
+      </button>
+    </section>
+  );
+}
 
 /**
  * First-screen CV intake: paste box + a "+" button that opens the other
