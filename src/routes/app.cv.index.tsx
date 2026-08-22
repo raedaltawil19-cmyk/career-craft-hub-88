@@ -67,7 +67,7 @@ function MasterCvPage() {
   const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 pb-24 lg:pb-0">
       <PageHeader
         eyebrow={t("cv.versionMeta", { version: cv.version })}
         title={t("cv.title")}
@@ -81,37 +81,6 @@ function MasterCvPage() {
           </Link>
         }
       />
-
-      {/* Mobile-only action bar sitting above the A4 template */}
-      <div className="grid grid-cols-2 gap-2.5 lg:hidden">
-        <ActionTile
-          icon={<Sparkles className="size-5" />}
-          label={t("ws.improveGeneral")}
-          tone="#ff6b6b"
-          onClick={() => setOpenWindow("improve")}
-        />
-        <ActionTile
-          icon={<Target className="size-5" />}
-          label={t("ws.tailorJob")}
-          tone="#574b90"
-          onClick={() => {
-            setTailorPreset(undefined);
-            setOpenWindow("tailor");
-          }}
-        />
-        <ActionTile
-          icon={<Compass className="size-5" />}
-          label={t("ws.careersTitle")}
-          tone="#12946a"
-          onClick={() => setShowCareers((v) => !v)}
-        />
-        <ActionTile
-          icon={<LayoutTemplate className="size-5" />}
-          label={t("ws.chooseTemplate")}
-          tone="#1f6feb"
-          onClick={() => setPreviewTpl(cv.template)}
-        />
-      </div>
 
       {showCareers ? (
         <div className="space-y-4 lg:hidden">
@@ -241,30 +210,82 @@ function MasterCvPage() {
           onClose={() => setOpenWindow(null)}
         />
       ) : null}
+
+      {/* Mobile-only floating action bar above the bottom navigation */}
+      <div
+        className="fixed inset-x-0 z-40 px-3 lg:hidden"
+        style={{ bottom: "calc(4.5rem + env(safe-area-inset-bottom))" }}
+      >
+        <div
+          className="mx-auto grid max-w-md grid-cols-4 gap-1 rounded-3xl border border-border bg-card/90 p-1.5 backdrop-blur"
+          style={{ boxShadow: "var(--shadow-lift)" }}
+        >
+          <BarAction
+            icon={<Sparkles className="size-4" />}
+            label={t("ws.barImprove")}
+            tone="#ff6b6b"
+            active={openWindow === "improve"}
+            onClick={() => setOpenWindow("improve")}
+          />
+          <BarAction
+            icon={<Target className="size-4" />}
+            label={t("ws.barTailor")}
+            tone="#574b90"
+            active={openWindow === "tailor"}
+            onClick={() => {
+              setTailorPreset(undefined);
+              setOpenWindow("tailor");
+            }}
+          />
+          <BarAction
+            icon={<Compass className="size-4" />}
+            label={t("ws.barCareers")}
+            tone="#12946a"
+            active={showCareers}
+            onClick={() => setShowCareers((v) => !v)}
+          />
+          <BarAction
+            icon={<LayoutTemplate className="size-4" />}
+            label={t("ws.barTemplate")}
+            tone="#1f6feb"
+            active={previewTpl !== null}
+            onClick={() => setPreviewTpl(cv.template)}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
-function ActionTile({
+function BarAction({
   icon,
   label,
   tone,
+  active,
   onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   tone: string;
+  active?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="pressable flex min-h-20 flex-col items-start justify-between gap-2 rounded-2xl p-3 text-start text-white"
-      style={{ background: tone, boxShadow: "var(--shadow-press)" }}
+      className="flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-1.5 text-center transition-colors active:scale-[0.97]"
+      style={active ? { background: `color-mix(in oklab, ${tone} 14%, transparent)` } : undefined}
     >
-      <span className="grid size-9 place-items-center rounded-xl bg-white/20">{icon}</span>
-      <span className="text-[13px] font-bold leading-tight">{label}</span>
+      <span
+        className="grid size-7 shrink-0 place-items-center rounded-full text-white"
+        style={{ background: tone }}
+      >
+        {icon}
+      </span>
+      <span className="text-[10px] font-bold leading-[1.15]" style={{ color: tone }}>
+        {label}
+      </span>
     </button>
   );
 }

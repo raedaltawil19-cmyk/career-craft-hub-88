@@ -33,6 +33,10 @@ export default makeBundle({
     improveGeneralDesc: "General improvements to wording and structure",
     tailorJob: "Tailor for a job",
     tailorJobDesc: "Match your CV to one specific job",
+    barImprove: "General improvement",
+    barTailor: "Match to job",
+    barCareers: "Careers for you",
+    barTemplate: "Change template",
 
     recTitle: "Suggested improvements",
     recSubtitle: "Choose one suggestion at a time. Nothing changes until you approve it.",
@@ -124,6 +128,10 @@ export default makeBundle({
     improveGeneralDesc: "Allmänna förbättringar av formuleringar och struktur",
     tailorJob: "Anpassa för ett jobb",
     tailorJobDesc: "Matcha ditt CV mot en specifik annons",
+    barImprove: "Allmän förbättring",
+    barTailor: "Matcha mot jobb",
+    barCareers: "Yrken för dig",
+    barTemplate: "Byt mall",
 
     recTitle: "Föreslagna förbättringar",
     recSubtitle: "Välj ett förslag i taget. Inget ändras förrän du godkänner.",
@@ -214,6 +222,10 @@ export default makeBundle({
     improveGeneralDesc: "تحسينات عامة على الصياغة والترتيب",
     tailorJob: "تخصيص لوظيفة محددة",
     tailorJobDesc: "مطابقة سيرتك مع إعلان وظيفة واحد",
+    barImprove: "تحسين عام",
+    barTailor: "مطابقة مع وظيفة",
+    barCareers: "مهن تناسبك",
+    barTemplate: "تغيير القالب",
 
     recTitle: "التحسينات المقترحة",
     recSubtitle: "اختر توصية واحدة في كل مرة. لا يتغيّر شيء قبل موافقتك.",
