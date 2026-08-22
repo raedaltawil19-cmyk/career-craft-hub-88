@@ -72,7 +72,7 @@ export function AddCvSheet({
           </div>
 
           <ul className="mt-5 space-y-2.5">
-            {options.map((o) => (
+            {shown.map((o) => (
               <li key={o.mode}>
                 <button
                   onClick={() => {
