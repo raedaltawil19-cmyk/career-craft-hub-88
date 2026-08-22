@@ -7,7 +7,7 @@ import { EmptyState, PageHeader, Tag } from "@/components/ui-bits";
 import { useT } from "@/lib/i18n";
 import type { CvDoc, MasterCv } from "@/lib/career-types";
 
-export const Route = createFileRoute("/app/cv/$docId")({
+export const Route = createFileRoute("/app/cv/$docId/")({
   head: () => ({
     meta: [
       { title: "CV versions — Smart CV" },
