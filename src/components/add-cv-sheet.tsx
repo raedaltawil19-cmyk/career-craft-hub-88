@@ -30,10 +30,20 @@ const options = [
   },
 ] as const;
 
-export function AddCvSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function AddCvSheet({
+  open,
+  onClose,
+  exclude = [],
+}: {
+  open: boolean;
+  onClose: () => void;
+  exclude?: readonly string[];
+}) {
   const navigate = useNavigate();
   const t = useT();
   if (!open) return null;
+  const shown = options.filter((o) => !exclude.includes(o.mode));
+
 
   return (
     <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={t("nav.addCv")}>
