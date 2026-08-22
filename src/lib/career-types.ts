@@ -52,6 +52,13 @@ export type CvDoc = {
   jobId?: string;
   updatedAt: string;
   score: number;
+  /** Id of the CV this version was derived from. */
+  parentId?: string;
+  /** Base name used when numbering duplicates. */
+  baseName?: string;
+  createdAt?: string;
+  /** Content snapshot for tailored copies; master reads from state.masterCv. */
+  data?: MasterCv;
 };
 
 export type Job = {
