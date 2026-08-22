@@ -315,5 +315,9 @@ export default makeBundle({
     qExtraPlaceholder: "مشاريع، عمل تطوعي، دورات",
 
     workingSubtext: "جارٍ تنظيم الأقسام والتواريخ والمهارات — لم يُحفظ شيء بعد",
+    templateStepTitle: "اختر قالبًا لسيرتك",
+    templateStepHint: "يمكنك تغييره لاحقًا في أي وقت.",
+    templateStepCta: "أنشئ السيرة الذاتية",
+
   },
 });
