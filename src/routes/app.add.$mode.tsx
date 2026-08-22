@@ -9,7 +9,7 @@ import {
   PenLine,
   ShieldCheck,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
