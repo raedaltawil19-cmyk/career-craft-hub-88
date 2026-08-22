@@ -1,17 +1,15 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
-  Check,
   ClipboardType,
   FileUp,
   Linkedin,
   Loader2,
   PenLine,
-  ShieldCheck,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
-import { ErrorState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
+import { ErrorState, Eyebrow, Panel } from "@/components/ui-bits";
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { MasterCv } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
