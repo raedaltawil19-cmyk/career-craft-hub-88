@@ -5,6 +5,7 @@ import { useI18n, useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { TemplateGallery } from "@/components/template-gallery";
+import { CvLibrary } from "@/components/cv-library";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
