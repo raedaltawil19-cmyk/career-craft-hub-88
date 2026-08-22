@@ -217,6 +217,12 @@ export default makeBundle({
     prevTemplate: "القالب السابق",
     nextTemplate: "القالب التالي",
     addCvCta: "أضف سيرتي الذاتية",
+    intakeTitle: "الصق النص، أو أرفق ملفًا، أو استورد من LinkedIn، أو عبّئ نموذجًا لإنشاء سيرتك الذاتية",
+    intakeHint: "الصق نص سيرتك هنا، أو اضغط + لاختيار طريقة أخرى.",
+    intakePlaceholder: "الصق نص سيرتك الذاتية هنا…",
+    intakeCreate: "أنشئ سيرتي الذاتية",
+    intakeMore: "طرق أخرى لإضافة السيرة",
+
 
     improveGeneral: "تحسين السيرة الذاتية",
     improveGeneralDesc: "تحسينات عامة على الصياغة والترتيب",
