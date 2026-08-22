@@ -106,7 +106,7 @@ function HomePage() {
         </div>
 
 
-        <aside className="space-y-4 lg:sticky lg:top-6">
+        <aside className="hidden space-y-4 lg:block lg:sticky lg:top-6">
           
 
           <BigAction
