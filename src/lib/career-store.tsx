@@ -304,6 +304,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setApplicationStatus,
       toggleSavedJob,
       addTailoredCv,
+      duplicateCv,
+      deleteCv,
+      updateCvDoc,
       markAllNotificationsRead,
     }),
     [
