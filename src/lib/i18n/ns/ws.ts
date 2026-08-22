@@ -28,6 +28,12 @@ export default makeBundle({
     prevTemplate: "Previous template",
     nextTemplate: "Next template",
     addCvCta: "Add my CV",
+    intakeTitle: "Paste text, attach a file, import from LinkedIn or fill in a form to create your CV",
+    intakeHint: "Paste your CV text here, or press + for another way.",
+    intakePlaceholder: "Paste the text of your CV here…",
+    intakeCreate: "Create my CV",
+    intakeMore: "More ways to add a CV",
+
 
     improveGeneral: "Improve my CV",
     improveGeneralDesc: "General improvements to wording and structure",
