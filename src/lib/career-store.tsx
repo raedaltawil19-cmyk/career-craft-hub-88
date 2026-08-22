@@ -225,6 +225,52 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  /** Duplicate one CV version. Copies are numbered: "<base> — <copyLabel> 1". */
+  const duplicateCv = useCallback((id: string, copyLabel: string) => {
+    const newId = `cv-${Math.random().toString(36).slice(2, 8)}`;
+    setState((s) => {
+      const doc = s.docs.find((d) => d.id === id);
+      if (!doc) return s;
+      const base = doc.baseName ?? doc.name;
+      const prefix = `${base} — ${copyLabel} `;
+      const used = s.docs
+        .map((d) => (d.name.startsWith(prefix) ? Number(d.name.slice(prefix.length)) : 0))
+        .filter((n) => Number.isFinite(n) && n > 0);
+      const next = (used.length ? Math.max(...used) : 0) + 1;
+      const copy: CvDoc = {
+        ...doc,
+        id: newId,
+        name: `${prefix}${next}`,
+        baseName: base,
+        kind: "tailored",
+        parentId: doc.kind === "master" ? doc.id : (doc.parentId ?? doc.id),
+        createdAt: new Date().toISOString(),
+        updatedAt: "just now",
+        data: doc.data ?? (doc.kind === "master" && s.masterCv ? s.masterCv : doc.data),
+      };
+      const at = s.docs.findIndex((d) => d.id === id);
+      const docs = [...s.docs];
+      docs.splice(at + 1, 0, copy);
+      return { ...s, docs };
+    });
+    return newId;
+  }, []);
+
+  /** Remove a version and every version derived from it. */
+  const deleteCv = useCallback((id: string) => {
+    setState((s) => ({
+      ...s,
+      docs: s.docs.filter((d) => d.id !== id && d.parentId !== id),
+    }));
+  }, []);
+
+  const updateCvDoc = useCallback((id: string, patch: Partial<CvDoc>) => {
+    setState((s) => ({
+      ...s,
+      docs: s.docs.map((d) => (d.id === id ? { ...d, ...patch } : d)),
+    }));
+  }, []);
+
   const addTailoredCv = useCallback((doc: CvDoc) => {
     setState((s) => ({ ...s, docs: [doc, ...s.docs.filter((d) => d.id !== doc.id)] }));
   }, []);
