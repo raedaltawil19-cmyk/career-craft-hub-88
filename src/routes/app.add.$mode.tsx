@@ -12,6 +12,8 @@ import { useWorkspace } from "@/lib/career-store";
 import { ErrorState, Eyebrow, Panel } from "@/components/ui-bits";
 import { TemplateGallery } from "@/components/template-gallery";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
+import { INTAKE_TEXT_KEY } from "@/components/cv-intake";
+
 import { demoMasterCv, emptyMasterCv } from "@/lib/career-data";
 import type { CvTemplateId, MasterCv } from "@/lib/career-types";
 
