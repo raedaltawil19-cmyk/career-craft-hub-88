@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Eye } from "lucide-react";
 import type { CvTemplateId } from "@/lib/career-types";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
