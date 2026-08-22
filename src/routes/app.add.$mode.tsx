@@ -95,8 +95,6 @@ function TemplateStep({ draft }: { draft: MasterCv }) {
   return (
     <div className="space-y-4">
       <Panel>
-        <h2 className="display text-xl">{t("add.templateStepTitle")}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{t("add.templateStepHint")}</p>
         <div className="mt-3">
           <TemplateGallery value={tpl} onChange={setTpl} onPreview={setPreviewTpl} />
         </div>
