@@ -10,7 +10,7 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { AddCvSheet } from "./add-cv-sheet";
 import { useWorkspace } from "@/lib/career-store";
@@ -39,6 +39,22 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const unread = state.notifications.filter((n) => !n.read).length;
   const jobAlert = state.suggestions.some((s) => s.state === "accepted");
+
+  // Highlight the central "+" right after the user picks a template but has no CV yet.
+  const [ctaGlow, setCtaGlow] = useState(false);
+  const lastTemplate = useRef(state.template);
+  useEffect(() => {
+    if (state.template === lastTemplate.current) return;
+    lastTemplate.current = state.template;
+    if (state.masterCv) return;
+    setCtaGlow(true);
+    const id = window.setTimeout(() => setCtaGlow(false), 30_000);
+    return () => window.clearTimeout(id);
+  }, [state.template, state.masterCv]);
+
+  useEffect(() => {
+    if (state.masterCv) setCtaGlow(false);
+  }, [state.masterCv]);
 
   const isActive = (to: string, exact: boolean) =>
     exact ? pathname === to : pathname.startsWith(to);
@@ -154,9 +170,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
           <li className="flex justify-center">
             <button
-              onClick={() => setSheetOpen(true)}
+              onClick={() => {
+                setCtaGlow(false);
+                setSheetOpen(true);
+              }}
               aria-label={t("nav.addCv")}
-              className="-mt-7 grid size-15 place-items-center rounded-full bg-primary text-primary-foreground ring-4 ring-background transition-transform active:scale-95"
+              className={cn(
+                "-mt-7 grid size-15 place-items-center rounded-full bg-primary text-primary-foreground ring-4 ring-background transition-transform active:scale-95",
+                ctaGlow && "cta-glow",
+              )}
               style={{ boxShadow: "var(--shadow-lift)", width: "3.5rem", height: "3.5rem" }}
             >
               <Plus className="size-6" />
