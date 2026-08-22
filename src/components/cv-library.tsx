@@ -31,29 +31,31 @@ export function CvLibrary() {
               <Link
                 to="/app/cv/$docId"
                 params={{ docId: d.id }}
-                className="pressable grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-border-strong bg-card p-3 text-start hover:bg-muted"
+                className="pressable flex w-full flex-col gap-3 rounded-2xl border border-border-strong bg-card p-3 text-start hover:bg-muted"
               >
-                <span
-                  className="grid size-10 shrink-0 place-items-center rounded-xl text-white"
-                  style={{ background: d.kind === "master" ? "#ff6b6b" : "#574b90" }}
-                >
-                  <FileText className="size-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="flex items-center gap-2">
-                    <span className="truncate text-sm font-bold">{d.name}</span>
-                    {d.kind === "master" ? (
-                      <Tag tone="match">{t("cv.masterLabel")}</Tag>
-                    ) : null}
+                <span className="flex items-center gap-3">
+                  <span
+                    className="grid size-10 shrink-0 place-items-center rounded-xl text-white"
+                    style={{ background: d.kind === "master" ? "#ff6b6b" : "#574b90" }}
+                  >
+                    <FileText className="size-5" />
                   </span>
-                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">
-                    {parent
-                      ? t("cv.derivedFrom", { name: parent })
-                      : d.updatedAt}
-                    {kids ? ` · ${t("cv.versionsCount", { count: kids })}` : ""}
+                  <span className="min-w-0">
+                    <span className="flex items-center gap-2">
+                      <span className="truncate text-sm font-bold">{d.name}</span>
+                      {d.kind === "master" ? (
+                        <Tag tone="match">{t("cv.masterLabel")}</Tag>
+                      ) : null}
+                    </span>
+                    <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                      {parent
+                        ? t("cv.derivedFrom", { name: parent })
+                        : d.updatedAt}
+                      {kids ? ` · ${t("cv.versionsCount", { count: kids })}` : ""}
+                    </span>
                   </span>
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-xl bg-primary-soft px-3 py-1.5 text-xs font-bold text-primary">
+                <span className="flex w-full items-center justify-center gap-1 rounded-xl bg-primary-soft py-2.5 text-xs font-bold text-primary">
                   {t("cv.openAction")}
                   <ChevronRight className="size-4 rtl:rotate-180" aria-hidden />
                 </span>
