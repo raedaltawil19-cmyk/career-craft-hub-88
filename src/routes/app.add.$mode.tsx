@@ -180,8 +180,7 @@ function PasteFlow() {
     autoStarted.current = true;
     if (text.trim().length <= 60) return;
     setPhase("working");
-    const id = window.setTimeout(() => setPhase("review"), 1100);
-    return () => window.clearTimeout(id);
+    window.setTimeout(() => setPhase("review"), 1100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
