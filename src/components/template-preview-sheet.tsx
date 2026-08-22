@@ -38,39 +38,43 @@ export function TemplatePreviewSheet({
           </SheetTitle>
         </SheetHeader>
 
-        <div className="min-h-0 flex-1 overflow-y-auto bg-muted/40 p-4">
-          {current ? (
-            <div className="pointer-events-none select-none">
-              <CvPreview cv={blankCvFor(lang, current.id)} className="w-full" placeholder />
-            </div>
-          ) : null}
-        </div>
+        <div className="relative min-h-0 flex-1">
+          <div className="h-full overflow-y-auto bg-muted/40 p-4">
+            {current ? (
+              <div className="pointer-events-none select-none">
+                <CvPreview cv={blankCvFor(lang, current.id)} className="w-full" placeholder />
+              </div>
+            ) : null}
+          </div>
 
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 border-t border-border bg-card px-4 py-3">
           <button
             type="button"
             onClick={() => go(-1)}
             aria-label={t("ws.prevTemplate")}
-            className="pressable grid size-11 place-items-center rounded-full border border-border"
+            className="pressable absolute start-2 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-card/90 shadow-lift backdrop-blur"
           >
             <ChevronLeft className="size-5 rtl:rotate-180" aria-hidden />
           </button>
           <button
             type="button"
-            onClick={() => current && onSelect(current.id)}
-            className="pressable rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground"
-          >
-            {t("ws.useThisTemplate")}
-          </button>
-          <button
-            type="button"
             onClick={() => go(1)}
             aria-label={t("ws.nextTemplate")}
-            className="pressable grid size-11 place-items-center rounded-full border border-border"
+            className="pressable absolute end-2 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-card/90 shadow-lift backdrop-blur"
           >
             <ChevronRight className="size-5 rtl:rotate-180" aria-hidden />
           </button>
         </div>
+
+        <div className="border-t border-border bg-card px-4 py-3">
+          <button
+            type="button"
+            onClick={() => current && onSelect(current.id)}
+            className="pressable w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground"
+          >
+            {t("ws.useThisTemplate")}
+          </button>
+        </div>
+
       </SheetContent>
     </Sheet>
   );
