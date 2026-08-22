@@ -28,6 +28,12 @@ export default makeBundle({
     prevTemplate: "Previous template",
     nextTemplate: "Next template",
     addCvCta: "Add my CV",
+    intakeTitle: "Paste text, attach a file, import from LinkedIn or fill in a form to create your CV",
+    intakeHint: "Paste your CV text here, or press + for another way.",
+    intakePlaceholder: "Paste the text of your CV here…",
+    intakeCreate: "Create my CV",
+    intakeMore: "More ways to add a CV",
+
 
     improveGeneral: "Improve my CV",
     improveGeneralDesc: "General improvements to wording and structure",
@@ -123,6 +129,12 @@ export default makeBundle({
     prevTemplate: "Föregående mall",
     nextTemplate: "Nästa mall",
     addCvCta: "Lägg till mitt CV",
+    intakeTitle: "Klistra in text, bifoga en fil, importera från LinkedIn eller fyll i ett formulär för att skapa ditt CV",
+    intakeHint: "Klistra in ditt CV här, eller tryck på + för ett annat sätt.",
+    intakePlaceholder: "Klistra in texten från ditt CV här…",
+    intakeCreate: "Skapa mitt CV",
+    intakeMore: "Fler sätt att lägga till CV",
+
 
     improveGeneral: "Förbättra mitt CV",
     improveGeneralDesc: "Allmänna förbättringar av formuleringar och struktur",
@@ -217,6 +229,12 @@ export default makeBundle({
     prevTemplate: "القالب السابق",
     nextTemplate: "القالب التالي",
     addCvCta: "أضف سيرتي الذاتية",
+    intakeTitle: "الصق النص، أو أرفق ملفًا، أو استورد من LinkedIn، أو عبّئ نموذجًا لإنشاء سيرتك الذاتية",
+    intakeHint: "الصق نص سيرتك هنا، أو اضغط + لاختيار طريقة أخرى.",
+    intakePlaceholder: "الصق نص سيرتك الذاتية هنا…",
+    intakeCreate: "أنشئ سيرتي الذاتية",
+    intakeMore: "طرق أخرى لإضافة السيرة",
+
 
     improveGeneral: "تحسين السيرة الذاتية",
     improveGeneralDesc: "تحسينات عامة على الصياغة والترتيب",

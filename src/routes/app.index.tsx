@@ -1,11 +1,10 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, ChevronRight, Compass, FilePlus2, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
-import { useI18n, useT } from "@/lib/i18n";
+import { Check, ChevronRight, Compass, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
-import { CvPreview } from "@/components/cv-preview";
-import { TemplateGallery } from "@/components/template-gallery";
 import { CvLibrary } from "@/components/cv-library";
+import { CvIntake } from "@/components/cv-intake";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
@@ -15,10 +14,9 @@ import {
   SimilarJobsPanel,
 } from "@/components/career-suggestions-panel";
 import { Eyebrow } from "@/components/ui-bits";
-import { AddCvSheet } from "@/components/add-cv-sheet";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
-import { blankCvFor } from "@/lib/sample-cv";
 import type { CvTemplateId } from "@/lib/career-types";
+
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
@@ -73,8 +71,6 @@ function HomePage() {
         </h1>
       </header>
 
-      <TemplateGallery value={template} onChange={setTemplate} onPreview={setPreviewTpl} />
-
       <TemplatePreviewSheet
         templateId={previewTpl}
         onOpenChange={(o) => !o && setPreviewTpl(null)}
@@ -85,26 +81,12 @@ function HomePage() {
         }}
       />
 
-      {cv ? null : <div className="hidden lg:block"><AddCvTile /></div>}
-
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-        <div className="space-y-5">
-          {cv ? (
-            <CvLibrary />
-          ) : (
-            <section aria-label={t("ws.tplPreviewTitle")} className="hidden lg:block">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-                <h2 className="display text-xl sm:text-2xl">{t("ws.tplPreviewTitle")}</h2>
-              </div>
-              <p className="mt-1 inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
-                {t("ws.previewOnlyBadge")}
-              </p>
-              <div className="relative mt-3 rounded-2xl">
-                <EmptyTemplate template={template} />
-              </div>
-            </section>
-          )}
+        <div className="space-y-7">
+          {state.docs.length ? <CvLibrary /> : null}
+          <CvIntake />
         </div>
+
 
 
         <aside className="hidden space-y-4 lg:block lg:sticky lg:top-6">
@@ -260,37 +242,4 @@ function BigAction({
   );
 }
 
-function EmptyTemplate({ template }: { template: CvTemplateId }) {
-  const { lang } = useI18n();
-  const sample = blankCvFor(lang, template);
-
-  return (
-    <div className="relative w-full">
-      <CvPreview cv={sample} className="w-full" placeholder />
-    </div>
-  );
-}
-
-function AddCvTile() {
-  const t = useT();
-  const [sheetOpen, setSheetOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setSheetOpen(true)}
-        className="pressable flex w-full flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-primary/40 bg-primary-soft px-4 py-6 text-center text-primary hover:bg-primary/10"
-      >
-        <span className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-center text-sm font-bold text-primary-foreground">
-          <FilePlus2 className="size-5" />
-          {t("ws.addCvCta")}
-        </span>
-        <span className="text-sm text-muted-foreground">{t("ws.emptyPreviewHint")}</span>
-      </button>
-
-      <AddCvSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
-    </>
-  );
-}
 

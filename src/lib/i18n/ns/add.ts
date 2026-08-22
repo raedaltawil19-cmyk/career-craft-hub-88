@@ -105,6 +105,10 @@ export default makeBundle({
     qExtraPlaceholder: "Projects, volunteering, courses",
 
     workingSubtext: "Structuring sections, dates and skills — nothing is saved yet",
+    templateStepTitle: "Choose a template for your CV",
+    templateStepHint: "You can change it at any time.",
+    templateStepCta: "Create the CV",
+
   },
   sv: {
     headTitle: "Lägg till ett CV — Smart CV",
@@ -210,6 +214,10 @@ export default makeBundle({
     qExtraPlaceholder: "Projekt, volontärarbete, kurser",
 
     workingSubtext: "Strukturerar avsnitt, datum och kompetenser — inget sparas ännu",
+    templateStepTitle: "Välj en mall för ditt CV",
+    templateStepHint: "Du kan byta när som helst.",
+    templateStepCta: "Skapa CV:t",
+
   },
   ar: {
     headTitle: "إضافة سيرة ذاتية — Smart CV",
@@ -315,5 +323,9 @@ export default makeBundle({
     qExtraPlaceholder: "مشاريع، عمل تطوعي، دورات",
 
     workingSubtext: "جارٍ تنظيم الأقسام والتواريخ والمهارات — لم يُحفظ شيء بعد",
+    templateStepTitle: "اختر قالبًا لسيرتك",
+    templateStepHint: "يمكنك تغييره لاحقًا في أي وقت.",
+    templateStepCta: "أنشئ السيرة الذاتية",
+
   },
 });
