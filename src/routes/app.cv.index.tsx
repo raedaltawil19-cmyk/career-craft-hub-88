@@ -58,46 +58,46 @@ function MasterCvPage() {
         }
       />
 
+      <Panel>
+        <h2 className="eyebrow">{t("cv.templateLabel")}</h2>
+        <div className="mt-2.5 grid grid-cols-3 gap-2">
+          {templates.map((tpl) => (
+            <button
+              key={tpl.id}
+              onClick={() => updateMasterCv({ template: tpl.id })}
+              className={cn(
+                "tap rounded-xl border px-2 text-sm font-medium",
+                cv.template === tpl.id
+                  ? "border-primary bg-primary-soft text-primary"
+                  : "border-border text-muted-foreground hover:bg-muted",
+              )}
+            >
+              {tpl.label}
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button
+            onClick={() => window.print()}
+            className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
+          >
+            <Printer className="size-4" /> {t("cv.print")}
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
+          >
+            <Download className="size-4" /> {t("cv.pdf")}
+          </button>
+        </div>
+      </Panel>
+
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="order-2 lg:order-1">
           <CvPreview cv={cv} />
         </div>
 
         <div className="order-1 space-y-4 lg:order-2">
-          <Panel>
-            <h2 className="eyebrow">{t("cv.templateLabel")}</h2>
-            <div className="mt-2.5 grid grid-cols-3 gap-2">
-              {templates.map((tpl) => (
-                <button
-                  key={tpl.id}
-                  onClick={() => updateMasterCv({ template: tpl.id })}
-                  className={cn(
-                    "tap rounded-xl border px-2 text-sm font-medium",
-                    cv.template === tpl.id
-                      ? "border-primary bg-primary-soft text-primary"
-                      : "border-border text-muted-foreground hover:bg-muted",
-                  )}
-                >
-                  {tpl.label}
-                </button>
-              ))}
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <button
-                onClick={() => window.print()}
-                className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
-              >
-                <Printer className="size-4" /> {t("cv.print")}
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
-              >
-                <Download className="size-4" /> {t("cv.pdf")}
-              </button>
-            </div>
-          </Panel>
-
           <Panel>
             <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
               <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
