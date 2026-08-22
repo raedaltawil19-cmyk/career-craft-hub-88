@@ -1,8 +1,17 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { Download, FileText, Pencil, Printer, Sparkles } from "lucide-react";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { Compass, Download, FileText, LayoutTemplate, Pencil, Printer, Sparkles, Target } from "lucide-react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
+import { ImproveWindow } from "@/components/improve-window";
+import { TailorWindow } from "@/components/tailor-window";
+import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
+import {
+  CareerSuggestionsPanel,
+  SimilarJobsPanel,
+} from "@/components/career-suggestions-panel";
+import type { CvTemplateId } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -17,12 +26,26 @@ export const Route = createFileRoute("/app/cv/")({
   component: MasterCvPage,
 });
 
-const templateIds = ["editorial", "compact", "classic"] as const;
+type WindowKind = "improve" | "tailor" | null;
 
 function MasterCvPage() {
   const t = useT();
-  const { state, updateMasterCv } = useWorkspace();
+  const navigate = useNavigate();
+  const {
+    state,
+    jobs,
+    careers,
+    updateMasterCv,
+    setTemplate,
+    applySuggestion,
+    setSuggestionState,
+  } = useWorkspace();
   const cv = state.masterCv;
+
+  const [openWindow, setOpenWindow] = useState<WindowKind>(null);
+  const [tailorPreset, setTailorPreset] = useState<string | undefined>(undefined);
+  const [showCareers, setShowCareers] = useState(false);
+  const [previewTpl, setPreviewTpl] = useState<CvTemplateId | null>(null);
 
   const templates = [
     { id: "editorial", label: t("cv.templateEditorial") },
@@ -41,6 +64,7 @@ function MasterCvPage() {
   }
 
   const pending = state.suggestions.filter((s) => s.state === "pending").length;
+  const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
     <div className="space-y-5">
@@ -58,39 +82,86 @@ function MasterCvPage() {
         }
       />
 
-      <Panel>
-        <h2 className="eyebrow">{t("cv.templateLabel")}</h2>
-        <div className="mt-2.5 grid grid-cols-3 gap-2">
-          {templates.map((tpl) => (
+      {/* Mobile-only action bar sitting above the A4 template */}
+      <div className="grid grid-cols-2 gap-2.5 lg:hidden">
+        <ActionTile
+          icon={<Sparkles className="size-5" />}
+          label={t("ws.improveGeneral")}
+          tone="#ff6b6b"
+          onClick={() => setOpenWindow("improve")}
+        />
+        <ActionTile
+          icon={<Target className="size-5" />}
+          label={t("ws.tailorJob")}
+          tone="#574b90"
+          onClick={() => {
+            setTailorPreset(undefined);
+            setOpenWindow("tailor");
+          }}
+        />
+        <ActionTile
+          icon={<Compass className="size-5" />}
+          label={t("ws.careersTitle")}
+          tone="#12946a"
+          onClick={() => setShowCareers((v) => !v)}
+        />
+        <ActionTile
+          icon={<LayoutTemplate className="size-5" />}
+          label={t("ws.chooseTemplate")}
+          tone="#1f6feb"
+          onClick={() => setPreviewTpl(cv.template)}
+        />
+      </div>
+
+      {showCareers ? (
+        <div className="space-y-4 lg:hidden">
+          <CareerSuggestionsPanel
+            careers={careers}
+            onOpenJobs={() => navigate({ to: "/app/jobs" })}
+            onTailor={(career) => {
+              setTailorPreset(career.title);
+              setOpenWindow("tailor");
+            }}
+          />
+          <SimilarJobsPanel jobs={topJobs} onOpenJobs={() => navigate({ to: "/app/jobs" })} />
+        </div>
+      ) : null}
+
+      <div className="hidden lg:block">
+        <Panel>
+          <h2 className="eyebrow">{t("cv.templateLabel")}</h2>
+          <div className="mt-2.5 grid grid-cols-3 gap-2">
+            {templates.map((tpl) => (
+              <button
+                key={tpl.id}
+                onClick={() => updateMasterCv({ template: tpl.id })}
+                className={cn(
+                  "tap rounded-xl border px-2 text-sm font-medium",
+                  cv.template === tpl.id
+                    ? "border-primary bg-primary-soft text-primary"
+                    : "border-border text-muted-foreground hover:bg-muted",
+                )}
+              >
+                {tpl.label}
+              </button>
+            ))}
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
             <button
-              key={tpl.id}
-              onClick={() => updateMasterCv({ template: tpl.id })}
-              className={cn(
-                "tap rounded-xl border px-2 text-sm font-medium",
-                cv.template === tpl.id
-                  ? "border-primary bg-primary-soft text-primary"
-                  : "border-border text-muted-foreground hover:bg-muted",
-              )}
+              onClick={() => window.print()}
+              className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
             >
-              {tpl.label}
+              <Printer className="size-4" /> {t("cv.print")}
             </button>
-          ))}
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <button
-            onClick={() => window.print()}
-            className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
-          >
-            <Printer className="size-4" /> {t("cv.print")}
-          </button>
-          <button
-            onClick={() => window.print()}
-            className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
-          >
-            <Download className="size-4" /> {t("cv.pdf")}
-          </button>
-        </div>
-      </Panel>
+            <button
+              onClick={() => window.print()}
+              className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium hover:bg-muted"
+            >
+              <Download className="size-4" /> {t("cv.pdf")}
+            </button>
+          </div>
+        </Panel>
+      </div>
 
       <div className="mx-auto w-full max-w-3xl">
         <CvPreview cv={cv} />
@@ -141,6 +212,59 @@ function MasterCvPage() {
           </ul>
         </Panel>
       </div>
+
+      <TemplatePreviewSheet
+        templateId={previewTpl}
+        onOpenChange={(o) => !o && setPreviewTpl(null)}
+        onNavigate={setPreviewTpl}
+        onSelect={(id) => {
+          setTemplate(id);
+          setPreviewTpl(null);
+        }}
+      />
+
+      {openWindow === "improve" ? (
+        <ImproveWindow
+          suggestions={state.suggestions}
+          onApply={applySuggestion}
+          onReject={(id) => setSuggestionState(id, "rejected")}
+          onClose={() => setOpenWindow(null)}
+        />
+      ) : null}
+
+      {openWindow === "tailor" ? (
+        <TailorWindow
+          suggestions={state.suggestions}
+          presetTitle={tailorPreset}
+          onApply={applySuggestion}
+          onReject={(id) => setSuggestionState(id, "rejected")}
+          onClose={() => setOpenWindow(null)}
+        />
+      ) : null}
     </div>
+  );
+}
+
+function ActionTile({
+  icon,
+  label,
+  tone,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  tone: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="pressable flex min-h-20 flex-col items-start justify-between gap-2 rounded-2xl p-3 text-start text-white"
+      style={{ background: tone, boxShadow: "var(--shadow-press)" }}
+    >
+      <span className="grid size-9 place-items-center rounded-xl bg-white/20">{icon}</span>
+      <span className="text-[13px] font-bold leading-tight">{label}</span>
+    </button>
   );
 }

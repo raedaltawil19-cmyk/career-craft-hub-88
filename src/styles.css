@@ -298,3 +298,20 @@
   min-height: 44px;
   min-width: 44px;
 }
+
+/* Attention pulse for the central "+" action after picking a template */
+@keyframes cta-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-primary) 55%, transparent);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 12px color-mix(in oklch, var(--color-primary) 0%, transparent);
+  }
+}
+
+@utility cta-glow {
+  animation: cta-glow 1.4s ease-in-out infinite;
+}
