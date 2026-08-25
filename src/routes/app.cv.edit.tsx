@@ -227,6 +227,13 @@ function SectionsPanel() {
         </ul>
       </Panel>
 
+      <AddExperienceDialog
+        open={addingExperience}
+        onClose={() => setAddingExperience(false)}
+        onSave={(entry) => updateMasterCv({ experience: [entry, ...cv.experience] })}
+      />
+
+
       <Panel>
         <h2 className="text-base font-semibold">{t("cv.skillsTitle")}</h2>
         <div className="mt-2 flex flex-wrap gap-1.5">
