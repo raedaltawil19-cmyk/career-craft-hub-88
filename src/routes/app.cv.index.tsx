@@ -211,15 +211,13 @@ function MasterCvPage() {
         />
       ) : null}
 
-      {/* Mobile-only floating action bar above the bottom navigation */}
-      <div
-        className="fixed inset-x-0 z-40 px-3 lg:hidden"
-        style={{ bottom: "calc(4.5rem + env(safe-area-inset-bottom))" }}
-      >
+      {/* Mobile-only floating side rail */}
+      <div className="fixed end-2 top-1/2 z-40 -translate-y-1/2 lg:hidden">
         <div
-          className="mx-auto grid max-w-md grid-cols-4 gap-1 rounded-3xl border border-border bg-card/90 p-1.5 backdrop-blur"
+          className="grid w-16 grid-cols-1 gap-1 rounded-3xl border border-border bg-card/90 p-1.5 backdrop-blur"
           style={{ boxShadow: "var(--shadow-lift)" }}
         >
+
           <BarAction
             icon={<Sparkles className="size-4" />}
             label={t("ws.barImprove")}
