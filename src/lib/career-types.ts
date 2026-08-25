@@ -17,12 +17,22 @@ export type EducationEntry = {
   note?: string;
 };
 
+export type ReferenceEntry = {
+  id: string;
+  name: string;
+  relation: string;
+  company: string;
+  email: string;
+  phone: string;
+};
+
 export type ProjectEntry = {
   id: string;
   name: string;
   description: string;
   year: string;
 };
+
 
 export type MasterCv = {
   name: string;
@@ -39,6 +49,7 @@ export type MasterCv = {
   tools: string[];
   certifications: string[];
   projects: ProjectEntry[];
+  references?: ReferenceEntry[];
   volunteer: string[];
   updatedAt: string;
   template: CvTemplateId;
