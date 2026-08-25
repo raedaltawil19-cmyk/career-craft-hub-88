@@ -49,6 +49,7 @@ export type MasterCv = {
   tools: string[];
   certifications: string[];
   projects: ProjectEntry[];
+  references?: ReferenceEntry[];
   volunteer: string[];
   updatedAt: string;
   template: CvTemplateId;
