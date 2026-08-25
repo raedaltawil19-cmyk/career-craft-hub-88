@@ -124,6 +124,7 @@ function SectionsPanel() {
   const cv = state.masterCv!;
   const [editingSummary, setEditingSummary] = useState(false);
   const [summary, setSummary] = useState(cv.summary);
+  const [addingExperience, setAddingExperience] = useState(false);
 
   const move = (index: number, dir: -1 | 1) => {
     const next = [...cv.experience];
