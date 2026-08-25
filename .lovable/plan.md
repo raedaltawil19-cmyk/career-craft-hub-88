@@ -45,6 +45,6 @@
 - إضافة `references: ReferenceEntry[]` إلى `MasterCv` في `src/lib/career-types.ts`، وحقل مستوى للغات (`languages` تصبح كائنات `{ name, level }` أو تُحفظ كنص «اللغة — المستوى» لتفادي كسر القوالب؛ سنختار الشكل الذي لا يكسر `cv-preview.tsx`).
 - تحديث `src/lib/sample-cv.ts` و`blankCvFor` لتشمل الحقول الجديدة.
 - تعميم `add-experience-dialog.tsx` إلى مجموعة نوافذ في `src/components/section-dialogs/` (profile, experience, education, skills, languages, references) مع قشرة مشتركة `SectionDialog` تحمل نفس التصميم الحالي.
-- إعادة بناء `SectionsPanel` في `src/routes/app.cv.edit.tsx` لتصبح ست بطاقات + بطاقة الأقسام الأخرى، كل بطاقة بزر قلم.
+- إعادة بناء `SectionsPanel` في `src/routes/app.cv.edit.tsx` لتصبح سبع بطاقات + بطاقة الأقسام الأخرى، كل بطاقة بزر قلم.
 - إضافة مفاتيح ترجمة جديدة (EN/SV/AR) في `src/lib/i18n/ns/cv.ts` لكل التسميات والحقول ورسائل التحقق.
 - عرض قسم الريفرنس واللغات في `src/components/cv-preview.tsx` بما يناسب كل قالب.
