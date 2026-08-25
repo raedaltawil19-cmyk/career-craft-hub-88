@@ -446,7 +446,7 @@ export function EducationDialog({
         school: x.school.trim(),
         start: x.start.trim(),
         end: x.end.trim(),
-        note: x.note?.trim() || undefined,
+        ...(x.note?.trim() ? { note: x.note.trim() } : {}),
       })),
     });
     onClose();
