@@ -139,6 +139,26 @@ export function CvPreview({
           </Section>
         ) : null}
 
+        {cv.references?.length ? (
+          <Section title={t("cv.referencesSection")}>
+            <ul className="space-y-2">
+              {cv.references.map((r) => (
+                <li key={r.id}>
+                  <p className="text-sm font-semibold">
+                    {r.name}
+                    {r.relation ? (
+                      <span className="font-normal text-muted-foreground"> · {r.relation}</span>
+                    ) : null}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {[r.company, r.email, r.phone].filter(Boolean).join("  ·  ")}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
         {cv.certifications.length || cv.volunteer.length ? (
           <Section title={t("cv.additionalSection")}>
             <ul className="space-y-1 text-sm text-foreground/85">
