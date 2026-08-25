@@ -17,12 +17,22 @@ export type EducationEntry = {
   note?: string;
 };
 
+export type ReferenceEntry = {
+  id: string;
+  name: string;
+  relation: string;
+  company: string;
+  email: string;
+  phone: string;
+};
+
 export type ProjectEntry = {
   id: string;
   name: string;
   description: string;
   year: string;
 };
+
 
 export type MasterCv = {
   name: string;
