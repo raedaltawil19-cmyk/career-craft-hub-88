@@ -1,9 +1,10 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Pencil, Sparkles, Undo2, X } from "lucide-react";
+import { ArrowLeft, Check, Pencil, Plus, Sparkles, Undo2, X } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
+import { AddExperienceDialog } from "@/components/add-experience-dialog";
 import { EmptyState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
 import type { Suggestion } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
@@ -123,6 +124,7 @@ function SectionsPanel() {
   const cv = state.masterCv!;
   const [editingSummary, setEditingSummary] = useState(false);
   const [summary, setSummary] = useState(cv.summary);
+  const [addingExperience, setAddingExperience] = useState(false);
 
   const move = (index: number, dir: -1 | 1) => {
     const next = [...cv.experience];
@@ -183,7 +185,15 @@ function SectionsPanel() {
       </Panel>
 
       <Panel>
-        <h2 className="text-base font-semibold">{t("cv.experienceTitle")}</h2>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+          <h2 className="min-w-0 text-base font-semibold">{t("cv.experienceTitle")}</h2>
+          <button
+            onClick={() => setAddingExperience(true)}
+            className="tap inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border px-3 text-sm font-semibold hover:border-primary/40 hover:bg-primary-soft/60"
+          >
+            <Plus className="size-4" /> {t("cv.addExperience")}
+          </button>
+        </div>
         <ul className="mt-2 space-y-2">
           {cv.experience.map((e, i) => (
             <li
@@ -216,6 +226,13 @@ function SectionsPanel() {
           ))}
         </ul>
       </Panel>
+
+      <AddExperienceDialog
+        open={addingExperience}
+        onClose={() => setAddingExperience(false)}
+        onSave={(entry) => updateMasterCv({ experience: [entry, ...cv.experience] })}
+      />
+
 
       <Panel>
         <h2 className="text-base font-semibold">{t("cv.skillsTitle")}</h2>
