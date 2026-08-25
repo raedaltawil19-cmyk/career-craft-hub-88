@@ -183,7 +183,15 @@ function SectionsPanel() {
       </Panel>
 
       <Panel>
-        <h2 className="text-base font-semibold">{t("cv.experienceTitle")}</h2>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+          <h2 className="min-w-0 text-base font-semibold">{t("cv.experienceTitle")}</h2>
+          <button
+            onClick={() => setAddingExperience(true)}
+            className="tap inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border px-3 text-sm font-semibold hover:border-primary/40 hover:bg-primary-soft/60"
+          >
+            <Plus className="size-4" /> {t("cv.addExperience")}
+          </button>
+        </div>
         <ul className="mt-2 space-y-2">
           {cv.experience.map((e, i) => (
             <li
