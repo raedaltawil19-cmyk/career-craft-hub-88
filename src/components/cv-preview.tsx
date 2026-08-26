@@ -139,6 +139,16 @@ export function CvPreview({
           </Section>
         ) : null}
 
+        {cv.certifications.length || cv.volunteer.length ? (
+          <Section title={t("cv.additionalSection")}>
+            <ul className="space-y-1 text-sm text-foreground/85">
+              {[...cv.certifications, ...cv.volunteer].map((x, i) => (
+                <li key={i}>{x}</li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+
         {cv.references?.length ? (
           <Section title={t("cv.referencesSection")}>
             <ul className="space-y-2">
@@ -154,16 +164,6 @@ export function CvPreview({
                     {[r.company, r.email, r.phone].filter(Boolean).join("  ·  ")}
                   </p>
                 </li>
-              ))}
-            </ul>
-          </Section>
-        ) : null}
-
-        {cv.certifications.length || cv.volunteer.length ? (
-          <Section title={t("cv.additionalSection")}>
-            <ul className="space-y-1 text-sm text-foreground/85">
-              {[...cv.certifications, ...cv.volunteer].map((x, i) => (
-                <li key={i}>{x}</li>
               ))}
             </ul>
           </Section>

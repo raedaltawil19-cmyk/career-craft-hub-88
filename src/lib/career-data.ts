@@ -115,6 +115,16 @@ export const demoMasterCv: MasterCv = {
     },
   ],
   volunteer: ["Mentor at Design Sthlm Collective (2020–present)"],
+  references: [
+    {
+      id: "ref-1",
+      name: "Erik Lindqvist",
+      relation: "Former design director",
+      company: "Northlane Fintech",
+      email: "erik.lindqvist@example.com",
+      phone: "+46 70 123 45 67",
+    },
+  ],
   updatedAt: new Date().toISOString(),
   template: "editorial",
   version: 4,
