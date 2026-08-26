@@ -332,10 +332,23 @@ function BarAction({
   active?: boolean;
   onClick: () => void;
 }) {
+  const [touchHint, setTouchHint] = useState(false);
+  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Touch screens have no hover: tapping reveals the label briefly while
+  // still firing the action.
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== "touch") return;
+    if (hintTimer.current) clearTimeout(hintTimer.current);
+    setTouchHint(true);
+    hintTimer.current = setTimeout(() => setTouchHint(false), 2200);
+  };
+
   return (
     <button
       type="button"
       onClick={onClick}
+      onPointerDown={onPointerDown}
       title={label}
       aria-label={label}
       className="group relative grid size-11 place-items-center rounded-2xl transition-colors active:scale-[0.97]"
@@ -347,7 +360,13 @@ function BarAction({
       >
         {icon}
       </span>
-      <span className="pointer-events-none absolute end-full top-1/2 me-2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 text-[11px] font-bold text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+      <span
+        className={cn(
+          "pointer-events-none absolute end-full top-1/2 me-2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 text-[11px] font-bold text-background opacity-0 shadow-lg transition-opacity duration-150",
+          "group-hover:opacity-100",
+          touchHint && "opacity-100",
+        )}
+      >
         {label}
       </span>
     </button>
