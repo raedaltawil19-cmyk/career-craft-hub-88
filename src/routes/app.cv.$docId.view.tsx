@@ -1,10 +1,11 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Compass,
   Copy,
   Download,
   FileText,
+  GripVertical,
   LayoutTemplate,
   Pencil,
   Printer,
@@ -24,6 +25,7 @@ import {
 } from "@/components/career-suggestions-panel";
 import type { CvTemplateId } from "@/lib/career-types";
 import { useT } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cv/$docId/view")({
   head: () => ({
