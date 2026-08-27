@@ -55,6 +55,28 @@ function TailorPage() {
     );
   }
 
+  /** Create (or reuse) the tracker entry for this job and return its id. */
+  const trackApplication = (status: ApplicationStatus) => {
+    const existing = state.applications.find((a) => a.jobId === job.id);
+    if (existing) return existing.id;
+    const id = `app-${job.id}`;
+    const today = new Date().toISOString().slice(0, 10);
+    addApplication({
+      id,
+      jobId: job.id,
+      company: job.company,
+      position: job.title,
+      link: job.applyUrl,
+      appliedDate: today,
+      cvUsed: `${job.company} — ${job.title}`,
+      status,
+      notes: "",
+      timeline: [{ id: `ev-${id}`, date: today, label: status }],
+    });
+    return id;
+  };
+
+
   const changes = [
     {
       id: "c1",
