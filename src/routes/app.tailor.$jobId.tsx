@@ -1,11 +1,14 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Loader2, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Loader2, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
+import { ShareCvMenu } from "@/components/share-cv-menu";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import type { ApplicationStatus } from "@/lib/career-types";
+
 
 export const Route = createFileRoute("/app/tailor/$jobId")({
   head: () => ({
@@ -24,7 +27,7 @@ function TailorPage() {
   const t = useT();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
-  const { jobs, state, addTailoredCv } = useWorkspace();
+  const { jobs, state, addTailoredCv, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
   const cv = state.masterCv;
   const [step, setStep] = useState<Step>(0);
@@ -51,6 +54,28 @@ function TailorPage() {
       />
     );
   }
+
+  /** Create (or reuse) the tracker entry for this job and return its id. */
+  const trackApplication = (status: ApplicationStatus) => {
+    const existing = state.applications.find((a) => a.jobId === job.id);
+    if (existing) return existing.id;
+    const id = `app-${job.id}`;
+    const today = new Date().toISOString().slice(0, 10);
+    addApplication({
+      id,
+      jobId: job.id,
+      company: job.company,
+      position: job.title,
+      link: job.applyUrl,
+      appliedDate: today,
+      cvUsed: `${job.company} — ${job.title}`,
+      status,
+      notes: "",
+      timeline: [{ id: `ev-${id}`, date: today, label: status }],
+    });
+    return id;
+  };
+
 
   const changes = [
     {
@@ -246,8 +271,9 @@ function TailorPage() {
                 name: `${job.company} — ${job.title}`,
                 kind: "tailored",
                 jobId: job.id,
-                updatedAt: "just now",
+                updatedAt: new Date().toISOString(),
                 score: Math.min(96, job.match + 6),
+                data: cv,
               });
               setStep(3);
             }}
@@ -265,24 +291,34 @@ function TailorPage() {
             <p className="mt-1 text-sm text-muted-foreground">
               {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Link
-                to="/app/applications"
-                className="tap inline-flex items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <a
+                href={job.applyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackApplication("Applied")}
+                className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                {t("tailor.trackApplication")}
-              </Link>
+                {t("tailor.applyNow")}
+                <ExternalLink className="size-4" aria-hidden />
+              </a>
               <button
-                onClick={() => navigate({ to: "/app/cv" })}
+                type="button"
+                onClick={() => {
+                  const id = trackApplication("Saved");
+                  navigate({ to: "/app/applications/$appId", params: { appId: id } });
+                }}
                 className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
               >
-                {t("tailor.allVersions")}
+                {t("tailor.trackApplication")}
               </button>
+              <ShareCvMenu cv={cv} name={`${job.company} — ${job.title}`} />
             </div>
           </Panel>
           <CvPreview cv={cv} highlight={job.matchingSkills} />
         </div>
       ) : null}
+
     </div>
   );
 }

@@ -3,16 +3,22 @@ import {
   ArrowLeft,
   Bookmark,
   BookmarkCheck,
+  ChevronRight,
   CircleAlert,
   CircleCheck,
   CircleDashed,
+  ExternalLink,
+  FileText,
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
+import { ShareCvMenu } from "@/components/share-cv-menu";
+import { formatEdited } from "@/lib/cv-share";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
+
 
 export const Route = createFileRoute("/app/jobs/$jobId")({
   head: () => ({
@@ -29,11 +35,15 @@ const tabs = ["Overview", "Analysis", "Match"] as const;
 
 function JobDetailPage() {
   const t = useT();
+  const { locale } = useI18n();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
   const { jobs, state, toggleSavedJob, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
+  const jobDoc = state.docs.find((d) => d.jobId === jobId);
+  const jobCv = jobDoc?.data ?? state.masterCv;
   const [tab, setTab] = useState<(typeof tabs)[number]>("Overview");
+
 
   const tabLabels: Record<(typeof tabs)[number], string> = {
     Overview: t("jobs.tabOverview"),
@@ -125,6 +135,43 @@ function JobDetailPage() {
           </button>
         ) : null}
       </div>
+
+      {jobDoc && jobCv ? (
+        <Panel className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-white">
+            <FileText className="size-5" aria-hidden />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-bold">{jobDoc.name}</span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {t("cv.lastEdited", { date: formatEdited(jobDoc.updatedAt, locale) })}
+            </span>
+          </span>
+          <span className="flex items-center gap-2">
+            <ShareCvMenu cv={jobCv} name={jobDoc.name} compact />
+            <Link
+              to="/app/cv/$docId/view"
+              params={{ docId: jobDoc.id }}
+              aria-label={t("cv.openAction")}
+              className="tap grid size-10 place-items-center rounded-xl bg-primary-soft text-primary"
+            >
+              <ChevronRight className="size-5 rtl:rotate-180" aria-hidden />
+            </Link>
+          </span>
+        </Panel>
+      ) : null}
+
+      <a
+        href={job.applyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="tap inline-flex items-center gap-2 rounded-xl bg-accent px-4 text-sm font-semibold text-white"
+      >
+        {t("tailor.applyNow")}
+        <ExternalLink className="size-4" aria-hidden />
+      </a>
+
+
 
       <div
         role="tablist"

@@ -45,8 +45,8 @@ export default makeBundle({
     createdTitle: "Tailored CV created",
     createdDescription:
       "Linked to Master CV v{version} and to {company} · {title}. Editing the Master CV later will flag this version for review.",
-    trackApplication: "Track this application",
-    allVersions: "All versions",
+    trackApplication: "Save to tracker",
+    applyNow: "Apply",
   },
   sv: {
     cantTailorTitle: "Kan inte anpassa ännu",
@@ -96,8 +96,8 @@ export default makeBundle({
     createdTitle: "Anpassat CV skapat",
     createdDescription:
       "Kopplat till huvud-CV v{version} och till {company} · {title}. Om du ändrar huvud-CV:t senare markeras den här versionen för granskning.",
-    trackApplication: "Följ den här ansökan",
-    allVersions: "Alla versioner",
+    trackApplication: "Spara i ansökningar",
+    applyNow: "Ansök",
   },
   ar: {
     cantTailorTitle: "لا يمكن التخصيص بعد",
@@ -147,7 +147,7 @@ export default makeBundle({
     createdTitle: "تم إنشاء السيرة المخصّصة",
     createdDescription:
       "مرتبطة بالسيرة الرئيسية الإصدار {version} وبـ {company} · {title}. أي تعديل لاحق على السيرة الرئيسية سيضع هذه النسخة قيد المراجعة.",
-    trackApplication: "تابع هذا الطلب",
-    allVersions: "كل النسخ",
+    trackApplication: "حفظ في المتابعة",
+    applyNow: "قدّم الآن",
   },
 });

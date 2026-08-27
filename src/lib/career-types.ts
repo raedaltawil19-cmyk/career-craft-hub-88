@@ -80,6 +80,8 @@ export type Job = {
   mode: "Remote" | "Hybrid" | "On-site";
   posted: string;
   source: string;
+  /** External application link. */
+  applyUrl: string;
   salary?: string;
   match: number;
   matchingSkills: string[];
