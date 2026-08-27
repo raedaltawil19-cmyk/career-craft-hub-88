@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  type Context,
   type ReactNode,
 } from "react";
 import type {
@@ -84,7 +85,16 @@ type Ctx = {
   markAllNotificationsRead: () => void;
 };
 
-const WorkspaceContext = createContext<Ctx | null>(null);
+/**
+ * Keep one context instance across HMR module re-evaluations, otherwise a hot
+ * update creates a fresh context and consumers read `null` (blank screen).
+ */
+const globalScope = globalThis as typeof globalThis & {
+  __smartcvWorkspaceContext?: Context<Ctx | null>;
+};
+const WorkspaceContext =
+  globalScope.__smartcvWorkspaceContext ?? createContext<Ctx | null>(null);
+globalScope.__smartcvWorkspaceContext = WorkspaceContext;
 const STORAGE_KEY = "smartcv:workspace:v1";
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
