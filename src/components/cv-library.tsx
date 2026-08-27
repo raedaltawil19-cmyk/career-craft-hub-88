@@ -1,12 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, FileText } from "lucide-react";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
+import { formatEdited } from "@/lib/cv-share";
 import { useWorkspace } from "@/lib/career-store";
 import { Tag } from "@/components/ui-bits";
 
 /** List of every CV the user created. Each card opens its versions page. */
 export function CvLibrary() {
   const t = useT();
+  const { locale } = useI18n();
   const { state } = useWorkspace();
   const docs = state.docs;
 
@@ -50,7 +52,7 @@ export function CvLibrary() {
                     <span className="mt-0.5 block truncate text-xs text-muted-foreground">
                       {parent
                         ? t("cv.derivedFrom", { name: parent })
-                        : d.updatedAt}
+                        : t("cv.lastEdited", { date: formatEdited(d.updatedAt, locale) })}
                       {kids ? ` · ${t("cv.versionsCount", { count: kids })}` : ""}
                     </span>
                   </span>
