@@ -111,41 +111,9 @@ export function CvPreview({
           </Section>
         ) : null}
 
-        {(cv.tools.length || cv.languages.length) ? (
-          <Section title={t("cv.toolsLanguagesSection")}>
-            {cv.tools.length ? (
-              <p className="text-sm text-foreground/85">{t("cv.toolsLabel", { tools: cv.tools.join(", ") })}</p>
-            ) : null}
-            {cv.languages.length ? (
-              <p className="mt-1 text-sm text-foreground/85">
-                {t("cv.languagesLabel", { languages: cv.languages.join(", ") })}
-              </p>
-            ) : null}
-          </Section>
-        ) : null}
-
-        {cv.projects.length ? (
-          <Section title={t("cv.projectsSection")}>
-            <ul className="space-y-2">
-              {cv.projects.map((p) => (
-                <li key={p.id}>
-                  <p className="text-sm font-semibold">
-                    {p.name} <span className="font-normal text-muted-foreground">· {p.year}</span>
-                  </p>
-                  <p className="text-sm text-foreground/85">{p.description}</p>
-                </li>
-              ))}
-            </ul>
-          </Section>
-        ) : null}
-
-        {cv.certifications.length || cv.volunteer.length ? (
-          <Section title={t("cv.additionalSection")}>
-            <ul className="space-y-1 text-sm text-foreground/85">
-              {[...cv.certifications, ...cv.volunteer].map((x, i) => (
-                <li key={i}>{x}</li>
-              ))}
-            </ul>
+        {cv.languages.length ? (
+          <Section title={t("cv.languagesSection")}>
+            <p className="text-sm leading-relaxed text-foreground/85">{cv.languages.join(" · ")}</p>
           </Section>
         ) : null}
 
