@@ -35,11 +35,15 @@ const tabs = ["Overview", "Analysis", "Match"] as const;
 
 function JobDetailPage() {
   const t = useT();
+  const { locale } = useI18n();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
   const { jobs, state, toggleSavedJob, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
+  const jobDoc = state.docs.find((d) => d.jobId === jobId);
+  const jobCv = jobDoc?.data ?? state.masterCv;
   const [tab, setTab] = useState<(typeof tabs)[number]>("Overview");
+
 
   const tabLabels: Record<(typeof tabs)[number], string> = {
     Overview: t("jobs.tabOverview"),
