@@ -315,3 +315,22 @@
 @utility cta-glow {
   animation: cta-glow 1.4s ease-in-out infinite;
 }
+
+/* Print / save-as-PDF: only the CV paper is printed */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .paper,
+  .paper * {
+    visibility: visible;
+  }
+  .paper {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
