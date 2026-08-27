@@ -340,14 +340,6 @@ function SectionsPanel() {
         )}
       </SectionCard>
 
-      <Panel>
-        <h2 className="text-base font-semibold">{t("cv.otherSectionsTitle")}</h2>
-        <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
-          <li>{t("cv.projectsCount", { count: cv.projects.length })}</li>
-          <li>{t("cv.certificationsCount", { count: cv.certifications.length })}</li>
-          <li>{t("cv.volunteerCount", { count: cv.volunteer.length })}</li>
-        </ul>
-      </Panel>
 
       {openSection === "contact" ? (
         <ContactDialog cv={cv} onClose={close} onSave={save} />
