@@ -15,6 +15,8 @@ import {
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
 import { EmptyState, PageHeader } from "@/components/ui-bits";
+import { ShareCvMenu } from "@/components/share-cv-menu";
+
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
