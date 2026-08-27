@@ -90,7 +90,7 @@ type Ctx = {
  * update creates a fresh context and consumers read `null` (blank screen).
  */
 const globalScope = globalThis as typeof globalThis & {
-  __smartcvWorkspaceContext?: React.Context<Ctx | null>;
+  __smartcvWorkspaceContext?: Context<Ctx | null>;
 };
 const WorkspaceContext =
   globalScope.__smartcvWorkspaceContext ?? createContext<Ctx | null>(null);
