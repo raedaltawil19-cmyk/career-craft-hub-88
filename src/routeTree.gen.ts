@@ -24,6 +24,7 @@ import { Route as AppJobsIndexRouteImport } from './routes/app.jobs.index'
 import { Route as AppJobsJobIdRouteImport } from './routes/app.jobs.$jobId'
 import { Route as AppJobsAnalyzeRouteImport } from './routes/app.jobs.analyze'
 import { Route as AppTailorJobIdRouteImport } from './routes/app.tailor.$jobId'
+import { Route as CvSharePayloadRouteImport } from './routes/cv.share.$payload'
 import { Route as AppCvDocIdIndexRouteImport } from './routes/app.cv.$docId.index'
 import { Route as AppCvDocIdViewRouteImport } from './routes/app.cv.$docId.view'
 
@@ -102,6 +103,11 @@ const AppTailorJobIdRoute = AppTailorJobIdRouteImport.update({
   path: '/tailor/$jobId',
   getParentRoute: () => AppRoute,
 } as any)
+const CvSharePayloadRoute = CvSharePayloadRouteImport.update({
+  id: '/cv/share/$payload',
+  path: '/cv/share/$payload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppCvDocIdIndexRoute = AppCvDocIdIndexRouteImport.update({
   id: '/cv/$docId/',
   path: '/cv/$docId/',
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/cv/share/$payload': typeof CvSharePayloadRoute
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/cv/share/$payload': typeof CvSharePayloadRoute
   '/app/applications': typeof AppApplicationsIndexRoute
   '/app/cv': typeof AppCvIndexRoute
   '/app/jobs': typeof AppJobsIndexRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/app/jobs/$jobId': typeof AppJobsJobIdRoute
   '/app/jobs/analyze': typeof AppJobsAnalyzeRoute
   '/app/tailor/$jobId': typeof AppTailorJobIdRoute
+  '/cv/share/$payload': typeof CvSharePayloadRoute
   '/app/applications/': typeof AppApplicationsIndexRoute
   '/app/cv/': typeof AppCvIndexRoute
   '/app/jobs/': typeof AppJobsIndexRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/tailor/$jobId'
+    | '/cv/share/$payload'
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/tailor/$jobId'
+    | '/cv/share/$payload'
     | '/app/applications'
     | '/app/cv'
     | '/app/jobs'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/app/jobs/$jobId'
     | '/app/jobs/analyze'
     | '/app/tailor/$jobId'
+    | '/cv/share/$payload'
     | '/app/applications/'
     | '/app/cv/'
     | '/app/jobs/'
@@ -233,6 +245,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   HowItWorksRoute: typeof HowItWorksRoute
+  CvSharePayloadRoute: typeof CvSharePayloadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -342,6 +355,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTailorJobIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/cv/share/$payload': {
+      id: '/cv/share/$payload'
+      path: '/cv/share/$payload'
+      fullPath: '/cv/share/$payload'
+      preLoaderRoute: typeof CvSharePayloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/cv/$docId/': {
       id: '/app/cv/$docId/'
       path: '/cv/$docId'
@@ -399,6 +419,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   HowItWorksRoute: HowItWorksRoute,
+  CvSharePayloadRoute: CvSharePayloadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
