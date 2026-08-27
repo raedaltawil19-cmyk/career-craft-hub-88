@@ -27,7 +27,7 @@ function TailorPage() {
   const t = useT();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
-  const { jobs, state, addTailoredCv } = useWorkspace();
+  const { jobs, state, addTailoredCv, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
   const cv = state.masterCv;
   const [step, setStep] = useState<Step>(0);
