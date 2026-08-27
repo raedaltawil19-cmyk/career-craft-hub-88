@@ -3,16 +3,22 @@ import {
   ArrowLeft,
   Bookmark,
   BookmarkCheck,
+  ChevronRight,
   CircleAlert,
   CircleCheck,
   CircleDashed,
+  ExternalLink,
+  FileText,
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
+import { ShareCvMenu } from "@/components/share-cv-menu";
+import { formatEdited } from "@/lib/cv-share";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
+
 
 export const Route = createFileRoute("/app/jobs/$jobId")({
   head: () => ({
