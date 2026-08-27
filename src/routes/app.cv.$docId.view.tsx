@@ -93,15 +93,19 @@ function CvVersionPage() {
         title={doc.name}
         description={t("cv.versionMeta", { version: cv.version })}
         action={
-          <button
-            type="button"
-            onClick={onDelete}
-            aria-label={t("cv.deleteAction")}
-            className="tap grid size-11 place-items-center rounded-xl border border-border text-destructive hover:bg-muted"
-          >
-            <Trash2 className="size-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <ShareCvMenu cv={cv} name={doc.name} compact />
+            <button
+              type="button"
+              onClick={onDelete}
+              aria-label={t("cv.deleteAction")}
+              className="tap grid size-11 place-items-center rounded-xl border border-border text-destructive hover:bg-muted"
+            >
+              <Trash2 className="size-5" />
+            </button>
+          </div>
         }
+
       />
 
       <div className="grid grid-cols-4 gap-1.5">
