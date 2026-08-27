@@ -1,11 +1,14 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Loader2, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Loader2, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
+import { ShareCvMenu } from "@/components/share-cv-menu";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import type { ApplicationStatus } from "@/lib/career-types";
+
 
 export const Route = createFileRoute("/app/tailor/$jobId")({
   head: () => ({
