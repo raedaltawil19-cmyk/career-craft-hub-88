@@ -246,8 +246,9 @@ function TailorPage() {
                 name: `${job.company} — ${job.title}`,
                 kind: "tailored",
                 jobId: job.id,
-                updatedAt: "just now",
+                updatedAt: new Date().toISOString(),
                 score: Math.min(96, job.match + 6),
+                data: cv,
               });
               setStep(3);
             }}
@@ -265,24 +266,34 @@ function TailorPage() {
             <p className="mt-1 text-sm text-muted-foreground">
               {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Link
-                to="/app/applications"
-                className="tap inline-flex items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <a
+                href={job.applyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackApplication("Applied")}
+                className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                {t("tailor.trackApplication")}
-              </Link>
+                {t("tailor.applyNow")}
+                <ExternalLink className="size-4" aria-hidden />
+              </a>
               <button
-                onClick={() => navigate({ to: "/app/cv" })}
+                type="button"
+                onClick={() => {
+                  const id = trackApplication("Saved");
+                  navigate({ to: "/app/applications/$appId", params: { appId: id } });
+                }}
                 className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
               >
-                {t("tailor.allVersions")}
+                {t("tailor.trackApplication")}
               </button>
+              <ShareCvMenu cv={cv} name={`${job.company} — ${job.title}`} />
             </div>
           </Panel>
           <CvPreview cv={cv} highlight={job.matchingSkills} />
         </div>
       ) : null}
+
     </div>
   );
 }
