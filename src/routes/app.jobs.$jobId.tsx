@@ -132,6 +132,43 @@ function JobDetailPage() {
         ) : null}
       </div>
 
+      {jobDoc && jobCv ? (
+        <Panel className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-white">
+            <FileText className="size-5" aria-hidden />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-bold">{jobDoc.name}</span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {t("cv.lastEdited", { date: formatEdited(jobDoc.updatedAt, locale) })}
+            </span>
+          </span>
+          <span className="flex items-center gap-2">
+            <ShareCvMenu cv={jobCv} name={jobDoc.name} compact />
+            <Link
+              to="/app/cv/$docId/view"
+              params={{ docId: jobDoc.id }}
+              aria-label={t("cv.openAction")}
+              className="tap grid size-10 place-items-center rounded-xl bg-primary-soft text-primary"
+            >
+              <ChevronRight className="size-5 rtl:rotate-180" aria-hidden />
+            </Link>
+          </span>
+        </Panel>
+      ) : null}
+
+      <a
+        href={job.applyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="tap inline-flex items-center gap-2 rounded-xl bg-accent px-4 text-sm font-semibold text-white"
+      >
+        {t("tailor.applyNow")}
+        <ExternalLink className="size-4" aria-hidden />
+      </a>
+
+
+
       <div
         role="tablist"
         aria-label={t("jobs.jobSections")}
