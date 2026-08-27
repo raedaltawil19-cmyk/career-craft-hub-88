@@ -138,6 +138,10 @@ function CvVersionPage() {
         </button>
       </div>
 
+      <div className="mx-auto w-full max-w-3xl">
+        <CvPreview cv={cv} />
+      </div>
+
       {showCareers ? (
         <div className="space-y-4">
           <CareerSuggestionsPanel
@@ -152,9 +156,6 @@ function CvVersionPage() {
         </div>
       ) : null}
 
-      <div className="mx-auto w-full max-w-3xl">
-        <CvPreview cv={cv} />
-      </div>
 
       <TemplatePreviewSheet
         templateId={previewTpl}

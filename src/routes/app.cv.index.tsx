@@ -83,6 +83,10 @@ function MasterCvPage() {
         }
       />
 
+      <div className="mx-auto w-full max-w-3xl">
+        <CvPreview cv={cv} />
+      </div>
+
       {showCareers ? (
         <div className="space-y-4 lg:hidden">
           <CareerSuggestionsPanel
@@ -133,9 +137,6 @@ function MasterCvPage() {
         </Panel>
       </div>
 
-      <div className="mx-auto w-full max-w-3xl">
-        <CvPreview cv={cv} />
-      </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel>
