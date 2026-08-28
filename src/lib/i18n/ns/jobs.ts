@@ -39,6 +39,7 @@ export default makeBundle({
     tabOverview: "Overview",
     tabAnalysis: "Analysis",
     tabMatch: "Match",
+    matchLabel: "Match",
 
     aboutTheRole: "About the role",
     responsibilities: "Responsibilities",
@@ -146,6 +147,7 @@ export default makeBundle({
     tabOverview: "Översikt",
     tabAnalysis: "Analys",
     tabMatch: "Matchning",
+    matchLabel: "Matchning",
 
     aboutTheRole: "Om rollen",
     responsibilities: "Ansvarsområden",
@@ -253,6 +255,7 @@ export default makeBundle({
     tabOverview: "نظرة عامة",
     tabAnalysis: "التحليل",
     tabMatch: "المطابقة",
+    matchLabel: "المطابقة",
 
     aboutTheRole: "عن الدور",
     responsibilities: "المسؤوليات",
