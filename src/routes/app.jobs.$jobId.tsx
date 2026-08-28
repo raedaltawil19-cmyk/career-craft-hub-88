@@ -317,6 +317,17 @@ function JobDetailPage() {
           />
         )
       ) : null}
+
+      <a
+        href={job.applyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="tap flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground"
+        style={{ boxShadow: "var(--shadow-press)" }}
+      >
+        {t("tailor.applyNow")}
+        <ExternalLink className="size-4 rtl:rotate-180" aria-hidden />
+      </a>
     </div>
   );
 }
