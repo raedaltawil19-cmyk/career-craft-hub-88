@@ -141,10 +141,13 @@ function JobsPage() {
                         ) : null}
                       </div>
                       {j.gaps.length ? (
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                          <span className="shrink-0 text-xs font-semibold text-muted-foreground">
+                            {t("jobs.gapsLabel")}
+                          </span>
                           {j.gaps.slice(0, 2).map((s) => (
                             <Tag key={s} tone="gap">
-                              {t("jobs.gapPrefix", { skill: s })}
+                              {s}
                             </Tag>
                           ))}
                         </div>
