@@ -7,7 +7,7 @@ import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-b
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
-import { CvSideRail } from "@/components/cv-side-rail";
+import { CvActionToolbar } from "@/components/cv-action-toolbar";
 import {
   CareerSuggestionsPanel,
   SimilarJobsPanel,
@@ -68,7 +68,7 @@ function MasterCvPage() {
   const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
-    <div className="space-y-5 pb-24 pe-24 lg:pb-0 lg:pe-0">
+    <div className="space-y-5 pb-24 lg:pb-0">
       <PageHeader
         eyebrow={t("cv.versionMeta", { version: cv.version })}
         title={t("cv.title")}
@@ -76,12 +76,27 @@ function MasterCvPage() {
         action={
           <Link
             to="/app/cv/edit"
-            className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+            className="tap hidden items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground lg:inline-flex"
           >
             <Pencil className="size-4" /> {t("cv.editAction")}
           </Link>
         }
       />
+
+      <CvActionToolbar
+        openWindow={openWindow}
+        showCareers={showCareers}
+        templateActive={previewTpl !== null}
+        onEdit={() => navigate({ to: "/app/cv/edit" })}
+        onImprove={() => setOpenWindow("improve")}
+        onTailor={() => {
+          setTailorPreset(undefined);
+          setOpenWindow("tailor");
+        }}
+        onCareers={() => setShowCareers((v) => !v)}
+        onTemplate={() => setPreviewTpl(cv.template)}
+      />
+
 
       <div className="mx-auto w-full max-w-3xl">
         <CvPreview cv={cv} />
@@ -213,19 +228,6 @@ function MasterCvPage() {
         />
       ) : null}
 
-      <CvSideRail
-        showLabels
-        openWindow={openWindow}
-        showCareers={showCareers}
-        templateActive={previewTpl !== null}
-        onImprove={() => setOpenWindow("improve")}
-        onTailor={() => {
-          setTailorPreset(undefined);
-          setOpenWindow("tailor");
-        }}
-        onCareers={() => setShowCareers((v) => !v)}
-        onTemplate={() => setPreviewTpl(cv.template)}
-      />
     </div>
   );
 }
