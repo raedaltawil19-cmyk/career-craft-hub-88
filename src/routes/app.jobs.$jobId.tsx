@@ -70,7 +70,7 @@ function JobDetailPage() {
   const alreadyTracked = state.applications.some((a) => a.jobId === job.id);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <Link
         to="/app/jobs"
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
@@ -78,34 +78,43 @@ function JobDetailPage() {
         <ArrowLeft className="size-4 rtl:rotate-180" /> {t("jobs.backToJobsShort")}
       </Link>
 
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
-        <div className="min-w-0">
-          <Eyebrow>
-            {job.mode} · {job.source} · {job.posted}
-          </Eyebrow>
-          <h1 className="display mt-1 text-[1.75rem] leading-tight sm:text-4xl">{job.title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {job.company} · {job.location}
-          </p>
-        </div>
-        <MatchRing value={job.match} size={64} />
-      </header>
+      <Panel className="space-y-4 p-4 sm:p-6">
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+          <div className="min-w-0">
+            <Eyebrow>
+              {job.mode} · {job.source} · {job.posted}
+            </Eyebrow>
+            <h1 className="display mt-1 text-[1.75rem] leading-tight sm:text-4xl">{job.title}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {job.company} · {job.location}
+            </p>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <MatchRing value={job.match} size={64} label={t("jobs.matchLabel")} />
+            <span className="text-xs font-medium text-muted-foreground">
+              {t("jobs.matchLabel")}
+            </span>
+          </div>
+        </header>
 
-      <div className="flex flex-wrap gap-2">
-        <Link
-          to="/app/tailor/$jobId"
-          params={{ jobId: job.id }}
-          className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
-        >
-          <Sparkles className="size-4" /> {t("jobs.tailorMyCv")}
-        </Link>
-        <button
-          onClick={() => toggleSavedJob(job.id)}
-          className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
-        >
-          {saved ? <BookmarkCheck className="size-4" /> : <Bookmark className="size-4" />}
-          {saved ? t("jobs.saved") : t("jobs.save")}
-        </button>
+        <div className="flex gap-2">
+          <Link
+            to="/app/tailor/$jobId"
+            params={{ jobId: job.id }}
+            className="tap inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+          >
+            <Sparkles className="size-4" /> {t("jobs.tailorMyCv")}
+          </Link>
+          <button
+            onClick={() => toggleSavedJob(job.id)}
+            aria-pressed={saved}
+            className="tap inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
+          >
+            {saved ? <BookmarkCheck className="size-4" /> : <Bookmark className="size-4" />}
+            {saved ? t("jobs.saved") : t("jobs.save")}
+          </button>
+        </div>
+
         {!alreadyTracked ? (
           <button
             onClick={() => {
@@ -129,12 +138,33 @@ function JobDetailPage() {
               });
               navigate({ to: "/app/applications" });
             }}
-            className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
+            className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
           >
             {t("jobs.trackApplication")}
           </button>
         ) : null}
-      </div>
+
+        <div
+          role="tablist"
+          aria-label={t("jobs.jobSections")}
+          className="flex gap-1 rounded-xl border border-border bg-surface p-1"
+        >
+          {tabs.map((tb) => (
+            <button
+              key={tb}
+              role="tab"
+              aria-selected={tab === tb}
+              onClick={() => setTab(tb)}
+              className={cn(
+                "tap flex-1 rounded-lg px-3 text-sm font-medium transition-colors",
+                tab === tb ? "bg-card text-foreground shadow-soft" : "text-muted-foreground",
+              )}
+            >
+              {tabLabels[tb]}
+            </button>
+          ))}
+        </div>
+      </Panel>
 
       {jobDoc && jobCv ? (
         <Panel className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
@@ -160,39 +190,6 @@ function JobDetailPage() {
           </span>
         </Panel>
       ) : null}
-
-      <a
-        href={job.applyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="tap inline-flex items-center gap-2 rounded-xl bg-accent px-4 text-sm font-semibold text-white"
-      >
-        {t("tailor.applyNow")}
-        <ExternalLink className="size-4" aria-hidden />
-      </a>
-
-
-
-      <div
-        role="tablist"
-        aria-label={t("jobs.jobSections")}
-        className="flex gap-1 rounded-xl border border-border bg-surface p-1"
-      >
-        {tabs.map((tb) => (
-          <button
-            key={tb}
-            role="tab"
-            aria-selected={tab === tb}
-            onClick={() => setTab(tb)}
-            className={cn(
-              "tap flex-1 rounded-lg px-3 text-sm font-medium transition-colors",
-              tab === tb ? "bg-card text-foreground shadow-soft" : "text-muted-foreground",
-            )}
-          >
-            {tabLabels[tb]}
-          </button>
-        ))}
-      </div>
 
       {tab === "Overview" ? (
         <div className="grid gap-4 lg:grid-cols-3">
@@ -320,6 +317,17 @@ function JobDetailPage() {
           />
         )
       ) : null}
+
+      <a
+        href={job.applyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="tap flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground"
+        style={{ boxShadow: "var(--shadow-press)" }}
+      >
+        {t("tailor.applyNow")}
+        <ExternalLink className="size-4 rtl:rotate-180" aria-hidden />
+      </a>
     </div>
   );
 }
