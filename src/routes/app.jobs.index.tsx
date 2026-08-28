@@ -2,7 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { Bookmark, BookmarkCheck, Filter, Link2, Search, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
-import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
+import { EmptyState, MatchRing, PageHeader, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -127,32 +127,9 @@ function JobsPage() {
                       </div>
                     </div>
 
-                    <div className="mt-3 space-y-2">
-                      <div className="flex flex-wrap gap-1.5">
-                        {j.matchingSkills.slice(0, 2).map((s) => (
-                          <Tag key={s} tone="match">
-                            {s}
-                          </Tag>
-                        ))}
-                        {j.matchingSkills[2] ? (
-                          <span className="hidden sm:inline-flex">
-                            <Tag tone="match">{j.matchingSkills[2]}</Tag>
-                          </span>
-                        ) : null}
-                      </div>
-                      {j.gaps.length ? (
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-                          <span className="shrink-0 text-xs font-semibold text-muted-foreground">
-                            {t("jobs.gapsLabel")}
-                          </span>
-                          {j.gaps.slice(0, 2).map((s) => (
-                            <Tag key={s} tone="gap">
-                              {s}
-                            </Tag>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
+                    <p className="mt-3 text-xs text-muted-foreground sm:hidden">
+                      {j.mode} · {j.posted}
+                    </p>
                   </Link>
                   <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-2 py-1 text-xs font-semibold text-foreground">
