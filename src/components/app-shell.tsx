@@ -16,6 +16,7 @@ import { AddCvSheet } from "./add-cv-sheet";
 import { useWorkspace } from "@/lib/career-store";
 import { useT } from "@/lib/i18n";
 import { LanguageSelect } from "./language-select";
+import { ShareCvMenu } from "./share-cv-menu";
 
 const primaryNav = [
   { to: "/app", labelKey: "nav.home", icon: Home, exact: true },
