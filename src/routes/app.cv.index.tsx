@@ -214,6 +214,7 @@ function MasterCvPage() {
       ) : null}
 
       <CvSideRail
+        showLabels
         openWindow={openWindow}
         showCareers={showCareers}
         templateActive={previewTpl !== null}
