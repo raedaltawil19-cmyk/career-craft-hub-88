@@ -16,6 +16,7 @@ import { AddCvSheet } from "./add-cv-sheet";
 import { useWorkspace } from "@/lib/career-store";
 import { useT } from "@/lib/i18n";
 import { LanguageSelect } from "./language-select";
+import { ShareCvMenu } from "./share-cv-menu";
 
 const primaryNav = [
   { to: "/app", labelKey: "nav.home", icon: Home, exact: true },
@@ -97,6 +98,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <LanguageSelect className="mb-3 self-start" />
 
+        {state.masterCv ? (
+          <ShareCvMenu
+            cv={state.masterCv}
+            name={state.masterCv.name}
+            compact
+            className="mb-3 self-start"
+          />
+        ) : null}
+
         <Link
           to="/how-it-works"
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -130,17 +140,24 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="display truncate text-lg">Smart CV</span>
           </Link>
           <div className="flex items-center gap-2">
-          <LanguageSelect />
-          <Link
-            to="/app/notifications"
-            aria-label={t("nav.notifications")}
-            className="tap relative grid place-items-center rounded-full text-muted-foreground"
-          >
-            <Bell className="size-5" />
-            {unread ? (
-              <span className="absolute end-2 top-2 size-2 rounded-full bg-accent" />
+            <LanguageSelect />
+            {state.masterCv ? (
+              <ShareCvMenu
+                cv={state.masterCv}
+                name={state.masterCv.name}
+                compact
+              />
             ) : null}
-          </Link>
+            <Link
+              to="/app/notifications"
+              aria-label={t("nav.notifications")}
+              className="tap relative grid place-items-center rounded-full text-muted-foreground"
+            >
+              <Bell className="size-5" />
+              {unread ? (
+                <span className="absolute end-2 top-2 size-2 rounded-full bg-accent" />
+              ) : null}
+            </Link>
           </div>
         </div>
       </header>
