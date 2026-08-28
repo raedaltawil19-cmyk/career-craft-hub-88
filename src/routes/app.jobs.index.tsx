@@ -127,7 +127,7 @@ function JobsPage() {
                       </div>
                     </div>
 
-                    <p className="mt-3 text-xs text-muted-foreground">
+                    <p className="mt-3 text-xs text-muted-foreground sm:hidden">
                       {j.mode} · {j.posted}
                     </p>
                   </Link>
