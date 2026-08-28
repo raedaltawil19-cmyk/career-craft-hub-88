@@ -18,6 +18,8 @@ type CvSideRailProps = {
   onTailor: () => void;
   onCareers: () => void;
   onTemplate: () => void;
+  /** When true, buttons show a short text label under each icon. */
+  showLabels?: boolean;
 };
 
 export function CvSideRail({
@@ -28,6 +30,7 @@ export function CvSideRail({
   onTailor,
   onCareers,
   onTemplate,
+  showLabels,
 }: CvSideRailProps) {
   const t = useT();
   const [dragY, setDragY] = useState(0);
@@ -85,11 +88,15 @@ export function CvSideRail({
       className={cn(
         "fixed end-2 top-1/2 z-40 lg:hidden will-change-transform touch-none",
         !dragging && "transition-transform duration-300 ease-out",
+        showLabels ? "w-20" : "w-14",
       )}
       style={{ transform: `translateY(calc(-50% + ${dragY}px))` }}
     >
       <div
-        className="flex w-14 flex-col items-center gap-1 rounded-3xl border border-border bg-card/90 p-1.5 backdrop-blur"
+        className={cn(
+          "flex flex-col items-center rounded-3xl border border-border bg-card/90 p-1.5 backdrop-blur",
+          showLabels ? "gap-1" : "gap-1",
+        )}
         style={{ boxShadow: "var(--shadow-lift)" }}
       >
         <button
@@ -110,6 +117,7 @@ export function CvSideRail({
           tone={TONES.improve}
           active={openWindow === "improve"}
           onClick={onImprove}
+          showLabel={showLabels}
         />
         <BarAction
           icon={<Target className="size-4" />}
@@ -117,6 +125,7 @@ export function CvSideRail({
           tone={TONES.tailor}
           active={openWindow === "tailor"}
           onClick={onTailor}
+          showLabel={showLabels}
         />
         <BarAction
           icon={<Compass className="size-4" />}
@@ -124,6 +133,7 @@ export function CvSideRail({
           tone={TONES.careers}
           active={showCareers}
           onClick={onCareers}
+          showLabel={showLabels}
         />
         <BarAction
           icon={<LayoutTemplate className="size-4" />}
@@ -131,6 +141,7 @@ export function CvSideRail({
           tone={TONES.template}
           active={templateActive}
           onClick={onTemplate}
+          showLabel={showLabels}
         />
       </div>
     </div>
@@ -143,24 +154,59 @@ function BarAction({
   tone,
   active,
   onClick,
+  showLabel,
 }: {
   icon: React.ReactNode;
   label: string;
   tone: string;
   active?: boolean;
   onClick: () => void;
+  showLabel?: boolean;
 }) {
   const [touchHint, setTouchHint] = useState(false);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Touch screens have no hover: tapping reveals the label briefly while
-  // still firing the action.
+  // Touch screens have no hover: tapping reveals the tooltip label briefly while
+  // still firing the action. Only used in the compact icon-only variant.
   const onPointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType !== "touch") return;
+    if (showLabel || e.pointerType !== "touch") return;
     if (hintTimer.current) clearTimeout(hintTimer.current);
     setTouchHint(true);
     hintTimer.current = setTimeout(() => setTouchHint(false), 2200);
   };
+
+  if (showLabel) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        onPointerDown={onPointerDown}
+        title={label}
+        aria-label={label}
+        className={cn(
+          "flex w-full flex-col items-center justify-center gap-1 rounded-2xl py-1.5 transition-colors active:scale-[0.97]",
+          active ? "hover:opacity-100" : "hover:bg-muted/60",
+        )}
+        style={active ? { background: `color-mix(in oklab, ${tone} 14%, transparent)` } : undefined}
+      >
+        <span
+          className="grid size-7 shrink-0 place-items-center rounded-full text-white"
+          style={{ background: tone }}
+        >
+          {icon}
+        </span>
+        <span
+          className={cn(
+            "line-clamp-2 max-w-full px-1 text-center text-[10px] leading-tight",
+            active ? "font-semibold" : "font-medium",
+          )}
+          style={{ color: active ? tone : undefined }}
+        >
+          {label}
+        </span>
+      </button>
+    );
+  }
 
   return (
     <button
