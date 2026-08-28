@@ -98,6 +98,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <LanguageSelect className="mb-3 self-start" />
 
+        {state.masterCv ? (
+          <ShareCvMenu
+            cv={state.masterCv}
+            name={state.masterCv.name}
+            compact
+            className="mb-3 self-start"
+          />
+        ) : null}
+
         <Link
           to="/how-it-works"
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
