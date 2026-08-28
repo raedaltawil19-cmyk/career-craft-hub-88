@@ -11,7 +11,7 @@ export default makeBundle({
 
     eyebrowDiscovery: "Discovery",
     title: "Jobs",
-    description: "Matches are calculated from your Master CV. Treat the score as a hint, not a verdict.",
+    description: "Matches based on your Master CV.",
     analyzeAPosting: "Analyze a posting",
     searchJobs: "Search jobs",
     searchPlaceholder: "Search title, company or city",
@@ -223,7 +223,7 @@ export default makeBundle({
 
     eyebrowDiscovery: "استكشاف",
     title: "الوظائف",
-    description: "تُحسب المطابقات بناءً على سيرتك الذاتية الرئيسية. اعتبر النتيجة مؤشرًا لا حكمًا نهائيًا.",
+    description: "مطابقة مع سيرتك الذاتية الرئيسية.",
     analyzeAPosting: "تحليل إعلان وظيفة",
     searchJobs: "البحث في الوظائف",
     searchPlaceholder: "ابحث بالمسمى الوظيفي أو الشركة أو المدينة",
