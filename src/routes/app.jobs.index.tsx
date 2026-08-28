@@ -51,7 +51,7 @@ function JobsPage() {
   }, [jobs, filter, query, state.savedJobIds]);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         eyebrow={t("jobs.eyebrowDiscovery")}
         title={t("jobs.title")}
@@ -59,14 +59,14 @@ function JobsPage() {
         action={
           <Link
             to="/app/jobs/analyze"
-            className="tap inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-medium hover:bg-muted"
+            className="tap inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted sm:rounded-xl sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
           >
-            <Link2 className="size-4" /> {t("jobs.analyzeAPosting")}
+            <Link2 className="size-3.5 sm:size-4" /> {t("jobs.analyzeAPosting")}
           </Link>
         }
       />
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <label className="relative block">
           <span className="sr-only">{t("jobs.searchJobs")}</span>
           <Search className="pointer-events-none absolute start-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -77,7 +77,7 @@ function JobsPage() {
             className="tap w-full rounded-xl border border-border bg-card ps-10 pe-4 text-sm outline-none focus:border-primary"
           />
         </label>
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+        <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-2 sm:px-0">
           <span className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
             <Filter className="size-3.5" />
           </span>
@@ -86,10 +86,10 @@ function JobsPage() {
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                "shrink-0 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors",
+                "shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors sm:px-3.5 sm:py-2 sm:text-sm",
                 filter === f
                   ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card text-muted-foreground hover:bg-muted",
+                  : "border-border/70 bg-card text-muted-foreground hover:bg-muted",
               )}
             >
               {filterLabels[f]}
@@ -99,7 +99,7 @@ function JobsPage() {
       </div>
 
       {visible.length ? (
-        <ul className="grid gap-3 lg:grid-cols-2">
+        <ul className="grid gap-4 lg:grid-cols-2">
           {visible.map((j) => {
             const saved = state.savedJobIds.includes(j.id);
             return (
@@ -112,28 +112,37 @@ function JobsPage() {
                   >
                     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                       <div className="min-w-0">
-                        <h2 className="truncate text-lg leading-snug">{j.title}</h2>
+                        <h2 className="truncate text-lg leading-snug">
+                          <span className="font-semibold sm:font-normal">{j.title}</span>
+                        </h2>
                         <p className="truncate text-sm text-muted-foreground">
                           {j.company} · {j.location}
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
+                        <p className="mt-1 hidden text-xs text-muted-foreground sm:block">
                           {j.mode} · {j.posted} · {j.source}
                         </p>
                       </div>
-                      <MatchRing value={j.match} />
+                      <div className="origin-top-right scale-[0.78] sm:scale-100">
+                        <MatchRing value={j.match} />
+                      </div>
                     </div>
 
                     <div className="mt-3 space-y-2">
                       <div className="flex flex-wrap gap-1.5">
-                        {j.matchingSkills.slice(0, 3).map((s) => (
+                        {j.matchingSkills.slice(0, 2).map((s) => (
                           <Tag key={s} tone="match">
                             {s}
                           </Tag>
                         ))}
+                        {j.matchingSkills[2] ? (
+                          <span className="hidden sm:inline-flex">
+                            <Tag tone="match">{j.matchingSkills[2]}</Tag>
+                          </span>
+                        ) : null}
                       </div>
                       {j.gaps.length ? (
                         <div className="flex flex-wrap gap-1.5">
-                          {j.gaps.map((s) => (
+                          {j.gaps.slice(0, 2).map((s) => (
                             <Tag key={s} tone="gap">
                               {t("jobs.gapPrefix", { skill: s })}
                             </Tag>
@@ -156,7 +165,7 @@ function JobsPage() {
                     <button
                       onClick={() => toggleSavedJob(j.id)}
                       aria-pressed={saved}
-                      className="tap inline-flex items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-primary"
+                      className="tap inline-flex items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-primary sm:text-sm"
                     >
                       {saved ? (
                         <BookmarkCheck className="size-4" />
