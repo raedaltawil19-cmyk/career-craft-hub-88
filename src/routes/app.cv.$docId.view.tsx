@@ -20,7 +20,7 @@ import { ShareCvMenu } from "@/components/share-cv-menu";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
-import { CvSideRail } from "@/components/cv-side-rail";
+import { CvActionToolbar } from "@/components/cv-action-toolbar";
 import {
   CareerSuggestionsPanel,
   SimilarJobsPanel,
@@ -89,7 +89,7 @@ function CvVersionPage() {
   };
 
   return (
-    <div className="space-y-5 pb-28 pe-14 lg:pb-6 lg:pe-0">
+    <div className="space-y-5 pb-28 lg:pb-6">
       <PageHeader
         eyebrow={doc.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")}
         title={doc.name}
