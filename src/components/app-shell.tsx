@@ -137,7 +137,6 @@ export function AppShell({ children }: { children: ReactNode }) {
                 cv={state.masterCv}
                 name={state.masterCv.name}
                 compact
-                className="hidden sm:block"
               />
             ) : null}
             <Link
