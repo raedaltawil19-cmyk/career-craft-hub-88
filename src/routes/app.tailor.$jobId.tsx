@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, ExternalLink, Loader2, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Bookmark, Check, ExternalLink, Loader2, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
@@ -286,21 +286,29 @@ function TailorPage() {
 
       {step === 3 ? (
         <div className="space-y-4">
-          <Panel className="border-success/40 bg-success-soft/40">
-            <h2 className="text-lg">{t("tailor.createdTitle")}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+          <Panel>
+            <div className="flex items-start gap-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full border-2 border-success text-success">
+                <Check className="size-5" aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg leading-snug">{t("tailor.createdTitle")}</h2>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
+                </p>
+              </div>
+              <ShareCvMenu cv={cv} name={`${job.company} — ${job.title}`} />
+            </div>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <a
                 href={job.applyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackApplication("Applied")}
-                className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+                className="tap inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-base font-bold text-primary-foreground"
               >
+                <ExternalLink className="size-4.5" aria-hidden />
                 {t("tailor.applyNow")}
-                <ExternalLink className="size-4" aria-hidden />
               </a>
               <button
                 type="button"
@@ -308,11 +316,11 @@ function TailorPage() {
                   const id = trackApplication("Saved");
                   navigate({ to: "/app/applications/$appId", params: { appId: id } });
                 }}
-                className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
+                className="tap inline-flex items-center justify-center gap-2 rounded-2xl border border-border-strong bg-card px-4 text-sm font-bold hover:bg-muted"
               >
+                <Bookmark className="size-4.5" aria-hidden />
                 {t("tailor.trackApplication")}
               </button>
-              <ShareCvMenu cv={cv} name={`${job.company} — ${job.title}`} />
             </div>
           </Panel>
           <CvPreview cv={cv} highlight={job.matchingSkills} />
