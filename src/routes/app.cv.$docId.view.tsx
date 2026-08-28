@@ -110,7 +110,21 @@ function CvVersionPage() {
 
       />
 
-      <div className="grid grid-cols-4 gap-1.5">
+      <CvActionToolbar
+        openWindow={openWindow}
+        showCareers={showCareers}
+        templateActive={previewTpl !== null}
+        onEdit={() => navigate({ to: "/app/cv/edit" })}
+        onImprove={() => setOpenWindow("improve")}
+        onTailor={() => {
+          setTailorPreset(undefined);
+          setOpenWindow("tailor");
+        }}
+        onCareers={() => setShowCareers((v) => !v)}
+        onTemplate={() => setPreviewTpl(cv.template)}
+      />
+
+      <div className="hidden grid-cols-4 gap-1.5 lg:grid">
         <Link
           to="/app/cv/edit"
           className="tap flex flex-col items-center justify-center gap-1 rounded-xl border border-border text-[11px] font-bold hover:bg-muted"
@@ -192,18 +206,6 @@ function CvVersionPage() {
         />
       ) : null}
 
-      <CvSideRail
-        openWindow={openWindow}
-        showCareers={showCareers}
-        templateActive={previewTpl !== null}
-        onImprove={() => setOpenWindow("improve")}
-        onTailor={() => {
-          setTailorPreset(undefined);
-          setOpenWindow("tailor");
-        }}
-        onCareers={() => setShowCareers((v) => !v)}
-        onTemplate={() => setPreviewTpl(cv.template)}
-      />
     </div>
   );
 }
