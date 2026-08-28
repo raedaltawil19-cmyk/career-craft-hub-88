@@ -117,7 +117,7 @@ export default makeBundle({
 
     eyebrowDiscovery: "Upptäck",
     title: "Jobb",
-    description: "Matchningar beräknas utifrån ditt huvud-CV. Se poängen som en fingervisning, inte ett facit.",
+    description: "Matchningar utifrån ditt huvud-CV.",
     analyzeAPosting: "Analysera en annons",
     searchJobs: "Sök jobb",
     searchPlaceholder: "Sök titel, företag eller stad",
