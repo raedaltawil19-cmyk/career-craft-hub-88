@@ -30,7 +30,7 @@ export function CvSideRail({
   onTailor,
   onCareers,
   onTemplate,
-  showLabels,
+  showLabels = false,
 }: CvSideRailProps) {
   const t = useT();
   const [dragY, setDragY] = useState(0);
