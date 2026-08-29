@@ -209,6 +209,18 @@ function TailorPage() {
                 </div>
               </div>
             </div>
+            <div className="mt-4 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 border-t border-border pt-4">
+              <MatchRing value={78} size={52} label={t("cv.cvQuality")} />
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold">{t("cv.cvQuality")}</h3>
+                <p className="text-xs text-muted-foreground">{t("cv.atsReadability")}</p>
+                <ul className="mt-1.5 space-y-1 text-xs text-muted-foreground">
+                  <li>· {t("cv.insightConsistentStructure")}</li>
+                  <li>· {t("cv.insightAchievements")}</li>
+                  <li>· {t("cv.insightDateFormats")}</li>
+                </ul>
+              </div>
+            </div>
           </Panel>
           <button
             onClick={() => setStep(2)}
