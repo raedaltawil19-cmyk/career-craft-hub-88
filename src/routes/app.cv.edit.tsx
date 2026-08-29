@@ -4,7 +4,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
-import { CvEditChat } from "@/components/cv-edit-chat";
 import {
   ContactDialog,
   EducationDialog,
@@ -19,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
 const searchSchema = z.object({
-  panel: z.enum(["sections", "ai", "preview"]).catch("sections"),
+  panel: z.enum(["sections", "preview"]).catch("sections"),
 });
 
 export const Route = createFileRoute("/app/cv/edit")({
@@ -27,7 +26,7 @@ export const Route = createFileRoute("/app/cv/edit")({
   head: () => ({
     meta: [
       { title: "CV editor — Smart CV" },
-      { name: "description", content: "Edit sections, review AI recommendations, preview output." },
+      { name: "description", content: "Edit sections and preview your CV output." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -43,7 +42,6 @@ function CvEditor() {
 
   const panels = [
     { id: "sections", label: t("cv.panelSections") },
-    { id: "ai", label: t("cv.panelAssistant") },
     { id: "preview", label: t("cv.panelPreview") },
   ] as const;
 
@@ -90,7 +88,7 @@ function CvEditor() {
         ))}
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)_21rem]">
+      <div className="grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)]">
         <div className={cn(panel === "sections" ? "block" : "hidden", "lg:block")}>
           <SectionsPanel />
         </div>
@@ -99,9 +97,6 @@ function CvEditor() {
           <p className="mt-3 text-center text-xs text-muted-foreground">
             {t("cv.previewNote", { template: cv.template })}
           </p>
-        </div>
-        <div className={cn(panel === "ai" ? "block" : "hidden", "lg:block")}>
-          <CvEditChat />
         </div>
       </div>
 
