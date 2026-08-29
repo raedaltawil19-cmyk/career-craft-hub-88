@@ -88,7 +88,7 @@ function CvEditor() {
         ))}
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)_21rem]">
+      <div className="grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)]">
         <div className={cn(panel === "sections" ? "block" : "hidden", "lg:block")}>
           <SectionsPanel />
         </div>
@@ -97,9 +97,6 @@ function CvEditor() {
           <p className="mt-3 text-center text-xs text-muted-foreground">
             {t("cv.previewNote", { template: cv.template })}
           </p>
-        </div>
-        <div className={cn(panel === "ai" ? "block" : "hidden", "lg:block")}>
-          <CvEditChat />
         </div>
       </div>
 
