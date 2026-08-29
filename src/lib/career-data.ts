@@ -159,6 +159,7 @@ export const demoCvDocs: CvDoc[] = [
 export const demoJobs: Job[] = [
   {
     id: "job-1",
+    careerIds: ["career-3"],
     title: "Senior Product Designer",
     company: "Klarna",
     location: "Stockholm",
@@ -198,6 +199,7 @@ export const demoJobs: Job[] = [
   },
   {
     id: "job-2",
+    careerIds: ["career-2", "career-3"],
     title: "Lead UX Designer",
     company: "Trustly",
     location: "Remote (EU)",
@@ -223,6 +225,7 @@ export const demoJobs: Job[] = [
   },
   {
     id: "job-3",
+    careerIds: ["career-1"],
     title: "Design Systems Designer",
     company: "Spotify",
     location: "Stockholm",
@@ -248,6 +251,7 @@ export const demoJobs: Job[] = [
   },
   {
     id: "job-4",
+    careerIds: ["career-1", "career-3"],
     title: "Product Designer, Platform",
     company: "Tink",
     location: "Stockholm",
