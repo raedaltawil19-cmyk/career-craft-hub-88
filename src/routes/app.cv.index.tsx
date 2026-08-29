@@ -8,10 +8,8 @@ import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { CvActionToolbar } from "@/components/cv-action-toolbar";
-import {
-  CareerSuggestionsPanel,
-  SimilarJobsPanel,
-} from "@/components/career-suggestions-panel";
+import { SimilarJobsPanel } from "@/components/career-suggestions-panel";
+import { CareersWindow } from "@/components/careers-window";
 import type { CvTemplateId } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -101,19 +99,6 @@ function MasterCvPage() {
         <CvPreview cv={cv} />
       </div>
 
-      {showCareers ? (
-        <div className="space-y-4 lg:hidden">
-          <CareerSuggestionsPanel
-            careers={careers}
-            onOpenJobs={() => navigate({ to: "/app/jobs" })}
-            onTailor={(career) => {
-              setTailorPreset(career.title);
-              setOpenWindow("tailor");
-            }}
-          />
-          <SimilarJobsPanel jobs={topJobs} onOpenJobs={() => navigate({ to: "/app/jobs" })} />
-        </div>
-      ) : null}
 
       <div className="hidden lg:block">
         <Panel>
@@ -200,6 +185,22 @@ function MasterCvPage() {
           onApply={applySuggestion}
           onReject={(id) => setSuggestionState(id, "rejected")}
           onClose={() => setOpenWindow(null)}
+        />
+      ) : null}
+
+      {showCareers ? (
+        <CareersWindow
+          careers={careers}
+          onOpenJobs={(c) => {
+            setShowCareers(false);
+            navigate({ to: "/app/jobs", search: { career: c.id } });
+          }}
+          onTailor={(c) => {
+            setShowCareers(false);
+            setTailorPreset(c.title);
+            setOpenWindow("tailor");
+          }}
+          onClose={() => setShowCareers(false)}
         />
       ) : null}
 
