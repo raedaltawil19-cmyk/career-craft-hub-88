@@ -326,7 +326,7 @@ function findField(text: string): FieldSpec | null {
  * Local, deterministic instruction parsing — never invents facts, it only moves
  * the words the user typed into the field they named.
  */
-export function parseInstruction(cv: MasterCv, instruction: string): Proposal | null {
+function parseInstruction(cv: MasterCv, instruction: string): Proposal | null {
   const text = instruction.trim();
   const lower = text.toLowerCase();
 
