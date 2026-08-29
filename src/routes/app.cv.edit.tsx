@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Pencil, Sparkles, Undo2, X } from "lucide-react";
+import { ArrowLeft, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
@@ -14,8 +14,7 @@ import {
   ReferencesDialog,
   SkillsDialog,
 } from "@/components/section-dialogs";
-import { EmptyState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
-import type { Suggestion } from "@/lib/career-types";
+import { EmptyState, Eyebrow, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
