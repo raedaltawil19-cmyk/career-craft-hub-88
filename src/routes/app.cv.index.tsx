@@ -153,31 +153,7 @@ function MasterCvPage() {
       </div>
 
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Panel>
-          <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
-            <MatchRing value={78} size={56} label={t("cv.cvQuality")} />
-            <div className="min-w-0">
-              <h2 className="text-base font-semibold">{t("cv.cvQuality")}</h2>
-              <p className="text-xs text-muted-foreground">{t("cv.atsReadability")}</p>
-            </div>
-          </div>
-          <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-            <li>· {t("cv.insightConsistentStructure")}</li>
-            <li>· {t("cv.insightAchievements")}</li>
-            <li>· {t("cv.insightDateFormats")}</li>
-          </ul>
-          {pending ? (
-            <Link
-              to="/app/cv/edit"
-              search={{ panel: "ai" }}
-              className="tap mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted"
-            >
-              <Sparkles className="size-4" /> {t("cv.recommendationsCount", { count: pending })}
-            </Link>
-          ) : null}
-        </Panel>
-
+      <div>
         <Panel>
           <h2 className="eyebrow">{t("cv.versionsLabel")}</h2>
           <ul className="mt-2.5 space-y-2">
