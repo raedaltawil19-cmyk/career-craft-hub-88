@@ -94,6 +94,9 @@ export default makeBundle({
     viewJobs: "Open jobs",
     matchLabel: "match",
 
+    careersWindowTitle: "We found career paths that fit your experience",
+    careersWindowHint: "Roles outside your current title where your experience transfers.",
+    viewOpenJobs: "See available jobs",
     careersTitle: "Other careers that fit you",
     careersHint: "We found roles outside your current title that match your skills.",
     whyFit: "Why it fits you",
@@ -204,6 +207,9 @@ export default makeBundle({
     viewJobs: "Öppna jobb",
     matchLabel: "matchning",
 
+    careersWindowTitle: "Vi hittade yrkesvägar som passar din erfarenhet",
+    careersWindowHint: "Roller utanför din nuvarande titel där din erfarenhet passar in.",
+    viewOpenJobs: "Se lediga jobb",
     careersTitle: "Andra yrken som passar dig",
     careersHint: "Vi hittade roller utanför din nuvarande titel som matchar din kompetens.",
     whyFit: "Varför det passar dig",
@@ -313,6 +319,9 @@ export default makeBundle({
     viewJobs: "فتح الوظائف",
     matchLabel: "تطابق",
 
+    careersWindowTitle: "وجدنا مسارات مهنية مناسبة لخبراتك",
+    careersWindowHint: "مهن خارج مسمّاك الحالي تنتقل إليها خبراتك بسهولة.",
+    viewOpenJobs: "انظر الوظائف المتاحة",
     careersTitle: "مهن أخرى تناسبك",
     careersHint: "وجدنا مهنًا خارج مسمّاك الحالي تتوافق مع مهاراتك.",
     whyFit: "لماذا تناسبك",
