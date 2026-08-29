@@ -1,9 +1,10 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Pencil, X } from "lucide-react";
+import { ArrowLeft, Pencil, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
+import { AiSectionDialog, type AiSection } from "@/components/ai-section-dialog";
 import {
   ContactDialog,
   EducationDialog,
@@ -130,6 +131,7 @@ function SectionsPanel() {
     | "languages"
     | "references"
   >(null);
+  const [aiSection, setAiSection] = useState<AiSection | null>(null);
   const close = () => setOpenSection(null);
   const save = (patch: Partial<typeof cv>) => updateMasterCv(patch);
 
@@ -173,7 +175,11 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 2. Profile ------------------------------------------------------- */}
-      <SectionCard title={t("cv.sectionProfileTitle")} onEdit={() => setOpenSection("profile")}>
+      <SectionCard
+        title={t("cv.sectionProfileTitle")}
+        onEdit={() => setOpenSection("profile")}
+        onAiEdit={() => setAiSection("profile")}
+      >
         {cv.summary ? (
           <p className="text-sm leading-relaxed text-muted-foreground">{cv.summary}</p>
         ) : (
@@ -182,7 +188,11 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 3. Experience ---------------------------------------------------- */}
-      <SectionCard title={t("cv.experienceTitle")} onEdit={() => setOpenSection("experience")}>
+      <SectionCard
+        title={t("cv.experienceTitle")}
+        onEdit={() => setOpenSection("experience")}
+        onAiEdit={() => setAiSection("experience")}
+      >
         {cv.experience.length ? (
           <ul className="space-y-2">
             {cv.experience.map((e, i) => (
@@ -326,6 +336,15 @@ function SectionsPanel() {
         )}
       </SectionCard>
 
+      {aiSection ? (
+        <AiSectionDialog
+          section={aiSection}
+          cv={cv}
+          onClose={() => setAiSection(null)}
+          onSave={save}
+        />
+      ) : null}
+
       {openSection === "contact" ? <ContactDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "profile" ? <ProfileDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "experience" ? (
@@ -348,10 +367,12 @@ function SectionsPanel() {
 function SectionCard({
   title,
   onEdit,
+  onAiEdit,
   children,
 }: {
   title: string;
   onEdit: () => void;
+  onAiEdit?: () => void;
   children: React.ReactNode;
 }) {
   const t = useT();
@@ -359,13 +380,24 @@ function SectionCard({
     <Panel>
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
         <h2 className="min-w-0 text-base font-semibold">{title}</h2>
-        <button
-          onClick={onEdit}
-          aria-label={t("cv.editSectionAria", { section: title })}
-          className="tap grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:bg-primary-soft/60 hover:text-primary"
-        >
-          <Pencil className="size-4" />
-        </button>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            onClick={onEdit}
+            aria-label={t("cv.editSectionAria", { section: title })}
+            className="tap grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-primary/40 hover:bg-primary-soft/60 hover:text-primary"
+          >
+            <Pencil className="size-4" />
+          </button>
+          {onAiEdit ? (
+            <button
+              onClick={onAiEdit}
+              aria-label={t("cv.aiEditAria", { section: title })}
+              className="tap grid size-9 shrink-0 place-items-center rounded-full border border-primary/35 bg-primary-soft/60 text-primary hover:bg-primary-soft"
+            >
+              <Sparkles className="size-4" />
+            </button>
+          ) : null}
+        </div>
       </div>
       <div className="mt-2.5">{children}</div>
     </Panel>
