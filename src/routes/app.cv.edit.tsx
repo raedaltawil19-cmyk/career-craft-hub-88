@@ -1,9 +1,10 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Check, Pencil, Sparkles, Undo2, X } from "lucide-react";
+import { ArrowLeft, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
+import { CvEditChat } from "@/components/cv-edit-chat";
 import {
   ContactDialog,
   EducationDialog,
@@ -13,8 +14,7 @@ import {
   ReferencesDialog,
   SkillsDialog,
 } from "@/components/section-dialogs";
-import { EmptyState, Eyebrow, Panel, Tag } from "@/components/ui-bits";
-import type { Suggestion } from "@/lib/career-types";
+import { EmptyState, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -48,12 +48,7 @@ function CvEditor() {
   ] as const;
 
   if (!cv) {
-    return (
-      <EmptyState
-        title={t("cv.emptyEditTitle")}
-        description={t("cv.emptyEditDescription")}
-      />
-    );
+    return <EmptyState title={t("cv.emptyEditTitle")} description={t("cv.emptyEditDescription")} />;
   }
 
   const setPanel = (p: (typeof panels)[number]["id"]) =>
@@ -106,7 +101,7 @@ function CvEditor() {
           </p>
         </div>
         <div className={cn(panel === "ai" ? "block" : "hidden", "lg:block")}>
-          <AiPanel />
+          <CvEditChat />
         </div>
       </div>
 
@@ -131,7 +126,14 @@ function SectionsPanel() {
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv!;
   const [openSection, setOpenSection] = useState<
-    null | "contact" | "profile" | "experience" | "education" | "skills" | "languages" | "references"
+    | null
+    | "contact"
+    | "profile"
+    | "experience"
+    | "education"
+    | "skills"
+    | "languages"
+    | "references"
   >(null);
   const close = () => setOpenSection(null);
   const save = (patch: Partial<typeof cv>) => updateMasterCv(patch);
@@ -152,10 +154,7 @@ function SectionsPanel() {
   return (
     <div className="space-y-3">
       {/* 1. Name & contact ------------------------------------------------ */}
-      <SectionCard
-        title={t("cv.sectionContactTitle")}
-        onEdit={() => setOpenSection("contact")}
-      >
+      <SectionCard title={t("cv.sectionContactTitle")} onEdit={() => setOpenSection("contact")}>
         {cv.name || cv.email || cv.phone ? (
           <div className="space-y-1 text-sm">
             <p className="font-medium">{cv.name}</p>
@@ -179,10 +178,7 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 2. Profile ------------------------------------------------------- */}
-      <SectionCard
-        title={t("cv.sectionProfileTitle")}
-        onEdit={() => setOpenSection("profile")}
-      >
+      <SectionCard title={t("cv.sectionProfileTitle")} onEdit={() => setOpenSection("profile")}>
         {cv.summary ? (
           <p className="text-sm leading-relaxed text-muted-foreground">{cv.summary}</p>
         ) : (
@@ -191,10 +187,7 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 3. Experience ---------------------------------------------------- */}
-      <SectionCard
-        title={t("cv.experienceTitle")}
-        onEdit={() => setOpenSection("experience")}
-      >
+      <SectionCard title={t("cv.experienceTitle")} onEdit={() => setOpenSection("experience")}>
         {cv.experience.length ? (
           <ul className="space-y-2">
             {cv.experience.map((e, i) => (
@@ -328,9 +321,7 @@ function SectionsPanel() {
                 </span>
                 <RemoveButton
                   label={t("cv.removeReferenceAria", { name: r.name })}
-                  onClick={() =>
-                    updateMasterCv({ references: removeAt(cv.references ?? [], i) })
-                  }
+                  onClick={() => updateMasterCv({ references: removeAt(cv.references ?? [], i) })}
                 />
               </li>
             ))}
@@ -340,22 +331,15 @@ function SectionsPanel() {
         )}
       </SectionCard>
 
-
-      {openSection === "contact" ? (
-        <ContactDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
-      {openSection === "profile" ? (
-        <ProfileDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
+      {openSection === "contact" ? <ContactDialog cv={cv} onClose={close} onSave={save} /> : null}
+      {openSection === "profile" ? <ProfileDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "experience" ? (
         <ExperienceDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
       {openSection === "education" ? (
         <EducationDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
-      {openSection === "skills" ? (
-        <SkillsDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
+      {openSection === "skills" ? <SkillsDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "languages" ? (
         <LanguagesDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
@@ -410,7 +394,6 @@ function RemoveButton({ label, onClick }: { label: string; onClick: () => void }
   );
 }
 
-
 function AddSkill() {
   const t = useT();
   const { state, updateMasterCv } = useWorkspace();
@@ -437,137 +420,5 @@ function AddSkill() {
         {t("cv.addButton")}
       </button>
     </form>
-  );
-}
-
-function AiPanel() {
-  const t = useT();
-  const { state, setSuggestionState, acceptAllSuggestions, updateMasterCv } = useWorkspace();
-  const cv = state.masterCv!;
-  const pending = state.suggestions.filter((s) => s.state === "pending");
-
-  const apply = (s: Suggestion) => {
-    if (s.section === "Professional summary") updateMasterCv({ summary: s.after });
-    setSuggestionState(s.id, "accepted");
-  };
-
-  const quickActions = [
-    t("cv.quickActionImprove"),
-    t("cv.quickActionAchievements"),
-    t("cv.quickActionKeywords"),
-  ];
-
-  return (
-    <div className="space-y-3">
-      <Panel className="border-primary/25 bg-primary-soft/40">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2.5">
-          <Sparkles className="mt-0.5 size-5 shrink-0 text-primary" />
-          <div className="min-w-0">
-            <h2 className="text-base font-semibold">{t("cv.assistantTitle")}</h2>
-            <p className="mt-1 text-xs text-muted-foreground">{t("cv.assistantDescription")}</p>
-          </div>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {quickActions.map((a) => (
-            <button
-              key={a}
-              className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-medium hover:bg-muted"
-            >
-              {a}
-            </button>
-          ))}
-        </div>
-      </Panel>
-
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-        <Eyebrow>{t("cv.openRecommendations", { count: pending.length })}</Eyebrow>
-        {pending.length ? (
-          <button
-            onClick={acceptAllSuggestions}
-            className="shrink-0 text-xs font-semibold text-primary"
-          >
-            {t("cv.acceptAll")}
-          </button>
-        ) : null}
-      </div>
-
-      {state.suggestions.length ? (
-        <ul className="space-y-3">
-          {state.suggestions.map((s) => (
-            <li key={s.id}>
-              <Panel
-                className={cn(
-                  s.state === "accepted" && "border-success/40",
-                  s.state === "rejected" && "opacity-60",
-                )}
-              >
-                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-accent">{s.section}</p>
-                    <p className="mt-0.5 text-sm font-medium">{s.issue}</p>
-                  </div>
-                  <Tag tone={s.severity === "high" ? "gap" : "neutral"}>{s.severity}</Tag>
-                </div>
-
-                <p className="mt-2 text-xs text-muted-foreground">{s.rationale}</p>
-
-                <div className="mt-3 space-y-2 text-sm">
-                  <div className="rounded-lg bg-muted p-2.5">
-                    <p className="eyebrow mb-1">{t("cv.current")}</p>
-                    <p className="text-foreground/75">{s.before}</p>
-                  </div>
-                  <div className="rounded-lg bg-success-soft p-2.5">
-                    <p className="eyebrow mb-1">{t("cv.suggested")}</p>
-                    <p>{s.after}</p>
-                  </div>
-                </div>
-
-                {s.state === "pending" ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      onClick={() => apply(s)}
-                      className="tap inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 text-sm font-semibold text-primary-foreground"
-                    >
-                      <Check className="size-4" /> {t("cv.accept")}
-                    </button>
-                    <button
-                      onClick={() => setSuggestionState(s.id, "rejected")}
-                      className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 text-sm font-medium"
-                    >
-                      <X className="size-4" /> {t("cv.reject")}
-                    </button>
-                    <button className="tap inline-flex items-center gap-1.5 rounded-xl border border-border px-3.5 text-sm font-medium">
-                      <Pencil className="size-4" /> {t("cv.editSuggestion")}
-                    </button>
-                  </div>
-                ) : (
-                  <div className="mt-3 flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "text-xs font-semibold",
-                        s.state === "accepted" ? "text-success" : "text-muted-foreground",
-                      )}
-                    >
-                      {s.state === "accepted" ? t("cv.accepted") : t("cv.rejected")}
-                    </span>
-                    <button
-                      onClick={() => setSuggestionState(s.id, "pending")}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-primary"
-                    >
-                      <Undo2 className="size-3.5" /> {t("cv.undo")}
-                    </button>
-                  </div>
-                )}
-              </Panel>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <EmptyState
-          title={t("cv.noRecommendationsTitle")}
-          description={t("cv.noRecommendationsDescription", { name: cv.name.split(" ")[0] ?? "" })}
-        />
-      )}
-    </div>
   );
 }
