@@ -26,7 +26,7 @@ export const Route = createFileRoute("/app/cv/edit")({
   head: () => ({
     meta: [
       { title: "CV editor — Smart CV" },
-      { name: "description", content: "Edit sections, review AI recommendations, preview output." },
+      { name: "description", content: "Edit sections and preview your CV output." },
       { name: "robots", content: "noindex" },
     ],
   }),
