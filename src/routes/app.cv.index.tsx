@@ -64,7 +64,6 @@ function MasterCvPage() {
     );
   }
 
-  const pending = state.suggestions.filter((s) => s.state === "pending").length;
   const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
