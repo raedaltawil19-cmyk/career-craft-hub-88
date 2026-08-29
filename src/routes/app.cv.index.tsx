@@ -1,9 +1,9 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Compass, Download, FileText, LayoutTemplate, Pencil, Printer, Sparkles, Target } from "lucide-react";
+import { Compass, Download, FileText, LayoutTemplate, Pencil, Printer, Target } from "lucide-react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
-import { EmptyState, MatchRing, PageHeader, Panel, Tag } from "@/components/ui-bits";
+import { EmptyState, PageHeader, Panel, Tag } from "@/components/ui-bits";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
