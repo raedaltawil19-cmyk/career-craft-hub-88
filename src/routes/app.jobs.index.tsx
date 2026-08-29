@@ -1,12 +1,18 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Bookmark, BookmarkCheck, Filter, Link2, Search, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
+import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { EmptyState, MatchRing, PageHeader, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
+const searchSchema = z.object({
+  career: z.string().optional().catch(undefined),
+});
+
 export const Route = createFileRoute("/app/jobs/")({
+  validateSearch: searchSchema,
   head: () => ({
     meta: [
       { title: "Jobs — Smart CV" },
@@ -21,7 +27,9 @@ const filters = ["All", "Remote", "Hybrid", "On-site", "Saved"] as const;
 
 function JobsPage() {
   const t = useT();
-  const { jobs, state, toggleSavedJob } = useWorkspace();
+  const { jobs, state, careers, toggleSavedJob } = useWorkspace();
+  const { career } = Route.useSearch();
+  const activeCareer = careers.find((c) => c.id === career);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
 
@@ -35,6 +43,7 @@ function JobsPage() {
 
   const visible = useMemo(() => {
     return jobs
+      .filter((j) => (career ? (j.careerIds ?? []).includes(career) : true))
       .filter((j) =>
         filter === "All"
           ? true
@@ -48,7 +57,7 @@ function JobsPage() {
           : true,
       )
       .sort((a, b) => b.match - a.match);
-  }, [jobs, filter, query, state.savedJobIds]);
+  }, [jobs, filter, query, career, state.savedJobIds]);
 
   return (
     <div className="space-y-6">
@@ -97,6 +106,21 @@ function JobsPage() {
           ))}
         </div>
       </div>
+
+      {activeCareer ? (
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-primary-soft/60 px-4 py-3">
+          <p className="min-w-0 text-sm font-semibold text-primary">
+            {t("jobs.careerFilterLabel", { career: activeCareer.title })}
+          </p>
+          <Link
+            to="/app/jobs"
+            search={{ career: undefined }}
+            className="shrink-0 rounded-full border border-primary/40 bg-card px-3 py-1.5 text-xs font-semibold text-primary hover:bg-muted"
+          >
+            {t("jobs.clearCareerFilter")}
+          </Link>
+        </div>
+      ) : null}
 
       {visible.length ? (
         <ul className="grid gap-4 lg:grid-cols-2">
