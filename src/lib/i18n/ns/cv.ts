@@ -63,7 +63,8 @@ export default makeBundle({
     panelAssistant: "Assistant",
     panelPreview: "Preview",
     previewNote: "Preview reflects the {template} template",
-    desktopHint: "Editing on a larger screen shows sections, preview and the assistant side by side.",
+    desktopHint:
+      "Editing on a larger screen shows sections, preview and the assistant side by side.",
     editingSrLive: "Editing {name} master CV",
     summaryTitle: "Professional summary",
     editSummaryAria: "Edit summary",
@@ -252,7 +253,8 @@ export default makeBundle({
     usedInApplication: "Använd i en ansökan",
 
     headTitleEdit: "CV-redigerare — Smart CV",
-    headDescriptionEdit: "Redigera sektioner, granska AI-rekommendationer och förhandsgranska resultatet.",
+    headDescriptionEdit:
+      "Redigera sektioner, granska AI-rekommendationer och förhandsgranska resultatet.",
     emptyEditTitle: "Inget att redigera ännu",
     emptyEditDescription: "Skapa ditt huvud-CV först med +-funktionen.",
     backToMaster: "Huvud-CV",
@@ -262,7 +264,8 @@ export default makeBundle({
     panelAssistant: "Assistent",
     panelPreview: "Förhandsgranskning",
     previewNote: "Förhandsgranskningen visar mallen {template}",
-    desktopHint: "På en större skärm visas sektioner, förhandsgranskning och assistenten sida vid sida.",
+    desktopHint:
+      "På en större skärm visas sektioner, förhandsgranskning och assistenten sida vid sida.",
     editingSrLive: "Redigerar {name}s huvud-CV",
     summaryTitle: "Professionell sammanfattning",
     editSummaryAria: "Redigera sammanfattning",
@@ -296,7 +299,8 @@ export default makeBundle({
     certificationsCount: "Certifieringar · {count}",
     volunteerCount: "Volontärarbete · {count}",
     assistantTitle: "Assistent · CV-kontext",
-    assistantDescription: "Skrivskyddad analys. Inget ändras förrän du accepterar en rekommendation.",
+    assistantDescription:
+      "Skrivskyddad analys. Inget ändras förrän du accepterar en rekommendation.",
     chatTitle: "Redigera med text",
     chatIntro: "Skriv vad du vill ändra i en mening och tryck på Tillämpa för att spara ändringen.",
     chatExample1: "Ändra jobbtiteln till Frontend Developer",

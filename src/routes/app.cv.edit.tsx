@@ -14,7 +14,7 @@ import {
   ReferencesDialog,
   SkillsDialog,
 } from "@/components/section-dialogs";
-import { EmptyState, Eyebrow, Panel } from "@/components/ui-bits";
+import { EmptyState, Panel } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -48,12 +48,7 @@ function CvEditor() {
   ] as const;
 
   if (!cv) {
-    return (
-      <EmptyState
-        title={t("cv.emptyEditTitle")}
-        description={t("cv.emptyEditDescription")}
-      />
-    );
+    return <EmptyState title={t("cv.emptyEditTitle")} description={t("cv.emptyEditDescription")} />;
   }
 
   const setPanel = (p: (typeof panels)[number]["id"]) =>
@@ -131,7 +126,14 @@ function SectionsPanel() {
   const { state, updateMasterCv } = useWorkspace();
   const cv = state.masterCv!;
   const [openSection, setOpenSection] = useState<
-    null | "contact" | "profile" | "experience" | "education" | "skills" | "languages" | "references"
+    | null
+    | "contact"
+    | "profile"
+    | "experience"
+    | "education"
+    | "skills"
+    | "languages"
+    | "references"
   >(null);
   const close = () => setOpenSection(null);
   const save = (patch: Partial<typeof cv>) => updateMasterCv(patch);
@@ -152,10 +154,7 @@ function SectionsPanel() {
   return (
     <div className="space-y-3">
       {/* 1. Name & contact ------------------------------------------------ */}
-      <SectionCard
-        title={t("cv.sectionContactTitle")}
-        onEdit={() => setOpenSection("contact")}
-      >
+      <SectionCard title={t("cv.sectionContactTitle")} onEdit={() => setOpenSection("contact")}>
         {cv.name || cv.email || cv.phone ? (
           <div className="space-y-1 text-sm">
             <p className="font-medium">{cv.name}</p>
@@ -179,10 +178,7 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 2. Profile ------------------------------------------------------- */}
-      <SectionCard
-        title={t("cv.sectionProfileTitle")}
-        onEdit={() => setOpenSection("profile")}
-      >
+      <SectionCard title={t("cv.sectionProfileTitle")} onEdit={() => setOpenSection("profile")}>
         {cv.summary ? (
           <p className="text-sm leading-relaxed text-muted-foreground">{cv.summary}</p>
         ) : (
@@ -191,10 +187,7 @@ function SectionsPanel() {
       </SectionCard>
 
       {/* 3. Experience ---------------------------------------------------- */}
-      <SectionCard
-        title={t("cv.experienceTitle")}
-        onEdit={() => setOpenSection("experience")}
-      >
+      <SectionCard title={t("cv.experienceTitle")} onEdit={() => setOpenSection("experience")}>
         {cv.experience.length ? (
           <ul className="space-y-2">
             {cv.experience.map((e, i) => (
@@ -328,9 +321,7 @@ function SectionsPanel() {
                 </span>
                 <RemoveButton
                   label={t("cv.removeReferenceAria", { name: r.name })}
-                  onClick={() =>
-                    updateMasterCv({ references: removeAt(cv.references ?? [], i) })
-                  }
+                  onClick={() => updateMasterCv({ references: removeAt(cv.references ?? [], i) })}
                 />
               </li>
             ))}
@@ -340,22 +331,15 @@ function SectionsPanel() {
         )}
       </SectionCard>
 
-
-      {openSection === "contact" ? (
-        <ContactDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
-      {openSection === "profile" ? (
-        <ProfileDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
+      {openSection === "contact" ? <ContactDialog cv={cv} onClose={close} onSave={save} /> : null}
+      {openSection === "profile" ? <ProfileDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "experience" ? (
         <ExperienceDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
       {openSection === "education" ? (
         <EducationDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
-      {openSection === "skills" ? (
-        <SkillsDialog cv={cv} onClose={close} onSave={save} />
-      ) : null}
+      {openSection === "skills" ? <SkillsDialog cv={cv} onClose={close} onSave={save} /> : null}
       {openSection === "languages" ? (
         <LanguagesDialog cv={cv} onClose={close} onSave={save} />
       ) : null}
@@ -409,7 +393,6 @@ function RemoveButton({ label, onClick }: { label: string; onClick: () => void }
     </button>
   );
 }
-
 
 function AddSkill() {
   const t = useT();

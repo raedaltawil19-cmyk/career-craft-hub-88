@@ -192,7 +192,15 @@ type FieldSpec = {
 const FIELDS: FieldSpec[] = [
   {
     labelKey: "cv.fieldTitle",
-    keywords: ["job title", "jobtitle", "professional title", "jobbtitel", "titel", "المسمى", "اللقب"],
+    keywords: [
+      "job title",
+      "jobtitle",
+      "professional title",
+      "jobbtitel",
+      "titel",
+      "المسمى",
+      "اللقب",
+    ],
     read: (cv) => cv.title,
     write: (_cv, v) => ({ title: v }),
   },
@@ -252,13 +260,31 @@ const FIELDS: FieldSpec[] = [
   },
   {
     labelKey: "cv.eduSchool",
-    keywords: ["school", "university", "institution", "skola", "universitet", "الجامعة", "المدرسة", "الجهة"],
+    keywords: [
+      "school",
+      "university",
+      "institution",
+      "skola",
+      "universitet",
+      "الجامعة",
+      "المدرسة",
+      "الجهة",
+    ],
     read: (cv) => cv.education[0]?.school ?? "",
     write: (cv, v) => patchFirstEducation(cv, { school: v }),
   },
   {
     labelKey: "cv.eduProgram",
-    keywords: ["programme", "program", "degree", "utbildning", "examen", "البرنامج", "الشهادة", "التخصص"],
+    keywords: [
+      "programme",
+      "program",
+      "degree",
+      "utbildning",
+      "examen",
+      "البرنامج",
+      "الشهادة",
+      "التخصص",
+    ],
     read: (cv) => cv.education[0]?.program ?? "",
     write: (cv, v) => patchFirstEducation(cv, { program: v }),
   },
@@ -309,7 +335,12 @@ export function parseInstruction(cv: MasterCv, instruction: string): Proposal | 
     const field = findField(text) ?? FIELDS.find((f) => f.labelKey === "cv.sectionProfileTitle")!;
     const before = field.read(cv);
     if (!before) return null;
-    const after = before.split(/(?<=[.!?])\s+/).filter(Boolean).slice(0, 1).join(" ") || before;
+    const after =
+      before
+        .split(/(?<=[.!?])\s+/)
+        .filter(Boolean)
+        .slice(0, 1)
+        .join(" ") || before;
     if (after === before) return null;
     return { labelKey: field.labelKey, before, after, patch: field.write(cv, after) };
   }
@@ -326,7 +357,10 @@ export function parseInstruction(cv: MasterCv, instruction: string): Proposal | 
   if (index < 0) return null;
 
   const target = text.slice(0, index);
-  const value = text.slice(index + sepLength).trim().replace(/^["'«]|["'»]$/g, "");
+  const value = text
+    .slice(index + sepLength)
+    .trim()
+    .replace(/^["'«]|["'»]$/g, "");
   if (!value) return null;
 
   const field = findField(target);
