@@ -4,7 +4,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
-import { CvEditChat } from "@/components/cv-edit-chat";
 import {
   ContactDialog,
   EducationDialog,
@@ -19,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
 const searchSchema = z.object({
-  panel: z.enum(["sections", "ai", "preview"]).catch("sections"),
+  panel: z.enum(["sections", "preview"]).catch("sections"),
 });
 
 export const Route = createFileRoute("/app/cv/edit")({
