@@ -42,7 +42,6 @@ function CvEditor() {
 
   const panels = [
     { id: "sections", label: t("cv.panelSections") },
-    { id: "ai", label: t("cv.panelAssistant") },
     { id: "preview", label: t("cv.panelPreview") },
   ] as const;
 
