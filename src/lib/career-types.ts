@@ -92,6 +92,8 @@ export type Job = {
   preferred: string[];
   keywords: string[];
   experienceRequirement: string;
+  /** Career paths this job belongs to (see CareerSuggestion.id). */
+  careerIds?: string[];
 };
 
 export type ApplicationStatus =

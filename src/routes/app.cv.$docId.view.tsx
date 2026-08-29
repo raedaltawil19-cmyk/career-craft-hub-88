@@ -21,13 +21,9 @@ import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { CvActionToolbar } from "@/components/cv-action-toolbar";
-import {
-  CareerSuggestionsPanel,
-  SimilarJobsPanel,
-} from "@/components/career-suggestions-panel";
+import { CareersWindow } from "@/components/careers-window";
 import type { CvTemplateId } from "@/lib/career-types";
 import { useT } from "@/lib/i18n";
-
 
 export const Route = createFileRoute("/app/cv/$docId/view")({
   head: () => ({
@@ -75,8 +71,6 @@ function CvVersionPage() {
     );
   }
 
-  const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
-
   const onDelete = () => {
     const kids = state.docs.filter((x) => x.parentId === doc.id).length;
     const message =
@@ -107,7 +101,6 @@ function CvVersionPage() {
             </button>
           </div>
         }
-
       />
 
       <CvActionToolbar
@@ -162,21 +155,6 @@ function CvVersionPage() {
         <CvPreview cv={cv} />
       </div>
 
-      {showCareers ? (
-        <div className="space-y-4">
-          <CareerSuggestionsPanel
-            careers={careers}
-            onOpenJobs={() => navigate({ to: "/app/jobs" })}
-            onTailor={(career) => {
-              setTailorPreset(career.title);
-              setOpenWindow("tailor");
-            }}
-          />
-          <SimilarJobsPanel jobs={topJobs} onOpenJobs={() => navigate({ to: "/app/jobs" })} />
-        </div>
-      ) : null}
-
-
       <TemplatePreviewSheet
         templateId={previewTpl}
         onOpenChange={(o) => !o && setPreviewTpl(null)}
@@ -206,7 +184,21 @@ function CvVersionPage() {
         />
       ) : null}
 
+      {showCareers ? (
+        <CareersWindow
+          careers={careers}
+          onOpenJobs={(c) => {
+            setShowCareers(false);
+            navigate({ to: "/app/jobs", search: { career: c.id } });
+          }}
+          onTailor={(c) => {
+            setShowCareers(false);
+            setTailorPreset(c.title);
+            setOpenWindow("tailor");
+          }}
+          onClose={() => setShowCareers(false)}
+        />
+      ) : null}
     </div>
   );
 }
-

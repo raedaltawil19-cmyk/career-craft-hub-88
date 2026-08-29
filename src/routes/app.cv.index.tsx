@@ -8,10 +8,7 @@ import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { CvActionToolbar } from "@/components/cv-action-toolbar";
-import {
-  CareerSuggestionsPanel,
-  SimilarJobsPanel,
-} from "@/components/career-suggestions-panel";
+import { CareersWindow } from "@/components/careers-window";
 import type { CvTemplateId } from "@/lib/career-types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -32,15 +29,8 @@ type WindowKind = "improve" | "tailor" | null;
 function MasterCvPage() {
   const t = useT();
   const navigate = useNavigate();
-  const {
-    state,
-    jobs,
-    careers,
-    updateMasterCv,
-    setTemplate,
-    applySuggestion,
-    setSuggestionState,
-  } = useWorkspace();
+  const { state, jobs, careers, updateMasterCv, setTemplate, applySuggestion, setSuggestionState } =
+    useWorkspace();
   const cv = state.masterCv;
 
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
@@ -63,8 +53,6 @@ function MasterCvPage() {
       />
     );
   }
-
-  const topJobs = [...jobs].sort((a, b) => b.match - a.match).slice(0, 3);
 
   return (
     <div className="space-y-5 pb-24 lg:pb-0">
@@ -96,24 +84,9 @@ function MasterCvPage() {
         onTemplate={() => setPreviewTpl(cv.template)}
       />
 
-
       <div className="mx-auto w-full max-w-3xl">
         <CvPreview cv={cv} />
       </div>
-
-      {showCareers ? (
-        <div className="space-y-4 lg:hidden">
-          <CareerSuggestionsPanel
-            careers={careers}
-            onOpenJobs={() => navigate({ to: "/app/jobs" })}
-            onTailor={(career) => {
-              setTailorPreset(career.title);
-              setOpenWindow("tailor");
-            }}
-          />
-          <SimilarJobsPanel jobs={topJobs} onOpenJobs={() => navigate({ to: "/app/jobs" })} />
-        </div>
-      ) : null}
 
       <div className="hidden lg:block">
         <Panel>
@@ -151,7 +124,6 @@ function MasterCvPage() {
         </Panel>
       </div>
 
-
       <div>
         <Panel>
           <h2 className="eyebrow">{t("cv.versionsLabel")}</h2>
@@ -164,7 +136,8 @@ function MasterCvPage() {
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-medium">{d.name}</span>
                   <span className="block text-xs text-muted-foreground">
-                    {d.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")} · {d.updatedAt}
+                    {d.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")} ·{" "}
+                    {d.updatedAt}
                   </span>
                 </span>
                 <Tag tone={d.score >= 80 ? "match" : "neutral"}>{d.score}</Tag>
@@ -203,7 +176,21 @@ function MasterCvPage() {
         />
       ) : null}
 
+      {showCareers ? (
+        <CareersWindow
+          careers={careers}
+          onOpenJobs={(c) => {
+            setShowCareers(false);
+            navigate({ to: "/app/jobs", search: { career: c.id } });
+          }}
+          onTailor={(c) => {
+            setShowCareers(false);
+            setTailorPreset(c.title);
+            setOpenWindow("tailor");
+          }}
+          onClose={() => setShowCareers(false)}
+        />
+      ) : null}
     </div>
   );
 }
-
