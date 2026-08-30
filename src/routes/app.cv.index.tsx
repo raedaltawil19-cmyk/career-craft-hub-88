@@ -170,8 +170,6 @@ function MasterCvPage() {
         <TailorWindow
           suggestions={state.suggestions}
           presetTitle={tailorPreset}
-          onApply={applySuggestion}
-          onReject={(id) => setSuggestionState(id, "rejected")}
           onClose={() => setOpenWindow(null)}
         />
       ) : null}

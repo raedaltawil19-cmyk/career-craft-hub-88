@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Bookmark, Check, ExternalLink, Loader2, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, FileText, Loader2, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useWorkspace } from "@/lib/career-store";
 import { CvPreview } from "@/components/cv-preview";
@@ -7,8 +7,7 @@ import { ShareCvMenu } from "@/components/share-cv-menu";
 import { EmptyState, Eyebrow, MatchRing, Panel, Tag } from "@/components/ui-bits";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
-import type { ApplicationStatus } from "@/lib/career-types";
-
+import type { ApplicationStatus, TailorChange } from "@/lib/career-types";
 
 export const Route = createFileRoute("/app/tailor/$jobId")({
   head: () => ({
@@ -27,12 +26,13 @@ function TailorPage() {
   const t = useT();
   const { jobId } = Route.useParams();
   const navigate = useNavigate();
-  const { jobs, state, addTailoredCv, addApplication } = useWorkspace();
+  const { jobs, state, createTailoredCv, addApplication } = useWorkspace();
   const job = jobs.find((j) => j.id === jobId);
   const cv = state.masterCv;
   const [step, setStep] = useState<Step>(0);
   const [analyzing, setAnalyzing] = useState(false);
   const [approved, setApproved] = useState<Record<string, boolean>>({});
+  const [newDocId, setNewDocId] = useState<string | null>(null);
 
   const steps = [
     t("tailor.stepAnalyze"),
@@ -47,7 +47,10 @@ function TailorPage() {
         title={t("tailor.cantTailorTitle")}
         description={t("tailor.cantTailorDescription")}
         action={
-          <Link to="/app/jobs" className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium">
+          <Link
+            to="/app/jobs"
+            className="tap inline-flex items-center rounded-xl border border-border px-4 text-sm font-medium"
+          >
             {t("tailor.backToJobs")}
           </Link>
         }
@@ -76,10 +79,10 @@ function TailorPage() {
     return id;
   };
 
-
   const changes = [
     {
       id: "c1",
+      target: "summary" as const,
       section: t("tailor.sectionSummary"),
       before: cv.summary,
       after: t("tailor.changeSummaryAfter", { title: cv.title, keyword: job.keywords[0] ?? "" }),
@@ -87,6 +90,7 @@ function TailorPage() {
     },
     {
       id: "c2",
+      target: "bullet" as const,
       section: t("tailor.sectionExperienceOrder"),
       before: t("tailor.changeExperienceBefore"),
       after: t("tailor.changeExperienceAfter"),
@@ -94,6 +98,7 @@ function TailorPage() {
     },
     {
       id: "c3",
+      target: "skills" as const,
       section: t("tailor.sectionSkills"),
       before: cv.skills.slice(0, 4).join(", "),
       after: t("tailor.changeSkillsAfter", { skills: job.matchingSkills.join(", ") }),
@@ -102,6 +107,8 @@ function TailorPage() {
   ];
 
   const approvedCount = Object.values(approved).filter(Boolean).length;
+  const tailoredDoc = state.docs.find((d) => d.id === newDocId) ?? null;
+  const tailoredCv = tailoredDoc?.data ?? cv;
 
   return (
     <div className="space-y-5">
@@ -123,12 +130,7 @@ function TailorPage() {
       <ol className="grid grid-cols-4 gap-1.5" aria-label={t("tailor.progressLabel")}>
         {steps.map((s, i) => (
           <li key={s} className="min-w-0">
-            <div
-              className={cn(
-                "h-1 rounded-full",
-                i <= step ? "bg-primary" : "bg-border",
-              )}
-            />
+            <div className={cn("h-1 rounded-full", i <= step ? "bg-primary" : "bg-border")} />
             <p
               className={cn(
                 "mt-1.5 truncate text-[0.6875rem] font-medium",
@@ -164,7 +166,11 @@ function TailorPage() {
             }}
             className="tap mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
           >
-            {analyzing ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+            {analyzing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Sparkles className="size-4" />
+            )}
             {analyzing ? t("tailor.analyzing") : t("tailor.analyzeJob")}
           </button>
         </Panel>
@@ -175,9 +181,7 @@ function TailorPage() {
           <Panel>
             <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
               <MatchRing value={job.match} size={64} />
-              <p className="min-w-0 text-sm text-muted-foreground">
-                {t("tailor.matchIntro")}
-              </p>
+              <p className="min-w-0 text-sm text-muted-foreground">{t("tailor.matchIntro")}</p>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <div>
@@ -278,15 +282,17 @@ function TailorPage() {
           <button
             disabled={approvedCount === 0}
             onClick={() => {
-              addTailoredCv({
-                id: `cv-${job.id}`,
-                name: `${job.company} — ${job.title}`,
-                kind: "tailored",
+              const applied: TailorChange[] = changes
+                .filter((c) => approved[c.id])
+                .map((c) => ({ target: c.target, before: c.before, after: c.after }));
+              const id = createTailoredCv({
                 jobId: job.id,
-                updatedAt: new Date().toISOString(),
+                company: job.company,
+                jobTitle: job.title,
                 score: Math.min(96, job.match + 6),
-                data: cv,
+                changes: applied,
               });
+              setNewDocId(id);
               setStep(3);
             }}
             className="tap inline-flex items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground disabled:opacity-40"
@@ -296,7 +302,7 @@ function TailorPage() {
         </div>
       ) : null}
 
-      {step === 3 ? (
+      {step === 3 && tailoredDoc ? (
         <div className="space-y-4">
           <Panel>
             <div className="flex items-start gap-3">
@@ -306,39 +312,50 @@ function TailorPage() {
               <div className="min-w-0 flex-1">
                 <h2 className="text-lg leading-snug">{t("tailor.createdTitle")}</h2>
                 <p className="mt-0.5 text-sm text-muted-foreground">
-                  {t("tailor.createdDescription", { version: cv.version, company: job.company, title: job.title })}
+                  {t("tailor.createdDescription", {
+                    version: cv.version,
+                    company: job.company,
+                    title: job.title,
+                  })}
                 </p>
+                <p className="mt-1 text-xs font-semibold text-accent">{tailoredDoc.name}</p>
               </div>
-              <ShareCvMenu cv={cv} name={`${job.company} — ${job.title}`} />
+              <ShareCvMenu cv={tailoredCv} name={tailoredDoc.name} />
             </div>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="mt-4 grid gap-2 sm:grid-cols-3">
+              <button
+                type="button"
+                onClick={() =>
+                  navigate({ to: "/app/cv/$docId/view", params: { docId: tailoredDoc.id } })
+                }
+                className="tap inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-base font-bold text-primary-foreground"
+              >
+                <FileText className="size-4.5" aria-hidden />
+                {t("tailor.openCv")}
+              </button>
               <a
                 href={job.applyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackApplication("Applied")}
-                className="tap inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-base font-bold text-primary-foreground"
+                className="tap inline-flex items-center justify-center gap-2 rounded-2xl border border-border-strong bg-card px-4 text-sm font-bold hover:bg-muted"
               >
                 <ExternalLink className="size-4.5" aria-hidden />
                 {t("tailor.applyNow")}
               </a>
               <button
                 type="button"
-                onClick={() => {
-                  const id = trackApplication("Saved");
-                  navigate({ to: "/app/applications/$appId", params: { appId: id } });
-                }}
+                onClick={() => navigate({ to: "/app" })}
                 className="tap inline-flex items-center justify-center gap-2 rounded-2xl border border-border-strong bg-card px-4 text-sm font-bold hover:bg-muted"
               >
-                <Bookmark className="size-4.5" aria-hidden />
-                {t("tailor.trackApplication")}
+                <ArrowLeft className="size-4.5 rtl:rotate-180" aria-hidden />
+                {t("tailor.backToLibrary")}
               </button>
             </div>
           </Panel>
-          <CvPreview cv={cv} highlight={job.matchingSkills} />
+          <CvPreview cv={tailoredCv} highlight={job.matchingSkills} />
         </div>
       ) : null}
-
     </div>
   );
 }

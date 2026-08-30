@@ -1,6 +1,14 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, ChevronRight, Compass, MessageSquare, Pencil, Sparkles, Target } from "lucide-react";
+import {
+  Check,
+  ChevronRight,
+  Compass,
+  MessageSquare,
+  Pencil,
+  Sparkles,
+  Target,
+} from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useWorkspace } from "@/lib/career-store";
 import { CvLibrary } from "@/components/cv-library";
@@ -9,14 +17,10 @@ import { TemplatePreviewSheet } from "@/components/template-preview-sheet";
 import { ImproveWindow } from "@/components/improve-window";
 import { TailorWindow } from "@/components/tailor-window";
 import { EditorChatWindow } from "@/components/editor-chat-window";
-import {
-  CareerSuggestionsPanel,
-  SimilarJobsPanel,
-} from "@/components/career-suggestions-panel";
+import { CareerSuggestionsPanel, SimilarJobsPanel } from "@/components/career-suggestions-panel";
 import { Eyebrow } from "@/components/ui-bits";
 import dashboardNs from "@/lib/i18n/ns/dashboard";
 import type { CvTemplateId } from "@/lib/career-types";
-
 
 const dashboardHeadTitle = dashboardNs.en.headTitle;
 const dashboardHeadDescription = dashboardNs.en.headDescription;
@@ -37,15 +41,8 @@ type WindowKind = "improve" | "tailor" | "chat" | null;
 function HomePage() {
   const t = useT();
   const navigate = useNavigate();
-  const {
-    state,
-    jobs,
-    careers,
-    setTemplate,
-    applySuggestion,
-    setSuggestionState,
-    updateMasterCv,
-  } = useWorkspace();
+  const { state, jobs, careers, setTemplate, applySuggestion, setSuggestionState, updateMasterCv } =
+    useWorkspace();
 
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
   const [tailorPreset, setTailorPreset] = useState<string | undefined>(undefined);
@@ -91,14 +88,9 @@ function HomePage() {
           ) : (
             <CvIntake />
           )}
-
         </div>
 
-
-
         <aside className="hidden space-y-4 lg:block lg:sticky lg:top-6">
-          
-
           <BigAction
             icon={<Sparkles className="size-6" />}
             title={t("ws.improveGeneral")}
@@ -176,7 +168,6 @@ function HomePage() {
         </aside>
       </div>
 
-
       {openWindow === "improve" ? (
         <ImproveWindow
           suggestions={state.suggestions}
@@ -190,8 +181,6 @@ function HomePage() {
         <TailorWindow
           suggestions={state.suggestions}
           presetTitle={tailorPreset}
-          onApply={applySuggestion}
-          onReject={(id) => setSuggestionState(id, "rejected")}
           onClose={() => setOpenWindow(null)}
         />
       ) : null}
@@ -248,5 +237,3 @@ function BigAction({
     </button>
   );
 }
-
-

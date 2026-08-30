@@ -30,7 +30,8 @@ export default makeBundle({
     sectionSkills: "Skills",
     changeSummaryAfter:
       "{title} with 8 years in fintech and B2B SaaS, focused on {keyword} work and end-to-end delivery for data-heavy products.",
-    changeSummaryWhy: 'Mirrors the posting\'s language ("{keyword}") using facts already in your CV.',
+    changeSummaryWhy:
+      'Mirrors the posting\'s language ("{keyword}") using facts already in your CV.',
     changeExperienceBefore: "Chronological order",
     changeExperienceAfter: "Move Northlane Fintech design-system work to the top bullet",
     changeExperienceWhy: "The posting lists systems contribution as a core requirement.",
@@ -47,11 +48,12 @@ export default makeBundle({
       "Linked to Master CV v{version} and to {company} · {title}. Editing the Master CV later will flag this version for review.",
     trackApplication: "Save to tracker",
     applyNow: "Apply",
+    openCv: "Open CV",
+    backToLibrary: "Back to library",
   },
   sv: {
     cantTailorTitle: "Kan inte anpassa ännu",
-    cantTailorDescription:
-      "Både ett huvud-CV och en vald tjänst krävs för att kunna anpassa.",
+    cantTailorDescription: "Både ett huvud-CV och en vald tjänst krävs för att kunna anpassa.",
     backToJobs: "Tillbaka till jobb",
     eyebrowTailoring: "{company} · från huvud-CV v{version}",
     heading: "Anpassat CV",
@@ -61,12 +63,10 @@ export default makeBundle({
     stepReview: "Granska ändringar",
     stepGenerate: "Generera",
     analyzeTitle: "Analysera annonsen",
-    analyzeDescription:
-      "Assistenten läser kraven och nyckelorden för {title} hos {company}.",
+    analyzeDescription: "Assistenten läser kraven och nyckelorden för {title} hos {company}.",
     analyzing: "Analyserar…",
     analyzeJob: "Analysera jobbet",
-    matchIntro:
-      "Ditt huvud-CV mot den här annonsen. Inget nedan hittar på erfarenhet du inte har.",
+    matchIntro: "Ditt huvud-CV mot den här annonsen. Inget nedan hittar på erfarenhet du inte har.",
     strong: "Starka",
     transferable: "Överförbara",
     missing: "Saknas",
@@ -78,15 +78,12 @@ export default makeBundle({
     sectionSkills: "Färdigheter",
     changeSummaryAfter:
       "{title} med 8 års erfarenhet inom fintech och B2B SaaS, med fokus på {keyword} och leverans från idé till lansering för datatunga produkter.",
-    changeSummaryWhy:
-      'Speglar annonsens språk ("{keyword}") med fakta som redan finns i ditt CV.',
+    changeSummaryWhy: 'Speglar annonsens språk ("{keyword}") med fakta som redan finns i ditt CV.',
     changeExperienceBefore: "Kronologisk ordning",
-    changeExperienceAfter:
-      "Flytta designsystemarbetet på Northlane Fintech till översta punkten",
+    changeExperienceAfter: "Flytta designsystemarbetet på Northlane Fintech till översta punkten",
     changeExperienceWhy: "Annonsen anger bidrag till designsystem som ett kärnkrav.",
     changeSkillsAfter: "{skills} först, därefter resten",
-    changeSkillsWhy:
-      "Placerar de färdigheter arbetsgivaren efterfrågar där de läses först.",
+    changeSkillsWhy: "Placerar de färdigheter arbetsgivaren efterfrågar där de läses först.",
     approved: "Godkänd",
     masterCv: "Huvud-CV",
     tailored: "Anpassat",
@@ -98,11 +95,12 @@ export default makeBundle({
       "Kopplat till huvud-CV v{version} och till {company} · {title}. Om du ändrar huvud-CV:t senare markeras den här versionen för granskning.",
     trackApplication: "Spara i ansökningar",
     applyNow: "Ansök",
+    openCv: "Öppna CV",
+    backToLibrary: "Tillbaka till biblioteket",
   },
   ar: {
     cantTailorTitle: "لا يمكن التخصيص بعد",
-    cantTailorDescription:
-      "يتطلب التخصيص وجود سيرة ذاتية رئيسية ووظيفة محدّدة معاً.",
+    cantTailorDescription: "يتطلب التخصيص وجود سيرة ذاتية رئيسية ووظيفة محدّدة معاً.",
     backToJobs: "العودة إلى الوظائف",
     eyebrowTailoring: "{company} · من السيرة الرئيسية الإصدار {version}",
     heading: "سيرة ذاتية مخصّصة",
@@ -112,12 +110,10 @@ export default makeBundle({
     stepReview: "مراجعة التعديلات",
     stepGenerate: "الإنشاء",
     analyzeTitle: "تحليل الإعلان الوظيفي",
-    analyzeDescription:
-      "يقرأ المساعد المتطلبات والكلمات المفتاحية لوظيفة {title} في {company}.",
+    analyzeDescription: "يقرأ المساعد المتطلبات والكلمات المفتاحية لوظيفة {title} في {company}.",
     analyzing: "جارٍ التحليل…",
     analyzeJob: "تحليل الوظيفة",
-    matchIntro:
-      "مقارنة سيرتك الذاتية الرئيسية بهذا الإعلان. لا شيء مما يلي يختلق خبرة لا تمتلكها.",
+    matchIntro: "مقارنة سيرتك الذاتية الرئيسية بهذا الإعلان. لا شيء مما يلي يختلق خبرة لا تمتلكها.",
     strong: "نقاط قوة",
     transferable: "مهارات قابلة للنقل",
     missing: "فجوات",
@@ -132,12 +128,10 @@ export default makeBundle({
     changeSummaryWhy:
       'يعكس لغة الإعلان ("{keyword}") اعتماداً على معلومات موجودة فعلاً في سيرتك الذاتية.',
     changeExperienceBefore: "الترتيب الزمني",
-    changeExperienceAfter:
-      "نقل العمل على نظام التصميم في Northlane Fintech إلى النقطة الأولى",
+    changeExperienceAfter: "نقل العمل على نظام التصميم في Northlane Fintech إلى النقطة الأولى",
     changeExperienceWhy: "يذكر الإعلان المساهمة في أنظمة التصميم كمتطلب أساسي.",
     changeSkillsAfter: "{skills} أولاً، ثم بقية المهارات",
-    changeSkillsWhy:
-      "يضع المهارات التي يطلبها صاحب العمل في المواضع التي تُقرأ أولاً.",
+    changeSkillsWhy: "يضع المهارات التي يطلبها صاحب العمل في المواضع التي تُقرأ أولاً.",
     approved: "معتمد",
     masterCv: "السيرة الرئيسية",
     tailored: "النسخة المخصّصة",
@@ -149,5 +143,7 @@ export default makeBundle({
       "مرتبطة بالسيرة الرئيسية الإصدار {version} وبـ {company} · {title}. أي تعديل لاحق على السيرة الرئيسية سيضع هذه النسخة قيد المراجعة.",
     trackApplication: "حفظ في المتابعة",
     applyNow: "قدّم الآن",
+    openCv: "فتح السيرة",
+    backToLibrary: "العودة إلى المكتبة",
   },
 });

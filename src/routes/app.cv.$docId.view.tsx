@@ -178,8 +178,7 @@ function CvVersionPage() {
         <TailorWindow
           suggestions={state.suggestions}
           presetTitle={tailorPreset}
-          onApply={applySuggestion}
-          onReject={(id) => setSuggestionState(id, "rejected")}
+          sourceId={docId}
           onClose={() => setOpenWindow(null)}
         />
       ) : null}

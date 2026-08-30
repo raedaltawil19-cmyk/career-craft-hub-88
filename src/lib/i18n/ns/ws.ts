@@ -20,7 +20,8 @@ export default makeBundle({
     tplMinimalDesc: "Plain and calm, no decoration",
 
     emptyPreviewTitle: "Your CV will appear here",
-    emptyPreviewHint: "Press the + button to add your CV — paste text, upload a file or fill the form.",
+    emptyPreviewHint:
+      "Press the + button to add your CV — paste text, upload a file or fill the form.",
     tplPreviewTitle: "Template preview",
     previewOnlyBadge: "Preview only — add your CV to fill it in",
     previewTemplate: "Preview",
@@ -28,16 +29,16 @@ export default makeBundle({
     prevTemplate: "Previous template",
     nextTemplate: "Next template",
     addCvCta: "Add my CV",
-    intakeTitle: "Paste text, attach a file, import from LinkedIn or fill in a form to create your CV",
+    intakeTitle:
+      "Paste text, attach a file, import from LinkedIn or fill in a form to create your CV",
     intakeHint: "Paste your CV text here, or press + for another way.",
     intakePlaceholder: "Paste the text of your CV here…",
     intakeCreate: "Create my CV",
     intakeMore: "More ways to add a CV",
-    intakeEmptyError: "Please add some text, attach a file or choose another method before creating your CV.",
+    intakeEmptyError:
+      "Please add some text, attach a file or choose another method before creating your CV.",
     addAnotherCv: "Add another CV",
     addAnotherCvHint: "Add a new CV from a paste, a file, LinkedIn or the form.",
-
-
 
     improveGeneral: "Improve my CV",
     improveGeneralDesc: "General improvements to wording and structure",
@@ -72,6 +73,11 @@ export default makeBundle({
     sending: "Your approved changes are being processed in the background.",
 
     close: "Close",
+    tailorOpenCv: "Open CV",
+    tailorApply: "Apply",
+    tailorBackToLibrary: "Back to library",
+    tailorCreate: "Create tailored CV",
+    tailorCreated: "A new version was created. Your Master CV is unchanged.",
     minimize: "Minimise",
     maximize: "Maximise",
     restore: "Restore",
@@ -141,16 +147,16 @@ export default makeBundle({
     prevTemplate: "Föregående mall",
     nextTemplate: "Nästa mall",
     addCvCta: "Lägg till mitt CV",
-    intakeTitle: "Klistra in text, bifoga en fil, importera från LinkedIn eller fyll i ett formulär för att skapa ditt CV",
+    intakeTitle:
+      "Klistra in text, bifoga en fil, importera från LinkedIn eller fyll i ett formulär för att skapa ditt CV",
     intakeHint: "Klistra in ditt CV här, eller tryck på + för ett annat sätt.",
     intakePlaceholder: "Klistra in texten från ditt CV här…",
     intakeCreate: "Skapa mitt CV",
     intakeMore: "Fler sätt att lägga till CV",
-    intakeEmptyError: "Lägg till lite text, bifoga en fil eller välj ett annat sätt innan du skapar ditt CV.",
+    intakeEmptyError:
+      "Lägg till lite text, bifoga en fil eller välj ett annat sätt innan du skapar ditt CV.",
     addAnotherCv: "Lägg till ett CV till",
     addAnotherCvHint: "Lägg till ett nytt CV via klistrad text, en fil, LinkedIn eller formuläret.",
-
-
 
     improveGeneral: "Förbättra mitt CV",
     improveGeneralDesc: "Allmänna förbättringar av formuleringar och struktur",
@@ -185,6 +191,11 @@ export default makeBundle({
     sending: "Dina godkända ändringar behandlas i bakgrunden.",
 
     close: "Stäng",
+    tailorOpenCv: "Öppna CV",
+    tailorApply: "Ansök",
+    tailorBackToLibrary: "Tillbaka till biblioteket",
+    tailorCreate: "Skapa anpassat CV",
+    tailorCreated: "En ny version skapades. Ditt huvud-CV är oförändrat.",
     minimize: "Minimera",
     maximize: "Maximera",
     restore: "Återställ",
@@ -245,7 +256,8 @@ export default makeBundle({
     tplMinimalDesc: "هادئ وبلا زخرفة",
 
     emptyPreviewTitle: "سيظهر سيرتك الذاتية هنا",
-    emptyPreviewHint: "اضغط على زر + لإضافة سيرتك الذاتية — الصق النص أو ارفع ملفًا أو املأ النموذج.",
+    emptyPreviewHint:
+      "اضغط على زر + لإضافة سيرتك الذاتية — الصق النص أو ارفع ملفًا أو املأ النموذج.",
     tplPreviewTitle: "معاينة القالب",
     previewOnlyBadge: "معاينة فقط — أضف سيرتك لتعبئتها",
     previewTemplate: "معاينة",
@@ -253,7 +265,8 @@ export default makeBundle({
     prevTemplate: "القالب السابق",
     nextTemplate: "القالب التالي",
     addCvCta: "أضف سيرتي الذاتية",
-    intakeTitle: "الصق النص، أو أرفق ملفًا، أو استورد من LinkedIn، أو عبّئ نموذجًا لإنشاء سيرتك الذاتية",
+    intakeTitle:
+      "الصق النص، أو أرفق ملفًا، أو استورد من LinkedIn، أو عبّئ نموذجًا لإنشاء سيرتك الذاتية",
     intakeHint: "الصق نص سيرتك هنا، أو اضغط + لاختيار طريقة أخرى.",
     intakePlaceholder: "الصق نص سيرتك الذاتية هنا…",
     intakeCreate: "أنشئ سيرتي الذاتية",
@@ -261,8 +274,6 @@ export default makeBundle({
     intakeEmptyError: "أضف نصًا أو أرفق ملفًا أو اختر طريقة أخرى قبل إنشاء سيرتك الذاتية.",
     addAnotherCv: "أضف سيرة ذاتية أخرى",
     addAnotherCvHint: "أضف سيرة ذاتية جديدة من لصق نص، ملف، LinkedIn، أو نموذج.",
-
-
 
     improveGeneral: "تحسين السيرة الذاتية",
     improveGeneralDesc: "تحسينات عامة على الصياغة والترتيب",
@@ -297,6 +308,11 @@ export default makeBundle({
     sending: "تتم معالجة التعديلات المعتمدة في الخلفية.",
 
     close: "إغلاق",
+    tailorOpenCv: "فتح السيرة",
+    tailorApply: "قدّم الآن",
+    tailorBackToLibrary: "العودة إلى المكتبة",
+    tailorCreate: "إنشاء نسخة مخصّصة",
+    tailorCreated: "تم إنشاء نسخة جديدة، وسيرتك الرئيسية لم تتغير.",
     minimize: "تصغير",
     maximize: "تكبير",
     restore: "استعادة",
