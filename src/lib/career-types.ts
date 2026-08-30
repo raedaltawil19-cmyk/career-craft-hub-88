@@ -33,7 +33,6 @@ export type ProjectEntry = {
   year: string;
 };
 
-
 export type MasterCv = {
   name: string;
   title: string;
@@ -56,11 +55,27 @@ export type MasterCv = {
   version: number;
 };
 
+/** One approved tailoring change, applied to a copy of the source CV. */
+export type TailorChange = {
+  target: "summary" | "skills" | "bullet";
+  before: string;
+  after: string;
+};
+
 export type CvDoc = {
   id: string;
   name: string;
   kind: "master" | "tailored";
   jobId?: string;
+  /** Job metadata this version was tailored for. */
+  company?: string;
+  jobTitle?: string;
+  /** Name of the CV this version was derived from. */
+  sourceName?: string;
+  /** Sequential version number inside this job / source family. */
+  version?: number;
+  /** Approved changes that were applied when the version was created. */
+  changes?: TailorChange[];
   updatedAt: string;
   score: number;
   /** Id of the CV this version was derived from. */

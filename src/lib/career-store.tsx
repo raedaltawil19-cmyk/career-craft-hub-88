@@ -18,6 +18,7 @@ import type {
   Notification,
   Suggestion,
   SuggestionState,
+  TailorChange,
 } from "./career-types";
 import {
   demoApplications,
@@ -28,6 +29,52 @@ import {
   demoNotifications,
   demoSuggestions,
 } from "./career-data";
+
+type TailorInput = {
+  /** Doc the version is derived from; falls back to the Master CV. */
+  sourceId?: string;
+  jobId?: string;
+  company?: string;
+  jobTitle?: string;
+  baseName?: string;
+  score?: number;
+  changes: TailorChange[];
+};
+
+/** Pure: returns a deep copy of `cv` with only the approved changes applied. */
+function applyTailorChanges(cv: MasterCv, changes: TailorChange[]): MasterCv {
+  let next: MasterCv = {
+    ...cv,
+    skills: [...cv.skills],
+    experience: cv.experience.map((e) => ({ ...e, bullets: [...e.bullets] })),
+  };
+  for (const c of changes) {
+    if (c.target === "summary") {
+      next = { ...next, summary: c.after };
+    } else if (c.target === "skills") {
+      const wanted = c.after
+        .split(/[,،]/)
+        .map((x) => x.trim())
+        .filter(Boolean);
+      const first = wanted.filter((w) =>
+        next.skills.some((s) => s.toLowerCase() === w.toLowerCase()),
+      );
+      const rest = next.skills.filter(
+        (s) => !first.some((w) => w.toLowerCase() === s.toLowerCase()),
+      );
+      next = { ...next, skills: [...first, ...rest] };
+    } else {
+      next = {
+        ...next,
+        experience: next.experience.map((e) => ({
+          ...e,
+          bullets: e.bullets.map((b) => (b === c.before ? c.after : b)),
+        })),
+      };
+    }
+  }
+  return { ...next, updatedAt: new Date().toISOString() };
+}
 
 type WorkspaceState = {
   onboarded: boolean;
@@ -79,6 +126,7 @@ type Ctx = {
   setApplicationStatus: (id: string, status: ApplicationStatus) => void;
   toggleSavedJob: (jobId: string) => void;
   addTailoredCv: (doc: CvDoc) => void;
+  createTailoredCv: (input: TailorInput) => string;
   duplicateCv: (id: string, copyLabel: string) => string;
   deleteCv: (id: string) => void;
   updateCvDoc: (id: string, patch: Partial<CvDoc>) => void;
@@ -92,8 +140,7 @@ type Ctx = {
 const globalScope = globalThis as typeof globalThis & {
   __smartcvWorkspaceContext?: Context<Ctx | null>;
 };
-const WorkspaceContext =
-  globalScope.__smartcvWorkspaceContext ?? createContext<Ctx | null>(null);
+const WorkspaceContext = globalScope.__smartcvWorkspaceContext ?? createContext<Ctx | null>(null);
 globalScope.__smartcvWorkspaceContext = WorkspaceContext;
 const STORAGE_KEY = "smartcv:workspace:v1";
 
@@ -132,7 +179,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       docs: s.docs.some((d) => d.kind === "master")
         ? s.docs
         : [
-            { id: "cv-master", name: "Master CV", kind: "master", updatedAt: "just now", score: 72 },
+            {
+              id: "cv-master",
+              name: "Master CV",
+              kind: "master",
+              updatedAt: "just now",
+              score: 72,
+            },
             ...s.docs,
           ],
     }));
@@ -292,6 +345,50 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, docs: [doc, ...s.docs.filter((d) => d.id !== doc.id)] }));
   }, []);
 
+  /**
+   * Create a brand new tailored version from a source CV, applying ONLY the
+   * approved changes to the copy. The Master CV and every older version stay
+   * untouched — nothing is ever overwritten.
+   */
+  const createTailoredCv = useCallback((input: TailorInput) => {
+    const newId = `cv-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+    setState((s) => {
+      const source =
+        (input.sourceId ? s.docs.find((d) => d.id === input.sourceId) : undefined) ??
+        s.docs.find((d) => d.kind === "master");
+      const base = source?.data ?? s.masterCv;
+      if (!base) return s;
+
+      const data = applyTailorChanges(base, input.changes);
+      const family = s.docs.filter((d) =>
+        input.jobId ? d.jobId === input.jobId : d.baseName === input.baseName,
+      );
+      const version = family.length + 1;
+      const label = input.jobId
+        ? `${input.company ?? ""} — ${input.jobTitle ?? ""}`.trim()
+        : (input.baseName ?? input.jobTitle ?? "Tailored CV");
+
+      const doc: CvDoc = {
+        id: newId,
+        name: `${label} · v${version}`,
+        baseName: label,
+        kind: "tailored",
+        ...(input.jobId ? { jobId: input.jobId } : {}),
+        ...(input.company ? { company: input.company } : {}),
+        ...(input.jobTitle ? { jobTitle: input.jobTitle } : {}),
+        ...(source ? { parentId: source.id, sourceName: source.name } : {}),
+        version,
+        changes: input.changes,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        score: input.score ?? 84,
+        data: { ...data, version },
+      };
+      return { ...s, docs: [doc, ...s.docs] };
+    });
+    return newId;
+  }, []);
+
   const markAllNotificationsRead = useCallback(() => {
     setState((s) => ({ ...s, notifications: s.notifications.map((n) => ({ ...n, read: true })) }));
   }, []);
@@ -314,6 +411,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setApplicationStatus,
       toggleSavedJob,
       addTailoredCv,
+      createTailoredCv,
       duplicateCv,
       deleteCv,
       updateCvDoc,
@@ -334,6 +432,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setApplicationStatus,
       toggleSavedJob,
       addTailoredCv,
+      createTailoredCv,
       duplicateCv,
       deleteCv,
       updateCvDoc,
