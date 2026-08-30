@@ -49,7 +49,6 @@ function CvVersionPage() {
     applySuggestion,
     setSuggestionState,
     duplicateCv,
-    deleteCv,
   } = useWorkspace();
 
   const [openWindow, setOpenWindow] = useState<WindowKind>(null);
@@ -69,17 +68,6 @@ function CvVersionPage() {
       />
     );
   }
-
-  const onDelete = () => {
-    const kids = state.docs.filter((x) => x.parentId === doc.id).length;
-    const message =
-      doc.kind === "master" && kids
-        ? t("cv.deleteMasterConfirm", { name: doc.name, count: kids })
-        : t("cv.deleteConfirm", { name: doc.name });
-    if (!window.confirm(message)) return;
-    deleteCv(doc.id);
-    navigate({ to: "/app" });
-  };
 
   const linkedJob = doc.jobId ? jobs.find((j) => j.id === doc.jobId) : undefined;
 
