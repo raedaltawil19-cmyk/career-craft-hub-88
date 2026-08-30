@@ -82,26 +82,28 @@ function CvVersionPage() {
     navigate({ to: "/app" });
   };
 
+  const linkedJob = doc.jobId ? jobs.find((j) => j.id === doc.jobId) : undefined;
+
   return (
     <div className="space-y-5 pb-28 lg:pb-6">
       <PageHeader
         eyebrow={doc.kind === "master" ? t("cv.masterLabel") : t("cv.tailoredLabel")}
         title={doc.name}
         description={t("cv.versionMeta", { version: cv.version })}
-        action={
-          <div className="flex items-center gap-2">
-            <ShareCvMenu cv={cv} name={doc.name} compact />
-            <button
-              type="button"
-              onClick={onDelete}
-              aria-label={t("cv.deleteAction")}
-              className="tap grid size-11 place-items-center rounded-xl border border-border text-destructive hover:bg-muted"
-            >
-              <Trash2 className="size-5" />
-            </button>
-          </div>
-        }
       />
+
+      {linkedJob ? (
+        <a
+          href={linkedJob.applyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tap flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground"
+          style={{ boxShadow: "var(--shadow-press)" }}
+        >
+          {t("tailor.applyNow")}
+          <ExternalLink className="size-4 rtl:rotate-180" aria-hidden />
+        </a>
+      ) : null}
 
       <CvActionToolbar
         openWindow={openWindow}
